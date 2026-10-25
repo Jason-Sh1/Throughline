@@ -59,3 +59,24 @@ jobs:
         run: make recluster
       - name: Clusters with 2+ outlets
         run: make clusters ARGS="--min-outlets 2 --limit 40"
+      # Same results as annotations, so they show on the PR's Checks tab without
+      # opening the logs.
+      - name: Report as annotations
+        if: always()
+        run: |
+          report() {
+            local level=$1 title=$2; shift 2
+            local body
+            body=$("$@" 2>&1 | head -c 60000 | sed ':a;N;$!ba;s/%/%25/g;s/\r/%0D/g;s/\n/%0A/g')
+            echo "::$level title=$title::${body:-none}"
+          }
+          report warning "Feeds not returning 200/304" psql "$DATABASE_URL" -At -F ' | ' -c \
+            "select s.name, f.url, coalesce(f.last_status::text, 'no response') from feeds f
+             join sources s on s.id = f.source_id
+             where f.last_status is distinct from 200 and f.last_status is distinct from 304
+             order by s.name"
+          report notice "Articles by origin" psql "$DATABASE_URL" -At -F ' | ' -c \
+            "select origin, count(*), count(duplicate_of), count(embedding) from articles group by 1"
+          report notice "Pipeline runs" psql "$DATABASE_URL" -At -F ' | ' -c \
+            "select kind, status, stats::text from pipeline_runs order by id"
+          report notice "Clusters with 2+ outlets" make -s clusters ARGS="--min-outlets 2 --limit 25 --headlines 5"
