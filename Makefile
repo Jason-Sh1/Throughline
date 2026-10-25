@@ -3,7 +3,7 @@ SHELL := /bin/bash
 WORKER := cd worker && uv run
 PG_TEST_URL ?= postgresql://postgres:postgres@localhost:54322/throughline_test
 
-.PHONY: help setup embed-deps dev test test-web test-worker lint ingest fetch cluster \
+.PHONY: help env-check setup embed-deps dev test test-web test-worker lint ingest fetch cluster \
         recluster purge clusters eval-quick validate-feeds sync-sources allsides db-test
 
 help:
@@ -46,6 +46,9 @@ allsides: ## Import AllSides ratings: make allsides CSV=path/to.csv [APPLY=1]
 	$(WORKER) python -m ingest.allsides $(abspath $(CSV)) $(if $(APPLY),--apply,)
 
 ingest: sync-sources fetch cluster ## Sync feeds, fetch all sources, embed + cluster
+
+env-check: ## Show which env vars are set (never prints values)
+	$(WORKER) python -m common.env_check
 
 fetch: ## Fetch RSS, GDELT and Guardian; store and dedupe articles
 	$(WORKER) python -m ingest.run

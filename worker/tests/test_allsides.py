@@ -83,6 +83,7 @@ def test_normalize_name():
     assert normalize_name("The New York Times (News)") == "new york times"
     assert normalize_name("Fox News (Online News)") == "fox news"
     assert normalize_name("Reason") == "reason"
+    assert normalize_name("CBS News (Online)") == "cbs news"
 
 
 def test_read_csv_and_plan(tmp_path):

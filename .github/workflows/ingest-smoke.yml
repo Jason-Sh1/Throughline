@@ -58,6 +58,8 @@ jobs:
       - name: Clusters before the nightly pass
         run: |
           make -s clusters ARGS="--min-outlets 2 --limit 25 --headlines 5" | tee /tmp/online.txt
+      - name: Threshold sweep (read-only replay of online clustering)
+        run: cd worker && uv run python -m cluster.sweep | tee /tmp/sweep.txt
       - name: Re-cluster
         run: make recluster
       - name: Clusters with 2+ outlets
@@ -84,3 +86,20 @@ jobs:
             "select kind, status, stats::text from pipeline_runs order by id"
           report notice "Online clusters (before re-cluster)" cat /tmp/online.txt
           report notice "Clusters with 2+ outlets (after re-cluster)" make -s clusters ARGS="--min-outlets 2 --limit 25 --headlines 5"
+      # Annotations are cut at ~4 KB and capped at 10 notices per step, so the
+      # sweep gets its own step, split into chunks on line boundaries.
+      - name: Report sweep as annotations
+        if: always()
+        run: |
+          [ -f /tmp/sweep.txt ] || exit 0
+          python3 - <<'PY'
+          chunks, cur = [], ""
+          for line in open("/tmp/sweep.txt"):
+              if len(cur) + len(line) > 3800:
+                  chunks.append(cur); cur = ""
+              cur += line
+          chunks.append(cur)
+          for i, c in enumerate(chunks[:10], 1):
+              body = c.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+              print(f"::notice title=Threshold sweep {i}/{len(chunks)}::{body}")
+          PY

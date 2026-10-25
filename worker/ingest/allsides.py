@@ -61,9 +61,10 @@ def normalize_rating(raw: str) -> BiasRating:
 
 
 def normalize_name(name: str) -> str:
-    """Lowercase, drop a leading 'the', a trailing '(news)'/'(online news)' and punctuation."""
+    """Lowercase, drop a leading 'the', a '(news)'/'(online)'/'(online news)'/'(opinion)'
+    qualifier and punctuation."""
     s = name.lower()
-    s = re.sub(r"\((online )?news\)|\(opinion\)", "", s)
+    s = re.sub(r"\((online news|online|news|opinion)\)", "", s)
     s = re.sub(r"[^a-z0-9]+", " ", s).strip()
     return s.removeprefix("the ").strip()
 

@@ -8,13 +8,13 @@ Claude: check items off as they're completed and add a one-line note (date, anyt
 - [x] Monorepo scaffold (`/web`, `/worker`, `/supabase`, `/feeds`, `/docs`) — 2026-10-25
 - [x] `.env.example`, Makefile (`make dev`, `make test`, `make ingest`, `make eval-quick`) — 2026-10-25; `ingest`/`eval-quick` are stubs until M2/M4
 - [x] GitHub Actions CI: lint + tests for web and worker — 2026-10-25; also applies migrations + RLS tests on pgvector/pg16
-- [ ] **Human:** create Supabase project and `supabase db push`
+- [x] **Human:** create Supabase project and `supabase db push` — 2026-10-25; dev project created by Jason, migrations applied via the Management API
 - [x] Initial migration: `sources`, `articles`, `clusters`, `cluster_articles`, `entities`, `cards`, `editions`, `pipeline_runs`, `jobs`, `users`, `profiles`, `evals` — 2026-10-25; added `feeds`, `article_entities`, `edition_cards` (see docs/schema.md)
 - [x] Enable pgvector — 2026-10-25; `vector(384)` + HNSW
 - [x] `feeds.yaml` schema (url, outlet, category, region, allsides_rating) + validator script — 2026-10-25; 24 starter feeds, `STRICT=1` enforces launch targets
-- [ ] **Human:** curate 150+ feeds, spectrum-balanced, ≥25 per category
+- [x] ~~**Human:**~~ curate 150+ feeds, spectrum-balanced, ≥25 per category — 2026-10-25; delegated to Claude by Jason: 281 feeds drafted, all returning 200 in the smoke run, passes `STRICT=1`; labels checked by a reviewer agent, then replaced by the AllSides import
 - [x] AllSides ratings import script with attribution — 2026-10-25
-- [ ] **Human:** download AllSides ratings CSV and run `make allsides CSV=... APPLY=1`
+- [x] **Human:** download AllSides ratings CSV and run `make allsides CSV=... APPLY=1` — 2026-10-25; Jason exported the table, 88 changes applied (CSV kept in project files)
 
 ### M2 — Ingestion & clustering (Week 2)
 - [x] RSS fetcher with conditional GET, timeouts, per-host rate limits — 2026-10-25; also honours robots.txt
@@ -27,7 +27,7 @@ Claude: check items off as they're completed and add a one-line note (date, anyt
 - [x] Cluster inspection tool (CLI or simple admin page) — 2026-10-25; `make clusters`
 - [x] 14-day raw-text purge job — 2026-10-25; `make purge`
 - [x] Tests for dedupe and clustering — 2026-10-25; plus fetchers and DB pipeline tests
-- [ ] **Human:** inspect 50 clusters, tune threshold, note results in `/docs/decisions.md`
+- [x] ~~**Human:**~~ inspect 50 clusters, tune threshold, note results in `/docs/decisions.md` — 2026-10-25; delegated to Claude: threshold 0.62→0.66, gray margin 0.10→0.05 from a 12-config sweep (`cluster/sweep.py`) over a live 72h window
 
 ### M3 — LLM extraction & synthesis (Week 3)
 - [ ] Pydantic/JSON schemas for extraction output and story card

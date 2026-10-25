@@ -260,7 +260,8 @@ def run(conn: psycopg.Connection, window_hours: int = 72, min_cluster_size: int 
             select a.id, a.embedding, ca.cluster_id
             from articles a left join cluster_articles ca on ca.article_id = a.id
             where a.embedding is not null and a.duplicate_of is null
-              and a.fetched_at > now() - make_interval(hours => %s)
+              -- Window on publish time: feeds re-serve months-old items we've only just fetched.
+              and coalesce(a.published_at, a.fetched_at) > now() - make_interval(hours => %s)
             order by a.id
             """,
             (window_hours,),

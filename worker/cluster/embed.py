@@ -48,7 +48,7 @@ def article_text(title: str, summary: str | None) -> str:
 
 
 def embed_pending(
-    conn: psycopg.Connection, embedder: Embedder, batch_size: int = 128, limit: int = 5000
+    conn: psycopg.Connection, embedder: Embedder, batch_size: int = 128, limit: int = 20000
 ) -> int:
     """Embed articles that don't have a vector yet. Duplicates are skipped:
     they inherit their original's cluster instead."""

@@ -68,13 +68,25 @@ def test_store_dedupes_url_title_and_simhash(db):
         art(s[0], "fed-1", "Fed holds rates steady", WIRE),
         art(s[0], "fed-1?utm_source=x", "Fed holds rates steady", WIRE),          # same URL
         art(s[1], "fed-copy", "Fed Holds Rates Steady - Outlet 1", "Different text."),  # title
-        art(s[2], "fed-wire", "Rates unchanged as Fed waits", WIRE + " Markets rose."),  # simhash
+        art(s[2], "fed-wire", "Fed holds rates as prices rise", WIRE + " Up."),  # simhash
         art(s[3], "storm", "Storm hits plains", "Heavy snow closed highways."),
     ])  # fmt: skip
     assert stats.as_dict() == {"inserted": 4, "url_dupes": 1, "title_dupes": 1, "near_dupes": 1}
     with db.cursor() as cur:
         cur.execute("select count(*) from articles where duplicate_of = 1")
         assert cur.fetchone()[0] == 2
+
+
+def test_store_near_dupe_needs_similar_headline(db):
+    # Same boilerplate-heavy summary, unrelated headlines: not a duplicate.
+    with db.cursor() as cur:
+        s = make_sources(cur, 2)
+    db.commit()
+    stats = store_articles(db, [
+        art(s[0], "a", "Fed holds rates steady", WIRE),
+        art(s[1], "b", "Storm closes highways across the plains", WIRE),
+    ])  # fmt: skip
+    assert stats.near_dupes == 0
 
 
 def test_store_backfills_raw_text_but_not_after_purge(db):

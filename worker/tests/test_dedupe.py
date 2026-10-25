@@ -8,6 +8,7 @@ from cluster.dedupe import (
     simhash,
     simhash_text,
     title_hash,
+    title_jaccard,
 )
 
 
@@ -91,3 +92,21 @@ def test_simhash_identical_and_signed_range():
 def test_simhash_text_requires_enough_words():
     assert simhash_text("Short headline", None) is None
     assert simhash_text("Headline", WIRE) is not None
+
+
+def test_stopwords_do_not_make_unrelated_texts_collide():
+    a = (
+        "The company said that it would be the first of its kind and that it was not "
+        "going to be the last, as they have been saying for the past year about it."
+    )
+    b = (
+        "The team said that it would be the best of its season and that it was not "
+        "going to be the end, as fans have been saying for the whole week about it."
+    )
+    assert hamming(simhash(a), simhash(b)) > SIMHASH_MAX_DISTANCE
+
+
+def test_title_jaccard():
+    assert title_jaccard("Fed holds rates", "Fed holds rates as inflation lingers") >= 0.5
+    assert title_jaccard("Fed holds rates steady", "Storm closes highways") == 0
+    assert title_jaccard("The", "A") == 0

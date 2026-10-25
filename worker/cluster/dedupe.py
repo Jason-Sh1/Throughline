@@ -70,8 +70,24 @@ def title_hash(title: str) -> str:
     return hashlib.sha1(normalize_title(title).encode()).hexdigest()
 
 
+# Function words carry no topic. Left in, they dominate short texts, and two
+# unrelated summaries full of "the", "and", "said" fingerprint as near-identical
+# (seen on the first live run, see docs/decisions.md).
+STOPWORDS = frozenset(
+    """
+a an and are as at be been but by for from had has have he her his i in into is it its
+of on or our over said says she that the their they this to up was we were what when
+which who will with would you after about more new not than after also out just
+""".split()
+)
+
+
+def content_words(text: str) -> list[str]:
+    return [w for w in normalize_title(text).split() if w not in STOPWORDS]
+
+
 def _shingles(text: str, n: int = 1) -> list[str]:
-    words = normalize_title(text).split()
+    words = content_words(text)
     if len(words) < n:
         return [" ".join(words)] if words else []
     return [" ".join(words[i : i + n]) for i in range(len(words) - n + 1)]
@@ -100,19 +116,34 @@ def hamming(a: int, b: int) -> int:
 
 # At or below this many differing bits (out of 64) two texts are near-duplicates.
 # The classic value is 3 with word 3-grams (Manku et al. 2007), but that's
-# calibrated for whole web pages. We only have title + RSS summary (30-80
-# words), where one inserted word changes ~10% of the 3-grams. On test pairs,
-# single words gave: lightly edited wire copies 5-8 bits apart, different
-# write-ups of the same event 19-28, unrelated stories ~20. So: words, and 10.
-# Revisit when tuning dedupe on real data (ROADMAP M2 human step).
-SIMHASH_MAX_DISTANCE = 10
+# calibrated for whole web pages. We only have title + RSS summary (15-50
+# content words), where one inserted word shifts a lot of the fingerprint. On
+# test pairs, content words (stopwords removed) gave: lightly edited wire
+# copies 5-11 bits apart, different write-ups of the same event ~29, unrelated
+# stories ~31. So: content words, and 12. Store.py also requires the headlines
+# to overlap (TITLE_MIN_JACCARD), which catches boilerplate collisions.
+SIMHASH_MAX_DISTANCE = 12
 
 # SimHash on very short text is noisy (two different 8-word headlines can
 # collide), so only use it when there's enough text.
 SIMHASH_MIN_WORDS = 20
 
 
+# A near-duplicate must also share most of its headline words. Wire copies keep
+# the headline nearly intact; boilerplate-heavy summaries ("Sign up for our
+# newsletter...") can collide on SimHash while the headlines have nothing in
+# common.
+TITLE_MIN_JACCARD = 0.5
+
+
+def title_jaccard(a: str, b: str) -> float:
+    ta, tb = set(content_words(a)), set(content_words(b))
+    if not ta or not tb:
+        return 0.0
+    return len(ta & tb) / len(ta | tb)
+
+
 def simhash_text(title: str, summary: str | None) -> str | None:
     """The text we fingerprint, or None when it's too short to be reliable."""
     text = f"{title} {summary or ''}"
-    return text if len(normalize_title(text).split()) >= SIMHASH_MIN_WORDS else None
+    return text if len(content_words(text)) >= SIMHASH_MIN_WORDS else None

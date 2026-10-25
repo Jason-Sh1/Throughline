@@ -65,3 +65,62 @@ Short notes on non-obvious choices, newest first.
 - **CI tests migrations against plain Postgres + pgvector** with a small shim
   (`supabase/tests/local_auth_shim.sql`) for `auth.users`, `auth.uid()` and the
   `anon`/`authenticated` roles, instead of booting the full Supabase stack.
+
+### M2 follow-up: fixes from the first full live run (2026-10-25)
+
+The first smoke run over the full feed list (~7.9k articles) showed three problems:
+
+- **False near-duplicates.** Unrelated articles were marked as SimHash duplicates. With only
+  title + RSS summary to fingerprint, stopwords ("the", "said", "that") and newsletter
+  boilerplate dominated the features. Fix: SimHash now ignores stopwords, and a near-duplicate
+  must *also* share at least half of its headline content words (`TITLE_MIN_JACCARD = 0.5`).
+  Real wire copies keep the headline mostly intact; boilerplate collisions don't. With
+  stopwords gone each word weighs more, so lightly edited copies measured 5-11 bits apart;
+  the threshold moved from 10 to 12 (independent coverage still sits ~29 bits away).
+- **Old articles clustered.** Some feeds re-serve items from months ago. The clustering window
+  used `fetched_at`, so a March article fetched today counted as fresh. Online clustering and
+  the nightly re-cluster now window on `coalesce(published_at, fetched_at)`.
+- **Embedding cap.** The first run hit the 5,000-article embed limit. Raised to 20,000
+  (all-MiniLM-L6-v2 on CPU does that in a few minutes).
+
+Feeds: 52 dead feeds (404, robots.txt disallow, bot blocks) were dropped and replaced, mostly
+with extra sections from outlets whose other feeds already worked. The list is 268 feeds and
+passes `make validate-feeds STRICT=1` (every category ≥25, left/right ratio 78/53 = 1.47).
+
+Label review (agent-assisted, from memory because allsides.com is blocked from the sandbox):
+Washington Examiner moved to Lean Right. RealClearPolitics/RealClearEnergy were dropped,
+because they're aggregators that re-link other outlets and would double-count in clusters.
+Fox's opinion feed was dropped (opinion shouldn't enter as news). Country fixes: Phys.org and
+Medical Xpress (Isle of Man), New Atlas (AU), Universe Today (CA). The remaining ratings stay
+placeholders until the AllSides CSV import. **Open for M3:** agencies (NASA, CDC, WHO) and
+journals (Nature, Lancet) shouldn't count toward a story's outlet count or spectrum spread in
+`confidence`; opinion-heavy outlets need to land in the framing panel's analysis/opinion bucket.
+
+### M2 follow-up: first cluster threshold tuning (2026-10-25)
+
+Delegated to Claude by Jason. Method: `cluster/sweep.py` replays online clustering over one live
+72h window (3,482 articles from 281 feeds, smoke run on PR #2) for 12 threshold × gray-margin
+combinations and prints the biggest clusters for three of them. Read-only, so it costs one CI run.
+
+| threshold / gray | multi-outlet stories | 5+ outlets | largest |
+|---|---|---|---|
+| 0.62 / 0.10 (old) | 290 | 57 | 39 |
+| **0.66 / 0.05 (new)** | 277 | 47 | 35 |
+| 0.70 / 0.05 | 256 | 44 | 30 |
+
+Over-merges at the old setting, all gone at 0.66 / 0.05:
+- Brazil election cluster absorbed a Guardian column on Brazilian football.
+- France protests cluster was seeded by Foreign Policy's generic "What in the World?" newsletter.
+- Starlink/Ukraine cluster pulled in a separate story on GOP oversight of SpaceX.
+- A 29-article "Premier League weekend" cluster (3 outlets) merged unrelated match reports.
+
+At 0.70 the big events (Alaska DOJ suit, Machado's return, Brazil, France) stay intact but
+~20 fewer multi-outlet stories form, i.e. we start splitting smaller events. Over-merging is the
+worse failure for us (a briefing that mixes two events is wrong; a split event is just a
+smaller card), so we take the stricter of the settings that don't visibly split, 0.66.
+The gray margin shrank because most bad joins came through the entity rule, whose entities are
+still capitalized-phrase heuristics; revisit both after M3 replaces them with LLM extraction.
+
+**Known remaining issues:** a few Daily Beast pieces with generic headlines land in the
+Starlink cluster (their summaries are about it, so arguably correct); sports match reports
+from one league still group loosely. Re-run the sweep after any embedding or entity change.
