@@ -17,16 +17,16 @@ Claude: check items off as they're completed and add a one-line note (date, anyt
 - [ ] **Human:** download AllSides ratings CSV and run `make allsides CSV=... APPLY=1`
 
 ### M2 — Ingestion & clustering (Week 2)
-- [ ] RSS fetcher with conditional GET, timeouts, per-host rate limits
-- [ ] GDELT DOC API fetcher
-- [ ] Guardian API fetcher (reads rate-limit headers)
-- [ ] URL canonicalization + title hashing + SimHash near-duplicate detection (track "republished by N outlets")
-- [ ] Local embedding model; store vectors in pgvector
-- [ ] Online clustering (cosine threshold, 48–72h window) + entity-overlap tiebreak
-- [ ] Nightly HDBSCAN re-cluster (merge/split)
-- [ ] Cluster inspection tool (CLI or simple admin page)
-- [ ] 14-day raw-text purge job
-- [ ] Tests for dedupe and clustering
+- [x] RSS fetcher with conditional GET, timeouts, per-host rate limits — 2026-10-25; also honours robots.txt
+- [x] GDELT DOC API fetcher — 2026-10-25; tracked outlets only
+- [x] Guardian API fetcher (reads rate-limit headers) — 2026-10-25
+- [x] URL canonicalization + title hashing + SimHash near-duplicate detection (track "republished by N outlets") — 2026-10-25; via `duplicate_of`
+- [x] Local embedding model; store vectors in pgvector — 2026-10-25; all-MiniLM-L6-v2, `make embed-deps`
+- [x] Online clustering (cosine threshold, 48–72h window) + entity-overlap tiebreak — 2026-10-25; heuristic entities until M3
+- [x] Nightly HDBSCAN re-cluster (merge/split) — 2026-10-25; scheduling lands with the cron in M8
+- [x] Cluster inspection tool (CLI or simple admin page) — 2026-10-25; `make clusters`
+- [x] 14-day raw-text purge job — 2026-10-25; `make purge`
+- [x] Tests for dedupe and clustering — 2026-10-25; plus fetchers and DB pipeline tests
 - [ ] **Human:** inspect 50 clusters, tune threshold, note results in `/docs/decisions.md`
 
 ### M3 — LLM extraction & synthesis (Week 3)
@@ -104,3 +104,4 @@ Claude: check items off as they're completed and add a one-line note (date, anyt
 ## Notes
 <!-- Claude appends dated notes here -->
 - 2026-10-25 (M1): Starter feed URLs could not be fetched from the dev sandbox (news sites blocked), so treat them as unverified until the M2 fetcher runs. Ratings in feeds.yaml are placeholders until the AllSides import. 29 worker tests + RLS smoke test passing.
+- 2026-10-25 (M2): 90 worker tests passing locally against Postgres + pgvector. Fetchers are tested with mocked HTTP only, because the dev sandbox can't reach news sites, GDELT, the Guardian or Hugging Face. `ingest-smoke.yml` runs the real pipeline on GitHub Actions. Clustering explained in docs/clustering.md.

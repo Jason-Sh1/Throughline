@@ -1,0 +1,61 @@
+# Live smoke test: fetch the real feeds into a throwaway database, embed with the
+# real model, cluster, and print the result. Runs on PRs that touch ingestion or
+# clustering, or by hand from the Actions tab. Not a required check: publishers'
+# feeds go down for reasons unrelated to our code.
+name: Ingest smoke test
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "worker/ingest/**"
+      - "worker/cluster/**"
+      - "feeds/**"
+      - ".github/workflows/ingest-smoke.yml"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: throughline_smoke
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/throughline_smoke
+      CRAWLER_CONTACT: https://github.com/${{ github.repository }}
+      GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+      - name: Install worker deps (CPU-only torch)
+        run: |
+          cd worker && uv sync --python 3.12
+          cd .. && make embed-deps
+      - name: Apply migrations
+        run: |
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -q -f supabase/tests/local_auth_shim.sql
+          for f in supabase/migrations/*.sql; do psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -q -f "$f"; done
+      - name: Sync feeds
+        run: make sync-sources
+      - name: Fetch
+        run: make fetch
+      - name: Feed health
+        run: |
+          psql "$DATABASE_URL" -c "select s.name, f.url, f.last_status from feeds f
+            join sources s on s.id = f.source_id
+            where f.last_status is distinct from 200 and f.last_status is distinct from 304
+            order by s.name"
+          psql "$DATABASE_URL" -c "select origin, count(*), count(duplicate_of) as dupes
+            from articles group by origin"
+      - name: Embed and cluster
+        run: make cluster
+      - name: Re-cluster
+        run: make recluster
+      - name: Clusters with 2+ outlets
+        run: make clusters ARGS="--min-outlets 2 --limit 40"

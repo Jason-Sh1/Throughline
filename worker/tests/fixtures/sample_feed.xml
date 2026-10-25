@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>Example News - Politics</title>
+  <link>https://news.example</link>
+  <language>en-us</language>
+  <item>
+    <title>Senate passes &amp; sends funding bill to president</title>
+    <link>https://news.example/politics/funding-bill?utm_source=rss</link>
+    <description>&lt;p&gt;The Senate voted 68-31 on Tuesday to pass a stopgap &lt;b&gt;funding&lt;/b&gt; bill.&lt;/p&gt;</description>
+    <pubDate>Tue, 21 Oct 2026 22:15:00 GMT</pubDate>
+  </item>
+  <item>
+    <title>Governor signs housing law</title>
+    <link>https://news.example/politics/housing-law</link>
+    <pubDate>Tue, 21 Oct 2026 18:00:00 -0400</pubDate>
+  </item>
+  <item>
+    <title></title>
+    <link>https://news.example/politics/no-title</link>
+  </item>
+  <item>
+    <title>No link here</title>
+  </item>
+</channel>
+</rss>

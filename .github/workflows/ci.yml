@@ -28,7 +28,7 @@ jobs:
         run: make test-worker
       - name: Validate feeds.yaml
         run: make validate-feeds
-      - name: Migrations, RLS and DB tests
+      - name: Migrations, RLS tests, and worker tests against Postgres
         run: make db-test
       - name: Eval gate
         run: make eval-quick

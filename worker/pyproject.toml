@@ -8,10 +8,18 @@ dependencies = [
   "ruamel.yaml>=0.18",       # round-trip YAML so the AllSides import keeps feeds.yaml comments
   "psycopg[binary]>=3.2",
   "python-dotenv>=1.0",
+  "feedparser>=6.0.14",
+  "httpx>=0.28.1",
+  "numpy>=2.5.4",
+  "scikit-learn>=1.9.1",
+  "pgvector>=0.5.1",
 ]
 
 [dependency-groups]
 dev = ["pytest>=8", "ruff>=0.6"]
+# sentence-transformers (for cluster/embed.py) is installed with `make embed-deps`
+# instead of being locked here: on Linux the default PyTorch wheel bundles CUDA
+# (~5 GB), and we only need the CPU build from PyTorch's own index.
 
 [tool.uv]
 package = false
