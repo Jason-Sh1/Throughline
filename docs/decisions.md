@@ -2,6 +2,43 @@
 
 Short notes on non-obvious choices, newest first.
 
+## 2026-10-25 — M2
+
+- **SimHash on words, with a threshold of 10 bits rather than the textbook 3.** The
+  classic setting (3-grams, 3 bits) is calibrated for whole web pages; we only
+  have a title plus an RSS summary. On test pairs, lightly edited wire copies
+  were 5–8 bits apart and independent write-ups of the same event 19–28. See
+  `cluster/dedupe.py`.
+- **Duplicates are kept, linked with `duplicate_of`.** A wire story that 6
+  outlets run is 6 outlets' worth of coverage for the spectrum bar, but only
+  one text for embeddings and the LLM.
+- **Cosine threshold 0.62, 72 h window, entity tiebreak.** Starting values for
+  all-MiniLM-L6-v2 on title + summary; to be tuned on real clusters (human step).
+  The entity rule only acts near the threshold, so a shared name like "Trump"
+  alone can't glue unrelated stories together (it needs ≥ 2 shared names and
+  similarity within 0.10 of the threshold).
+- **Heuristic entities until M3.** Capitalized phrases from title + summary. Cheap
+  and good enough for "do these stories mention the same people?". M3's
+  extraction step will produce typed entities.
+- **scikit-learn's HDBSCAN** instead of the `hdbscan` package: same algorithm,
+  no extra compiled dependency. Noise points keep their online assignment.
+- **Guards on the nightly re-cluster.** The first live run (529 articles, 24
+  feeds) showed plain HDBSCAN over-merging: one 22-article "cluster" mixed three
+  different election-ad stories, and another mixed IMF, Iran and Houthi stories.
+  Two guards were added. A leave-one-out coherence floor at the online threshold
+  turns weak members back into noise; it measures each member against the
+  *other* members, because including the member itself is far too lenient for
+  small groups. And a cluster is merged only when all of its articles moved.
+- **GDELT only for outlets we already track.** Untracked domains have no
+  spectrum label, so storing them would skew the coverage bar.
+- **sentence-transformers is installed by `make embed-deps`, not locked.** The
+  default Linux PyTorch wheel bundles CUDA (~5 GB); we pull the CPU build from
+  PyTorch's index. CI unit tests use a fake embedder and don't need it.
+- **Live smoke test as a separate, non-required workflow.** The dev sandbox can't
+  reach news sites, so `ingest-smoke.yml` runs the real fetch → embed → cluster
+  on GitHub Actions for PRs touching ingestion. It's not a required check
+  because a publisher's feed being down shouldn't block merges.
+
 ## 2026-10-25 — M1
 
 - **feeds.yaml is grouped by outlet**, not one row per feed. Region and AllSides

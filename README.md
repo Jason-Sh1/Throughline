@@ -14,7 +14,7 @@ web/        Next.js app (App Router, TypeScript, Tailwind)
 worker/     Python 3.12 ingestion + AI pipeline (uv)
 supabase/   migrations and DB tests
 feeds/      feeds.yaml, the curated RSS list
-docs/       schema notes, design decisions
+docs/       schema notes, clustering explainer, design decisions
 ```
 
 ## Setup
@@ -31,6 +31,18 @@ make dev                  # web app on http://localhost:3000
 
 Database: create a Supabase project, then `supabase link` and `supabase db push`
 to apply `supabase/migrations/`. Set `DATABASE_URL` and run `make sync-sources`.
+
+Pipeline (needs `DATABASE_URL`):
+
+```bash
+make embed-deps           # once: CPU-only PyTorch + sentence-transformers
+make ingest               # sync feeds, fetch, dedupe, embed, cluster
+make clusters             # print recent clusters with headlines
+make recluster            # nightly HDBSCAN pass
+make purge                # clear raw text older than 14 days
+```
+
+How it works: [docs/clustering.md](docs/clustering.md).
 
 To test migrations locally against any Postgres 16 with pgvector:
 `make db-test PG_TEST_URL=postgresql://...` (use a throwaway database).

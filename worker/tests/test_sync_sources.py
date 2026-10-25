@@ -1,15 +1,10 @@
 """Integration test: needs TEST_DATABASE_URL pointing at a database with the
 migrations applied (CI provides one; locally `make db-test` sets it up)."""
 
-import os
-
 import pytest
 
 from ingest.feeds_config import FeedsFile
 from ingest.sync_sources import sync
-
-DB_URL = os.environ.get("TEST_DATABASE_URL")
-pytestmark = pytest.mark.skipif(not DB_URL, reason="TEST_DATABASE_URL not set")
 
 
 def feeds(rating="lean_left", urls=("https://a.example/rss", "https://a.example/tech")):
@@ -30,14 +25,8 @@ def feeds(rating="lean_left", urls=("https://a.example/rss", "https://a.example/
 
 
 @pytest.fixture
-def conn():
-    import psycopg
-
-    with psycopg.connect(DB_URL) as c:
-        yield c
-        with c.cursor() as cur:
-            cur.execute("delete from sources where slug = 'sync-test-outlet'")
-        c.commit()
+def conn(db):
+    return db
 
 
 def test_sync_is_idempotent_and_deactivates_removed_feeds(conn):

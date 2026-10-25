@@ -152,7 +152,7 @@ def validate(data: object, strict: bool = False) -> tuple[FeedsFile | None, Repo
             report.errors.append(
                 f"{outlet.slug}: non-US outlets must be not_rated (got {outlet.allsides_rating})"
             )
-        if outlet.allsides_rating not in (BiasRating.NOT_RATED,) and not outlet.allsides_url:
+        if outlet.allsides_rating != BiasRating.NOT_RATED and not outlet.allsides_url:
             report.warnings.append(
                 f"{outlet.slug}: rated but no allsides_url yet (run the AllSides import)"
             )

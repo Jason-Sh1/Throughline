@@ -20,15 +20,15 @@ jobs:
     env:
       PG_TEST_URL: postgresql://postgres:postgres@localhost:5432/throughline_test
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
       - name: Install worker deps
         run: cd worker && uv sync --python 3.12
       - name: Lint and unit tests
         run: make test-worker
       - name: Validate feeds.yaml
         run: make validate-feeds
-      - name: Migrations, RLS and DB tests
+      - name: Migrations, RLS tests, and worker tests against Postgres
         run: make db-test
       - name: Eval gate
         run: make eval-quick
@@ -36,8 +36,8 @@ jobs:
   web:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
