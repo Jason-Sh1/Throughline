@@ -86,3 +86,12 @@ The first smoke run over the full feed list (~7.9k articles) showed three proble
 Feeds: 52 dead feeds (404, robots.txt disallow, bot blocks) were dropped and replaced, mostly
 with extra sections from outlets whose other feeds already worked. The list is 268 feeds and
 passes `make validate-feeds STRICT=1` (every category ≥25, left/right ratio 78/53 = 1.47).
+
+Label review (agent-assisted, from memory because allsides.com is blocked from the sandbox):
+Washington Examiner moved to Lean Right. RealClearPolitics/RealClearEnergy were dropped,
+because they're aggregators that re-link other outlets and would double-count in clusters.
+Fox's opinion feed was dropped (opinion shouldn't enter as news). Country fixes: Phys.org and
+Medical Xpress (Isle of Man), New Atlas (AU), Universe Today (CA). The remaining ratings stay
+placeholders until the AllSides CSV import. **Open for M3:** agencies (NASA, CDC, WHO) and
+journals (Nature, Lancet) shouldn't count toward a story's outlet count or spectrum spread in
+`confidence`; opinion-heavy outlets need to land in the framing panel's analysis/opinion bucket.

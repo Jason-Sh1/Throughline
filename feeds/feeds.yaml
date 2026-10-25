@@ -378,15 +378,6 @@ outlets:
       - url: https://www.forbes.com/business/feed/
         category: business
 
-  - slug: realclearpolitics
-    name: RealClearPolitics
-    homepage: https://www.realclearpolitics.com
-    region: US
-    allsides_rating: center
-    feeds:
-      - url: https://www.realclearpolitics.com/index.xml
-        category: politics
-
   - slug: foreign-policy
     name: Foreign Policy
     homepage: https://foreignpolicy.com
@@ -395,15 +386,6 @@ outlets:
     feeds:
       - url: https://foreignpolicy.com/feed/
         category: world
-
-  - slug: realclearenergy
-    name: RealClearEnergy
-    homepage: https://www.realclearenergy.org
-    region: US
-    allsides_rating: center
-    feeds:
-      - url: https://www.realclearenergy.org/index.xml
-        category: climate
 
   # --- Lean right / right ------------------------------------------------------
   - slug: new-york-post
@@ -495,17 +477,6 @@ outlets:
         category: sports
       - url: https://moxie.foxnews.com/google-publisher/entertainment.xml
         category: culture
-      - url: https://moxie.foxnews.com/google-publisher/opinion.xml
-        category: politics
-
-  - slug: washington-examiner
-    name: Washington Examiner
-    homepage: https://www.washingtonexaminer.com
-    region: US
-    allsides_rating: right
-    feeds:
-      - url: https://www.washingtonexaminer.com/feed
-        category: politics
 
   - slug: national-review
     name: National Review
@@ -659,6 +630,16 @@ outlets:
       - url: https://www.theepochtimes.com/c-us/feed
         category: us
 
+  # --- Lean right --------------------------------------------------------------
+  - slug: washington-examiner
+    name: Washington Examiner
+    homepage: https://www.washingtonexaminer.com
+    region: US
+    allsides_rating: lean_right
+    feeds:
+      - url: https://www.washingtonexaminer.com/feed
+        category: politics
+
   # --- Specialist / not rated --------------------------------------------------
   - slug: ars-technica
     name: Ars Technica
@@ -755,7 +736,7 @@ outlets:
   - slug: phys-org
     name: Phys.org
     homepage: https://phys.org
-    region: US
+    region: IM
     allsides_rating: not_rated
     feeds:
       - url: https://phys.org/rss-feed/
@@ -804,7 +785,7 @@ outlets:
   - slug: medical-xpress
     name: Medical Xpress
     homepage: https://medicalxpress.com
-    region: US
+    region: IM
     allsides_rating: not_rated
     feeds:
       - url: https://medicalxpress.com/rss-feed/
@@ -1069,7 +1050,7 @@ outlets:
   - slug: new-atlas
     name: New Atlas
     homepage: https://newatlas.com
-    region: US
+    region: AU
     allsides_rating: not_rated
     feeds:
       - url: https://newatlas.com/index.rss
@@ -1078,7 +1059,7 @@ outlets:
   - slug: universe-today
     name: Universe Today
     homepage: https://www.universetoday.com
-    region: US
+    region: CA
     allsides_rating: not_rated
     feeds:
       - url: https://www.universetoday.com/feed/
