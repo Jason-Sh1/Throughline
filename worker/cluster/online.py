@@ -30,9 +30,9 @@ from cluster.embed import to_array
 
 @dataclass(frozen=True)
 class ClusterConfig:
-    threshold: float = 0.62
+    threshold: float = 0.66  # tuned 2026-10-25, see docs/decisions.md
     tie_margin: float = 0.03
-    gray_margin: float = 0.10
+    gray_margin: float = 0.05
     min_entity_overlap: int = 2
     window_hours: int = 72
 

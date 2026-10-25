@@ -95,3 +95,32 @@ Medical Xpress (Isle of Man), New Atlas (AU), Universe Today (CA). The remaining
 placeholders until the AllSides CSV import. **Open for M3:** agencies (NASA, CDC, WHO) and
 journals (Nature, Lancet) shouldn't count toward a story's outlet count or spectrum spread in
 `confidence`; opinion-heavy outlets need to land in the framing panel's analysis/opinion bucket.
+
+### M2 follow-up: first cluster threshold tuning (2026-10-25)
+
+Delegated to Claude by Jason. Method: `cluster/sweep.py` replays online clustering over one live
+72h window (3,482 articles from 281 feeds, smoke run on PR #2) for 12 threshold × gray-margin
+combinations and prints the biggest clusters for three of them. Read-only, so it costs one CI run.
+
+| threshold / gray | multi-outlet stories | 5+ outlets | largest |
+|---|---|---|---|
+| 0.62 / 0.10 (old) | 290 | 57 | 39 |
+| **0.66 / 0.05 (new)** | 277 | 47 | 35 |
+| 0.70 / 0.05 | 256 | 44 | 30 |
+
+Over-merges at the old setting, all gone at 0.66 / 0.05:
+- Brazil election cluster absorbed a Guardian column on Brazilian football.
+- France protests cluster was seeded by Foreign Policy's generic "What in the World?" newsletter.
+- Starlink/Ukraine cluster pulled in a separate story on GOP oversight of SpaceX.
+- A 29-article "Premier League weekend" cluster (3 outlets) merged unrelated match reports.
+
+At 0.70 the big events (Alaska DOJ suit, Machado's return, Brazil, France) stay intact but
+~20 fewer multi-outlet stories form, i.e. we start splitting smaller events. Over-merging is the
+worse failure for us (a briefing that mixes two events is wrong; a split event is just a
+smaller card), so we take the stricter of the settings that don't visibly split, 0.66.
+The gray margin shrank because most bad joins came through the entity rule, whose entities are
+still capitalized-phrase heuristics; revisit both after M3 replaces them with LLM extraction.
+
+**Known remaining issues:** a few Daily Beast pieces with generic headlines land in the
+Starlink cluster (their summaries are about it, so arguably correct); sports match reports
+from one league still group loosely. Re-run the sweep after any embedding or entity change.

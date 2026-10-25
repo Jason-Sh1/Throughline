@@ -44,9 +44,9 @@ last 72 hours:
 
 | Situation | Result |
 |---|---|
-| best similarity ≥ `threshold` (0.62) | join that cluster |
+| best similarity ≥ `threshold` (0.66) | join that cluster |
 | two or more clusters within 0.03 of the best | join the one sharing the most names |
-| best is in the gray zone (0.52–0.62) and shares ≥ 2 names | join it anyway |
+| best is in the gray zone (0.61–0.66) and shares ≥ 2 names | join it anyway |
 | otherwise | start a new cluster |
 
 "Names" are capitalized phrases from the headline and summary (`cluster/entities.py`),
