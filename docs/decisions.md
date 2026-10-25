@@ -2,6 +2,57 @@
 
 Short notes on non-obvious choices, newest first.
 
+## 2026-10-25 — M3
+
+- **Models: Claude Haiku 5.5 for synthesis, Gemini 2.5 Flash-Lite for extraction.**
+  Checked 2026-10-25. Haiku 5.5 on the Batch API is $0.05 / $0.25 per million input /
+  output tokens, a tenth of Haiku 4.5 (which CLAUDE.md first named). Gemini 2.5
+  Flash-Lite is the cheapest Flash-Lite ($0.10 / $0.40 paid, free on the free tier);
+  the newer 3.x Flash-Lites cost 2.5-6x more for a step we validate anyway. Gemini's
+  free tier may use inputs to improve Google's products; inputs are headlines and
+  RSS summaries that publishers syndicate publicly, plus Guardian text.
+- **No `temperature` on Claude.** Current Claude models reject sampling parameters.
+  Determinism comes from structured outputs (`output_config.format` with the card's
+  JSON schema), a strict prompt and `effort: low`.
+- **Extraction is synchronous, synthesis is batched.** Extraction is ~$0.001 a story
+  and the synthesis batch needs its claims. Synthesis goes through the Message
+  Batches API (half price; an edition isn't latency-sensitive). A batch is recorded
+  in `llm_batches`, so if it outlives the run's `--wait`, `make edition-collect`
+  picks it up later.
+- **Local source ids ("S1".."S12") instead of database ids** in prompts: shorter,
+  and an id outside the list is obviously invented. Code maps them back to article
+  ids. The citation filter keeps only ids in the list and drops any sentence left
+  with none; a card without a cited headline or at least one bullet is rejected.
+- **The model never writes an outlet headline.** For the framing panel it picks
+  source ids; code fills in the outlet's real headline from `articles` (rule 3).
+  Sources, coverage counts and the "AI-generated from N sources" label are all
+  computed, not generated.
+- **The models don't see AllSides ratings.** Framing buckets are about how widely
+  something was reported and news vs. opinion, not left vs. right; showing ratings
+  invites "left-leaning outlets said" sentences. Ratings are still used to pick a
+  spectrum-balanced set of up to 12 sources per story.
+- **Opinion pieces are detected by URL path** (`/opinion/`, `/commentary/`, ...).
+  Crude but transparent; it tells the model which sources to keep out of facts.
+- **Caching by content hash** at both steps: (articles' text, prompt version,
+  model). An unchanged story costs nothing in the next edition, and bumping the
+  prompt version regenerates everything.
+- **Prompt caching** on the fixed system prompt (`cache_control`), which is over
+  Haiku 5.5's 512-token minimum. Within a batch, cache hits are best-effort.
+- **Spend guard.** Before submitting, the builder estimates the batch cost and
+  refuses above `MAX_EDITION_COST_USD` (default $0.20: 3 editions/day stays under
+  the $20/month cap even if nothing were cached).
+- **Edition ranking:** `log2(1 + outlets) * (1 + 0.25 * sides) * 0.5^(age_h / 18)`,
+  where `sides` counts which of left / center / right covered it. Coverage breadth
+  and recency, with a small bonus for cross-spectrum coverage. Stories need 2+
+  outlets and a new article in the last 36 h. Top 50 get full cards, the next 30 a
+  cited one-liner from extraction; a story whose card failed falls back to its
+  one-liner. M6 adds personalization on top.
+- **Cards are stored as `draft`** until the M4 verification pass marks them
+  verified; editions stay `building` until then.
+- **Typed entities from extraction are not yet fed back into clustering**
+  (`article_entities` still holds the M2 heuristics): extraction is per story, the
+  entity tiebreak is per article. Revisit with the next threshold sweep.
+
 ## 2026-10-25 — M2
 
 - **SimHash on words, with a threshold of 10 bits rather than the textbook 3.** The
