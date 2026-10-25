@@ -307,8 +307,6 @@ outlets:
     feeds:
       - url: https://insideclimatenews.org/feed/
         category: climate
-      - url: https://insideclimatenews.org/category/science/feed/
-        category: climate
 
   - slug: business-insider
     name: Business Insider
@@ -418,6 +416,8 @@ outlets:
         category: culture
       - url: https://nypost.com/real-estate/feed/
         category: business
+      - url: https://nypost.com/feed/
+        category: us
 
   - slug: reason
     name: Reason
@@ -477,6 +477,8 @@ outlets:
         category: sports
       - url: https://moxie.foxnews.com/google-publisher/entertainment.xml
         category: culture
+      - url: https://moxie.foxnews.com/google-publisher/latest.xml
+        category: us
 
   - slug: national-review
     name: National Review
@@ -485,6 +487,8 @@ outlets:
     allsides_rating: right
     feeds:
       - url: https://www.nationalreview.com/feed/
+        category: politics
+      - url: https://www.nationalreview.com/corner/feed/
         category: politics
 
   - slug: the-federalist
@@ -515,30 +519,6 @@ outlets:
     feeds:
       - url: https://feeds.feedburner.com/breitbart
         category: us
-      - url: https://www.breitbart.com/politics/feed/
-        category: politics
-      - url: https://www.breitbart.com/economy/feed/
-        category: business
-      - url: https://www.breitbart.com/tech/feed/
-        category: tech
-      - url: https://www.breitbart.com/sports/feed/
-        category: sports
-      - url: https://www.breitbart.com/entertainment/feed/
-        category: culture
-      - url: https://www.breitbart.com/world-news/feed/
-        category: world
-      - url: https://www.breitbart.com/national-security/feed/
-        category: world
-      - url: https://www.breitbart.com/europe/feed/
-        category: world
-      - url: https://www.breitbart.com/middle-east/feed/
-        category: world
-      - url: https://www.breitbart.com/border/feed/
-        category: us
-      - url: https://www.breitbart.com/education/feed/
-        category: us
-      - url: https://www.breitbart.com/the-media/feed/
-        category: culture
 
   - slug: newsmax
     name: Newsmax
@@ -548,6 +528,14 @@ outlets:
     feeds:
       - url: https://www.newsmax.com/rss/Newsfront/16/
         category: us
+      - url: https://www.newsmax.com/rss/Politics/1/
+        category: politics
+      - url: https://www.newsmax.com/rss/US/18/
+        category: us
+      - url: https://www.newsmax.com/rss/World/17/
+        category: world
+      - url: https://www.newsmax.com/rss/Health/19/
+        category: health
 
   - slug: the-blaze
     name: TheBlaze
@@ -629,6 +617,35 @@ outlets:
     feeds:
       - url: https://www.theepochtimes.com/c-us/feed
         category: us
+      - url: https://www.theepochtimes.com/c-world/feed
+        category: world
+      - url: https://www.theepochtimes.com/c-china/feed
+        category: world
+      - url: https://www.theepochtimes.com/c-business/feed
+        category: business
+      - url: https://www.theepochtimes.com/c-us-politics/feed
+        category: politics
+      - url: https://www.theepochtimes.com/c-tech/feed
+        category: tech
+
+  - slug: fox-business
+    name: Fox Business
+    homepage: https://www.foxbusiness.com
+    region: US
+    allsides_rating: lean_right
+    feeds:
+      - url: https://moxie.foxbusiness.com/google-publisher/latest.xml
+        category: business
+      - url: https://moxie.foxbusiness.com/google-publisher/markets.xml
+        category: business
+      - url: https://moxie.foxbusiness.com/google-publisher/economy.xml
+        category: business
+      - url: https://moxie.foxbusiness.com/google-publisher/technology.xml
+        category: tech
+      - url: https://moxie.foxbusiness.com/google-publisher/politics.xml
+        category: politics
+      - url: https://moxie.foxbusiness.com/google-publisher/energy.xml
+        category: climate
 
   # --- Lean right --------------------------------------------------------------
   - slug: washington-examiner
@@ -745,6 +762,8 @@ outlets:
         category: science
       - url: https://phys.org/rss-feed/earth-news/
         category: climate
+      - url: https://phys.org/rss-feed/earth-news/environment/
+        category: climate
 
   - slug: quanta
     name: Quanta Magazine
@@ -820,6 +839,10 @@ outlets:
       - url: https://sports.yahoo.com/nfl/rss/
         category: sports
       - url: https://sports.yahoo.com/nba/rss/
+        category: sports
+      - url: https://sports.yahoo.com/mlb/rss/
+        category: sports
+      - url: https://sports.yahoo.com/nhl/rss/
         category: sports
 
   - slug: variety
@@ -1307,6 +1330,8 @@ outlets:
     feeds:
       - url: https://www.economist.com/business/rss.xml
         category: business
+      - url: https://www.economist.com/science-and-technology/rss.xml
+        category: climate
 
   - slug: who
     name: World Health Organization
@@ -1315,15 +1340,6 @@ outlets:
     allsides_rating: not_rated
     feeds:
       - url: https://www.who.int/rss-feeds/news-english.xml
-        category: health
-
-  - slug: the-lancet
-    name: The Lancet
-    homepage: https://www.thelancet.com
-    region: GB
-    allsides_rating: not_rated
-    feeds:
-      - url: https://www.thelancet.com/rssfeed/lancet_online.xml
         category: health
 
   - slug: desmog

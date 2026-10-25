@@ -58,6 +58,8 @@ jobs:
       - name: Clusters before the nightly pass
         run: |
           make -s clusters ARGS="--min-outlets 2 --limit 25 --headlines 5" | tee /tmp/online.txt
+      - name: Threshold sweep (read-only replay of online clustering)
+        run: cd worker && uv run python -m cluster.sweep | tee /tmp/sweep.txt
       - name: Re-cluster
         run: make recluster
       - name: Clusters with 2+ outlets
@@ -82,5 +84,6 @@ jobs:
             "select origin, count(*), count(duplicate_of), count(embedding) from articles group by 1"
           report notice "Pipeline runs" psql "$DATABASE_URL" -At -F ' | ' -c \
             "select kind, status, stats::text from pipeline_runs order by id"
+          report notice "Threshold sweep" cat /tmp/sweep.txt
           report notice "Online clusters (before re-cluster)" cat /tmp/online.txt
           report notice "Clusters with 2+ outlets (after re-cluster)" make -s clusters ARGS="--min-outlets 2 --limit 25 --headlines 5"
