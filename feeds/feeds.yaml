@@ -4,11 +4,10 @@
 # overall. Drafted by Claude on 2026-10-25 (Jason delegated curation); Jason
 # reviews the spectrum labels.
 #
-# allsides_rating values are best-guess placeholders until the AllSides import
-# (`make allsides CSV=...`) replaces them with current ratings and fills in
-# allsides_url. Non-U.S. outlets are always `not_rated`. Specialist outlets
-# (tech, science, health, sports, culture trade press) are `not_rated` unless
-# AllSides rates them.
+# allsides_rating comes from the AllSides ratings table (imported 2026-10-25 with
+# `make allsides CSV=... APPLY=1`); `allsides_name` maps an outlet to its row when
+# the names differ. U.S. outlets AllSides doesn't rate, and all non-U.S. outlets,
+# are `not_rated`.
 #
 # Ratings: AllSides Media Bias Ratings, https://www.allsides.com/media-bias,
 # licensed CC BY-NC 4.0.
@@ -28,6 +27,7 @@ outlets:
     homepage: https://www.vox.com
     region: US
     allsides_rating: left
+    allsides_url: https://www.allsides.com/news-source/vox-media-bias
     feeds:
       - url: https://www.vox.com/rss/index.xml
         category: politics
@@ -37,6 +37,7 @@ outlets:
     homepage: https://www.huffpost.com
     region: US
     allsides_rating: left
+    allsides_url: https://www.allsides.com/news-source/huffpost-media-bias
     feeds:
       - url: https://www.huffpost.com/section/front-page/feed
         category: us
@@ -52,6 +53,7 @@ outlets:
     homepage: https://slate.com
     region: US
     allsides_rating: left
+    allsides_url: https://www.allsides.com/news-source/slate-media-bias
     feeds:
       - url: https://slate.com/feeds/all.rss
         category: culture
@@ -61,6 +63,7 @@ outlets:
     homepage: https://www.motherjones.com
     region: US
     allsides_rating: left
+    allsides_url: https://www.allsides.com/news-source/mother-jones-media-bias
     feeds:
       - url: https://www.motherjones.com/feed/
         category: politics
@@ -70,6 +73,7 @@ outlets:
     homepage: https://www.thenation.com
     region: US
     allsides_rating: left
+    allsides_url: https://www.allsides.com/news-source/nation-media-bias
     feeds:
       - url: https://www.thenation.com/feed/?post_type=article
         category: politics
@@ -79,6 +83,7 @@ outlets:
     homepage: https://www.salon.com
     region: US
     allsides_rating: left
+    allsides_url: https://www.allsides.com/news-source/salon-media-bias
     feeds:
       - url: https://www.salon.com/feed/
         category: us
@@ -88,6 +93,7 @@ outlets:
     homepage: https://www.thedailybeast.com
     region: US
     allsides_rating: left
+    allsides_url: https://www.allsides.com/news-source/daily-beast-media-bias
     feeds:
       - url: https://www.thedailybeast.com/arc/outboundfeeds/rss/articles/
         category: us
@@ -96,7 +102,8 @@ outlets:
     name: Grist
     homepage: https://grist.org
     region: US
-    allsides_rating: left
+    allsides_rating: lean_left
+    allsides_url: https://www.allsides.com/news-source/grist-media-bias
     feeds:
       - url: https://grist.org/feed/
         category: climate
@@ -105,7 +112,10 @@ outlets:
     name: Rolling Stone
     homepage: https://www.rollingstone.com
     region: US
+    allsides_name: RollingStone.com
     allsides_rating: left
+    allsides_url: 
+      https://www.allsides.com/news-source/rollingstonecom-media-bias
     feeds:
       - url: https://www.rollingstone.com/feed/
         category: culture
@@ -115,6 +125,7 @@ outlets:
     homepage: https://www.npr.org
     region: US
     allsides_rating: lean_left
+    allsides_url: https://www.allsides.com/news-source/npr-media-bias
     feeds:
       - url: https://feeds.npr.org/1001/rss.xml
         category: us
@@ -146,6 +157,8 @@ outlets:
     homepage: https://www.nytimes.com
     region: US
     allsides_rating: lean_left
+    allsides_url: 
+      https://www.allsides.com/news-source/new-york-times-news-media-bias
     feeds:
       - url: https://rss.nytimes.com/services/xml/rss/nyt/US.xml
         category: us
@@ -183,6 +196,8 @@ outlets:
     homepage: https://www.cbsnews.com
     region: US
     allsides_rating: lean_left
+    allsides_url: 
+      https://www.allsides.com/news-source/cbs-news-online-media-bias
     feeds:
       - url: https://www.cbsnews.com/latest/rss/us
         category: us
@@ -206,6 +221,7 @@ outlets:
     homepage: https://abcnews.go.com
     region: US
     allsides_rating: lean_left
+    allsides_url: https://www.allsides.com/news-source/abc-news-media-bias
     feeds:
       - url: https://abcnews.go.com/abcnews/usheadlines
         category: us
@@ -228,7 +244,8 @@ outlets:
     name: The Atlantic
     homepage: https://www.theatlantic.com
     region: US
-    allsides_rating: lean_left
+    allsides_rating: left
+    allsides_url: https://www.allsides.com/news-source/atlantic-media-bias
     feeds:
       - url: https://www.theatlantic.com/feed/all/
         category: us
@@ -238,6 +255,7 @@ outlets:
     homepage: https://www.politico.com
     region: US
     allsides_rating: lean_left
+    allsides_url: https://www.allsides.com/news-source/politico-media-bias
     feeds:
       - url: https://rss.politico.com/politics-news.xml
         category: politics
@@ -255,6 +273,8 @@ outlets:
     homepage: https://www.latimes.com
     region: US
     allsides_rating: lean_left
+    allsides_url: 
+      https://www.allsides.com/news-source/los-angeles-times-media-bias
     feeds:
       - url: https://www.latimes.com/world-nation/rss2.0.xml
         category: world
@@ -275,7 +295,10 @@ outlets:
     name: Time
     homepage: https://time.com
     region: US
+    allsides_name: Time Magazine
     allsides_rating: lean_left
+    allsides_url: 
+      https://www.allsides.com/news-source/time-magazine-news-media-bias
     feeds:
       - url: https://time.com/feed/
         category: us
@@ -285,6 +308,7 @@ outlets:
     homepage: https://www.cnbc.com
     region: US
     allsides_rating: lean_left
+    allsides_url: https://www.allsides.com/news-source/cnbc-media-bias
     feeds:
       - url: https://www.cnbc.com/id/100003114/device/rss/rss.html
         category: business
@@ -303,7 +327,7 @@ outlets:
     name: Inside Climate News
     homepage: https://insideclimatenews.org
     region: US
-    allsides_rating: lean_left
+    allsides_rating: not_rated
     feeds:
       - url: https://insideclimatenews.org/feed/
         category: climate
@@ -313,6 +337,8 @@ outlets:
     homepage: https://www.businessinsider.com
     region: US
     allsides_rating: lean_left
+    allsides_url: 
+      https://www.allsides.com/news-source/business-insider-media-bias
     feeds:
       - url: https://feeds.businessinsider.com/custom/all
         category: business
@@ -323,6 +349,7 @@ outlets:
     homepage: https://thehill.com
     region: US
     allsides_rating: center
+    allsides_url: https://www.allsides.com/news-source/hill-media-bias
     feeds:
       - url: https://thehill.com/homenews/feed/
         category: politics
@@ -346,6 +373,7 @@ outlets:
     homepage: https://www.newsweek.com
     region: US
     allsides_rating: center
+    allsides_url: https://www.allsides.com/news-source/newsweek-media-bias
     feeds:
       - url: https://www.newsweek.com/rss
         category: us
@@ -355,6 +383,8 @@ outlets:
     homepage: https://www.csmonitor.com
     region: US
     allsides_rating: center
+    allsides_url: 
+      https://www.allsides.com/news-source/christian-science-monitor-media-bias
     feeds:
       - url: https://rss.csmonitor.com/feeds/usa
         category: us
@@ -372,6 +402,7 @@ outlets:
     homepage: https://www.forbes.com
     region: US
     allsides_rating: center
+    allsides_url: https://www.allsides.com/news-source/forbes-media-bias
     feeds:
       - url: https://www.forbes.com/business/feed/
         category: business
@@ -381,6 +412,7 @@ outlets:
     homepage: https://foreignpolicy.com
     region: US
     allsides_rating: center
+    allsides_url: https://www.allsides.com/news-source/foreign-policy-media-bias
     feeds:
       - url: https://foreignpolicy.com/feed/
         category: world
@@ -390,7 +422,9 @@ outlets:
     name: New York Post
     homepage: https://nypost.com
     region: US
-    allsides_rating: lean_right
+    allsides_rating: right
+    allsides_url: 
+      https://www.allsides.com/news-source/new-york-post-news-media-bias
     feeds:
       - url: https://nypost.com/us-news/feed/
         category: us
@@ -423,7 +457,8 @@ outlets:
     name: Reason
     homepage: https://reason.com
     region: US
-    allsides_rating: lean_right
+    allsides_rating: center
+    allsides_url: https://www.allsides.com/news-source/reason-media-bias
     feeds:
       - url: https://reason.com/feed/
         category: politics
@@ -433,6 +468,7 @@ outlets:
     homepage: https://thedispatch.com
     region: US
     allsides_rating: lean_right
+    allsides_url: https://www.allsides.com/news-source/dispatch-media-bias
     feeds:
       - url: https://thedispatch.com/feed/
         category: us
@@ -442,6 +478,7 @@ outlets:
     homepage: https://www.thefp.com
     region: US
     allsides_rating: lean_right
+    allsides_url: https://www.allsides.com/news-source/free-press-media-bias-0
     feeds:
       - url: https://www.thefp.com/feed
         category: us
@@ -451,6 +488,8 @@ outlets:
     homepage: https://freebeacon.com
     region: US
     allsides_rating: right
+    allsides_url: 
+      https://www.allsides.com/news-source/washington-free-beacon-media-bias
     feeds:
       - url: https://freebeacon.com/feed/
         category: politics
@@ -459,7 +498,9 @@ outlets:
     name: Fox News
     homepage: https://www.foxnews.com
     region: US
+    allsides_name: Fox News Digital
     allsides_rating: right
+    allsides_url: https://www.allsides.com/news-source/fox-news-media-bias
     feeds:
       - url: https://moxie.foxnews.com/google-publisher/us.xml
         category: us
@@ -484,7 +525,9 @@ outlets:
     name: National Review
     homepage: https://www.nationalreview.com
     region: US
-    allsides_rating: right
+    allsides_rating: lean_right
+    allsides_url: 
+      https://www.allsides.com/news-source/national-review-news-media-bias
     feeds:
       - url: https://www.nationalreview.com/feed/
         category: politics
@@ -496,6 +539,7 @@ outlets:
     homepage: https://thefederalist.com
     region: US
     allsides_rating: right
+    allsides_url: https://www.allsides.com/news-source/federalist-media-bias
     feeds:
       - url: https://thefederalist.com/feed/
         category: politics
@@ -506,7 +550,8 @@ outlets:
     name: The Daily Caller
     homepage: https://dailycaller.com
     region: US
-    allsides_rating: right
+    allsides_rating: lean_right
+    allsides_url: https://www.allsides.com/news-source/daily-caller-media-bias
     feeds:
       - url: https://dailycaller.com/feed/
         category: us
@@ -516,6 +561,7 @@ outlets:
     homepage: https://www.breitbart.com
     region: US
     allsides_rating: right
+    allsides_url: https://www.allsides.com/news-source/breitbart-news-media-bias
     feeds:
       - url: https://feeds.feedburner.com/breitbart
         category: us
@@ -525,6 +571,7 @@ outlets:
     homepage: https://www.newsmax.com
     region: US
     allsides_rating: right
+    allsides_url: https://www.allsides.com/news-source/newsmax
     feeds:
       - url: https://www.newsmax.com/rss/Newsfront/16/
         category: us
@@ -541,7 +588,9 @@ outlets:
     name: TheBlaze
     homepage: https://www.theblaze.com
     region: US
+    allsides_name: Blaze Media
     allsides_rating: right
+    allsides_url: https://www.allsides.com/news-source/blaze-media-media-bias
     feeds:
       - url: https://www.theblaze.com/feeds/feed.rss
         category: politics
@@ -551,6 +600,7 @@ outlets:
     homepage: https://www.dailysignal.com
     region: US
     allsides_rating: right
+    allsides_url: https://www.allsides.com/news-source/daily-signal-media-bias
     feeds:
       - url: https://www.dailysignal.com/feed/
         category: politics
@@ -560,6 +610,7 @@ outlets:
     homepage: https://www.dailywire.com
     region: US
     allsides_rating: right
+    allsides_url: https://www.allsides.com/news-source/daily-wire-media-bias
     feeds:
       - url: https://www.dailywire.com/feeds/rss.xml
         category: us
@@ -569,6 +620,8 @@ outlets:
     homepage: https://www.westernjournal.com
     region: US
     allsides_rating: right
+    allsides_url: 
+      https://www.allsides.com/news-source/western-journal-media-bias
     feeds:
       - url: https://www.westernjournal.com/feed/
         category: us
@@ -577,7 +630,9 @@ outlets:
     name: Hot Air
     homepage: https://hotair.com
     region: US
-    allsides_rating: right
+    allsides_name: HotAir
+    allsides_rating: lean_right
+    allsides_url: https://www.allsides.com/news-source/hotair-media-bias
     feeds:
       - url: https://hotair.com/feed
         category: politics
@@ -587,6 +642,7 @@ outlets:
     homepage: https://pjmedia.com
     region: US
     allsides_rating: right
+    allsides_url: https://www.allsides.com/news-source/pj-media-media-bias
     feeds:
       - url: https://pjmedia.com/feed
         category: politics
@@ -596,6 +652,7 @@ outlets:
     homepage: https://redstate.com
     region: US
     allsides_rating: right
+    allsides_url: https://www.allsides.com/news-source/redstate-media-bias
     feeds:
       - url: https://redstate.com/feed
         category: politics
@@ -605,6 +662,8 @@ outlets:
     homepage: https://spectator.org
     region: US
     allsides_rating: right
+    allsides_url: 
+      https://www.allsides.com/news-source/american-spectator-media-bias
     feeds:
       - url: https://spectator.org/feed/
         category: politics
@@ -614,6 +673,7 @@ outlets:
     homepage: https://www.theepochtimes.com
     region: US
     allsides_rating: lean_right
+    allsides_url: https://www.allsides.com/news-source/epoch-times-media-bias
     feeds:
       - url: https://www.theepochtimes.com/c-us/feed
         category: us
@@ -633,6 +693,7 @@ outlets:
     homepage: https://www.foxbusiness.com
     region: US
     allsides_rating: lean_right
+    allsides_url: https://www.allsides.com/news-source/fox-business-media-bias
     feeds:
       - url: https://moxie.foxbusiness.com/google-publisher/latest.xml
         category: business
@@ -653,6 +714,8 @@ outlets:
     homepage: https://www.washingtonexaminer.com
     region: US
     allsides_rating: lean_right
+    allsides_url: 
+      https://www.allsides.com/news-source/washington-examiner-media-bias
     feeds:
       - url: https://www.washingtonexaminer.com/feed
         category: politics
@@ -662,7 +725,8 @@ outlets:
     name: Ars Technica
     homepage: https://arstechnica.com
     region: US
-    allsides_rating: not_rated
+    allsides_rating: center
+    allsides_url: https://www.allsides.com/news-source/ars-technica-media-bias
     feeds:
       - url: https://feeds.arstechnica.com/arstechnica/index
         category: tech
@@ -677,7 +741,8 @@ outlets:
     name: The Verge
     homepage: https://www.theverge.com
     region: US
-    allsides_rating: not_rated
+    allsides_rating: lean_left
+    allsides_url: https://www.allsides.com/news-source/verge-media-bias
     feeds:
       - url: https://www.theverge.com/rss/index.xml
         category: tech
@@ -686,7 +751,8 @@ outlets:
     name: Wired
     homepage: https://www.wired.com
     region: US
-    allsides_rating: not_rated
+    allsides_rating: left
+    allsides_url: https://www.allsides.com/news-source/wired-media-bias
     feeds:
       - url: https://www.wired.com/feed/rss
         category: tech
@@ -697,7 +763,8 @@ outlets:
     name: TechCrunch
     homepage: https://techcrunch.com
     region: US
-    allsides_rating: not_rated
+    allsides_rating: center
+    allsides_url: https://www.allsides.com/news-source/techcrunch-media-bias
     feeds:
       - url: https://techcrunch.com/feed/
         category: tech
@@ -726,7 +793,9 @@ outlets:
     name: ScienceDaily
     homepage: https://www.sciencedaily.com
     region: US
-    allsides_rating: not_rated
+    allsides_name: Science Daily
+    allsides_rating: center
+    allsides_url: https://www.allsides.com/news-source/science-daily-media-bias
     feeds:
       - url: https://www.sciencedaily.com/rss/top/science.xml
         category: science
@@ -779,6 +848,7 @@ outlets:
     homepage: https://www.nasa.gov
     region: US
     allsides_rating: not_rated
+    allsides_url: https://www.allsides.com/news-source/nasa-media-bias
     feeds:
       - url: https://www.nasa.gov/news-release/feed/
         category: science
@@ -787,7 +857,8 @@ outlets:
     name: STAT
     homepage: https://www.statnews.com
     region: US
-    allsides_rating: not_rated
+    allsides_rating: center
+    allsides_url: https://www.allsides.com/news-source/stat-media-bias
     feeds:
       - url: https://www.statnews.com/feed/
         category: health
@@ -849,7 +920,8 @@ outlets:
     name: Variety
     homepage: https://variety.com
     region: US
-    allsides_rating: not_rated
+    allsides_rating: lean_left
+    allsides_url: https://www.allsides.com/news-source/variety-media-bias
     feeds:
       - url: https://variety.com/feed/
         category: culture
@@ -858,7 +930,9 @@ outlets:
     name: The Hollywood Reporter
     homepage: https://www.hollywoodreporter.com
     region: US
-    allsides_rating: not_rated
+    allsides_rating: lean_left
+    allsides_url: 
+      https://www.allsides.com/news-source/hollywood-reporter-media-bias
     feeds:
       - url: https://www.hollywoodreporter.com/feed/
         category: culture
@@ -876,7 +950,8 @@ outlets:
     name: Fortune
     homepage: https://fortune.com
     region: US
-    allsides_rating: not_rated
+    allsides_rating: center
+    allsides_url: https://www.allsides.com/news-source/fortune-media-bias
     feeds:
       - url: https://fortune.com/feed/
         category: business
@@ -885,7 +960,8 @@ outlets:
     name: Quartz
     homepage: https://qz.com
     region: US
-    allsides_rating: not_rated
+    allsides_rating: center
+    allsides_url: https://www.allsides.com/news-source/quartz-media-bias
     feeds:
       - url: https://qz.com/rss
         category: business
@@ -894,7 +970,8 @@ outlets:
     name: CNET
     homepage: https://www.cnet.com
     region: US
-    allsides_rating: not_rated
+    allsides_rating: center
+    allsides_url: https://www.allsides.com/news-source/cnet-media-bias
     feeds:
       - url: https://www.cnet.com/rss/news/
         category: tech
@@ -921,7 +998,9 @@ outlets:
     name: Scientific American
     homepage: https://www.scientificamerican.com
     region: US
-    allsides_rating: not_rated
+    allsides_rating: lean_left
+    allsides_url: 
+      https://www.allsides.com/news-source/scientific-american-media-bias-0
     feeds:
       - url: https://www.scientificamerican.com/platform/syndication/rss/
         category: science
@@ -930,7 +1009,8 @@ outlets:
     name: Live Science
     homepage: https://www.livescience.com
     region: US
-    allsides_rating: not_rated
+    allsides_rating: center
+    allsides_url: https://www.allsides.com/news-source/live-science-media-bias
     feeds:
       - url: https://www.livescience.com/feeds/all
         category: science
@@ -975,7 +1055,9 @@ outlets:
     name: The Conversation (US)
     homepage: https://theconversation.com/us
     region: US
-    allsides_rating: not_rated
+    allsides_name: The Conversation
+    allsides_rating: lean_left
+    allsides_url: https://www.allsides.com/news-source/conversation-media-bias
     feeds:
       - url: https://theconversation.com/us/articles.atom
         category: health
@@ -1047,7 +1129,8 @@ outlets:
     name: Deadline
     homepage: https://deadline.com
     region: US
-    allsides_rating: not_rated
+    allsides_rating: lean_left
+    allsides_url: https://www.allsides.com/news-source/deadline-media-bias
     feeds:
       - url: https://deadline.com/feed/
         category: culture
@@ -1056,7 +1139,8 @@ outlets:
     name: Billboard
     homepage: https://www.billboard.com
     region: US
-    allsides_rating: not_rated
+    allsides_rating: left
+    allsides_url: https://www.allsides.com/news-source/billboard-media-bias
     feeds:
       - url: https://www.billboard.com/feed/
         category: culture
@@ -1066,6 +1150,7 @@ outlets:
     homepage: https://bigthink.com
     region: US
     allsides_rating: not_rated
+    allsides_url: https://www.allsides.com/news-source/big-think-media-bias
     feeds:
       - url: https://bigthink.com/feed/
         category: science
@@ -1092,7 +1177,10 @@ outlets:
     name: CDC Newsroom
     homepage: https://www.cdc.gov
     region: US
+    allsides_name: Centers for Disease Control and Prevention
     allsides_rating: not_rated
+    allsides_url: 
+      https://www.allsides.com/news-source/centers-disease-control-and-prevention-media-bias
     feeds:
       - url: https://tools.cdc.gov/api/v2/resources/media/132608.rss
         category: health
