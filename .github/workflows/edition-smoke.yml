@@ -1,8 +1,8 @@
 # Live edition smoke test: ingest real feeds into a throwaway database, then run
-# the M3 pipeline (Gemini extraction, Claude batch synthesis) on a few top
-# stories and print the cards. Costs about a cent per run. Runs on PRs that touch
-# the LLM pipeline, or by hand from the Actions tab. Needs the GEMINI_API_KEY and
-# ANTHROPIC_API_KEY repo secrets.
+# the M3 pipeline (Claude batch extraction + synthesis) on a few top stories
+# and print the cards. Costs about a cent per run. Runs on PRs that touch the
+# LLM pipeline, or by hand from the Actions tab. Needs the ANTHROPIC_API_KEY
+# repo secret.
 name: Edition smoke test
 
 on:
@@ -33,14 +33,13 @@ jobs:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/throughline_smoke
       CRAWLER_CONTACT: https://github.com/${{ github.repository }}
       GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
-      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
     steps:
       - uses: actions/checkout@v5
       - uses: astral-sh/setup-uv@v7
       - name: Check secrets
         run: |
-          for v in GEMINI_API_KEY ANTHROPIC_API_KEY; do
+          for v in ANTHROPIC_API_KEY; do
             [ -n "${!v}" ] || { echo "::error title=Missing secret::$v is not set as a repo secret"; exit 1; }
           done
       - name: Install worker deps (CPU-only torch)

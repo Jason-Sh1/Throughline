@@ -23,7 +23,7 @@ This is a non-commercial portfolio project built by one student. Favor simple, e
 - **DB/Auth:** Supabase Postgres + pgvector, Supabase Auth (magic link + Google), row-level security.
 - **Worker:** Python 3.12 — feedparser, trafilatura (only where permitted), sentence-transformers (local embedding model), hdbscan, anthropic SDK, google-genai SDK.
 - **Scheduling:** GitHub Actions cron (MVP) → Railway/Fly container later. Postgres `jobs` table for job state.
-- **LLMs:** Claude Haiku 5.5 (`claude-haiku-5-5`, effort `low`) via Batch API for story synthesis/verification; Gemini 2.5 Flash-Lite (`gemini-2.5-flash-lite`) for extraction. Chosen 2026-10-25 as the cheapest current options; prices live in `worker/llm/cost.py`. Verify current model names/prices before changing them.
+- **LLMs:** Claude Haiku 5.5 (`claude-haiku-5-5`, effort `low`) via Batch API for extraction, story synthesis and verification. Chosen 2026-10-25 as the cheapest current option; prices live in `worker/llm/cost.py`. A Gemini Flash-Lite backend for extraction remains (`EXTRACT_MODEL=gemini-2.5-flash-lite`), but its free tier allows only 20 requests/day. Verify current model names/prices before changing them.
 - **Viz:** custom React timeline, Recharts, MapLibre GL.
 - **Monitoring:** Sentry, `pipeline_runs` table, LLM tracing (Langfuse or similar).
 

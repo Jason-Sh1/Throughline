@@ -9,8 +9,8 @@ import json
 from datetime import UTC, datetime, timedelta
 from types import SimpleNamespace
 
-from llm import edition
-from llm.extract import LLMResult, extract_cluster
+from llm import batch, edition
+from llm.extract import LLMResult, extract_sync
 from tests.test_llm_units import draft_dict, msg
 
 EXTRACTION = {
@@ -32,35 +32,50 @@ class FakeGemini:
         return LLMResult(json.dumps(EXTRACTION), 1000, 500)
 
 
-class FakeAnthropic:
-    """Just enough of client.messages(.batches) for synthesize.py."""
+def reply(text):
+    m = msg(text)
+    m.usage = SimpleNamespace(
+        input_tokens=2000,
+        output_tokens=1500,
+        cache_read_input_tokens=1000,
+        cache_creation_input_tokens=0,
+    )
+    return m
 
-    def __init__(self, card_json):
-        self.submitted = []
-        usage = SimpleNamespace(
-            input_tokens=2000,
-            output_tokens=1500,
-            cache_read_input_tokens=1000,
-            cache_creation_input_tokens=0,
-        )
-        self._msg = msg(card_json)
-        self._msg.usage = usage
+
+class FakeAnthropic:
+    """Just enough of client.messages(.batches): answers "extract-*" requests with
+    `extraction` and "card-*" requests with `card` (JSON strings)."""
+
+    def __init__(self, card, extraction=None):
+        self.batches_sent: dict[str, list] = {}
+        self.direct = []
+        replies = {"extract": extraction or json.dumps(EXTRACTION), "card": card}
         outer = self
 
         class Batches:
             def create(self, requests):
-                outer.submitted = list(requests)
-                return SimpleNamespace(id="msgbatch_test")
+                bid = f"msgbatch_{len(outer.batches_sent)}"
+                outer.batches_sent[bid] = list(requests)
+                return SimpleNamespace(id=bid)
 
             def retrieve(self, _id):
                 return SimpleNamespace(processing_status="ended")
 
-            def results(self, _id):
-                return [SimpleNamespace(custom_id=r["custom_id"],
-                        result=SimpleNamespace(type="succeeded", message=outer._msg))
-                        for r in outer.submitted]  # fmt: skip
+            def results(self, bid):
+                return [SimpleNamespace(custom_id=r["custom_id"], result=SimpleNamespace(
+                            type="succeeded", message=reply(replies[r["custom_id"].split("-")[0]])))
+                        for r in outer.batches_sent[bid]]  # fmt: skip
 
-        self.messages = SimpleNamespace(batches=Batches(), create=lambda **kw: outer._msg)
+        def create(**params):
+            outer.direct.append(params)
+            return reply(card)
+
+        self.messages = SimpleNamespace(batches=Batches(), create=create)
+
+    def requests(self, prefix):
+        return [r for b in self.batches_sent.values() for r in b
+                if r["custom_id"].startswith(prefix)]  # fmt: skip
 
 
 def seed(cur):
@@ -104,8 +119,8 @@ def test_extraction_is_cached_by_content_hash(db):
         c1, _ = seed(cur)
     db.commit()
     fake = FakeGemini()
-    ex1, spend1 = extract_cluster(db, c1, fake, "gemini-2.5-flash-lite")
-    ex2, spend2 = extract_cluster(db, c1, fake, "gemini-2.5-flash-lite")
+    ex1, spend1 = extract_sync(db, c1, fake, "gemini-2.5-flash-lite")
+    ex2, spend2 = extract_sync(db, c1, fake, "gemini-2.5-flash-lite")
     assert ex1 == ex2 and fake.calls == 1
     assert spend1["input_tokens"] == 1000 and spend2["input_tokens"] == 0
 
@@ -114,17 +129,18 @@ def test_edition_build_end_to_end(db, monkeypatch, tmp_path):
     with db.cursor() as cur:
         c1, c2 = seed(cur)
     db.commit()
-    card_json = json.dumps(draft_dict())
-    fake_claude = FakeAnthropic(card_json)
-    monkeypatch.setattr(edition, "gemini_caller", lambda model: FakeGemini())
+    fake_claude = FakeAnthropic(json.dumps(draft_dict()))
     monkeypatch.setattr(edition, "anthropic_client", lambda: fake_claude)
 
     stats = {}
     eid = edition.build(db, "morning", n_full=1, n_tail=5, wait_s=0, stats=stats)
-    assert stats["new_cards"] == 1 and stats["synthesis"]["cards"] == 1
+    assert stats["new_extractions"] == 2 and stats["extraction"]["ok"] == 2
+    assert stats["new_cards"] == 1 and stats["synthesis"]["ok"] == 1
+    assert len(fake_claude.batches_sent) == 2  # one extraction batch, one synthesis batch
     assert stats["cost_usd"] > 0
-    req = fake_claude.submitted[0]["params"]
+    req = fake_claude.requests("card-")[0]["params"]
     assert "SECRET FULL TEXT" in req["messages"][0]["content"]  # model sees text...
+    assert "<claims>" in req["messages"][0]["content"]
 
     with db.cursor() as cur:
         cur.execute(
@@ -152,7 +168,8 @@ def test_edition_build_end_to_end(db, monkeypatch, tmp_path):
     # Second run: nothing changed, so no new extraction or synthesis calls.
     stats2 = {}
     edition.build(db, "morning", n_full=1, n_tail=5, wait_s=0, stats=stats2)
-    assert stats2["new_cards"] == 0 and stats2["cost_usd"] == 0
+    assert stats2["new_extractions"] == 0 and stats2["new_cards"] == 0
+    assert stats2["cost_usd"] == 0 and len(fake_claude.batches_sent) == 2
 
     out = tmp_path / "edition.json"
     doc = edition.export(db, out, eid)
@@ -166,20 +183,60 @@ def test_invalid_card_is_retried_once_then_falls_back(db, monkeypatch):
         seed(cur)
     db.commit()
     fake = FakeAnthropic("{not json")
-    retries = []
-
-    def create(**kw):
-        retries.append(kw)
-        return fake._msg  # still invalid
-
-    fake.messages.create = create
-    monkeypatch.setattr(edition, "gemini_caller", lambda model: FakeGemini())
     monkeypatch.setattr(edition, "anthropic_client", lambda: fake)
     stats = {}
     eid = edition.build(db, "evening", n_full=1, n_tail=0, wait_s=0, stats=stats)
-    assert len(retries) == 1  # exactly one retry, with the same user message
-    assert retries[0]["messages"] == fake.submitted[0]["params"]["messages"]
+    assert len(fake.direct) == 1  # exactly one retry, with the same request
+    assert fake.direct[0]["messages"] == fake.requests("card-")[0]["params"]["messages"]
     assert stats["synthesis"]["failed"] == 1
     with db.cursor() as cur:
         cur.execute("select tier from edition_cards where edition_id = %s", (eid,))
         assert [r[0] for r in cur.fetchall()] == ["one_liner"]
+
+
+def test_gemini_extraction_backend(db, monkeypatch):
+    with db.cursor() as cur:
+        seed(cur)
+    db.commit()
+    monkeypatch.setenv("EXTRACT_MODEL", "gemini-2.5-flash-lite")
+    gemini = FakeGemini()
+    fake = FakeAnthropic(json.dumps(draft_dict()))
+    monkeypatch.setattr(edition, "gemini_caller", lambda model: gemini)
+    monkeypatch.setattr(edition, "anthropic_client", lambda: fake)
+    stats = {}
+    edition.build(db, "midday", n_full=2, n_tail=0, wait_s=0, stats=stats)
+    assert gemini.calls == 2 and fake.requests("extract-") == []
+    assert stats["synthesis"]["ok"] == 2
+
+
+def test_spend_guard_blocks_submission(db, monkeypatch):
+    with db.cursor() as cur:
+        seed(cur)
+    db.commit()
+    fake = FakeAnthropic(json.dumps(draft_dict()))
+    monkeypatch.setattr(edition, "anthropic_client", lambda: fake)
+    monkeypatch.setattr(edition, "MAX_EDITION_COST_USD", 0.0)
+    import pytest
+
+    with pytest.raises(edition.OverBudget):
+        edition.build(db, "morning", n_full=1, n_tail=0, wait_s=0, stats={})
+    assert fake.batches_sent == {}
+
+
+def test_pending_batch_is_collected_later(db, monkeypatch):
+    with db.cursor() as cur:
+        seed(cur)
+    db.commit()
+    fake = FakeAnthropic(json.dumps(draft_dict()))
+    monkeypatch.setattr(edition, "anthropic_client", lambda: fake)
+    monkeypatch.setattr(batch, "wait_for", lambda *a: False)  # still running
+    stats = {}
+    edition.build(db, "morning", n_full=1, n_tail=0, wait_s=0, stats=stats)
+    assert "extraction_batch_pending" in stats
+    monkeypatch.setattr(batch, "wait_for", lambda *a: True)  # finished since
+    collected = {}
+    edition.collect_open(db, collected)
+    assert collected["cost_usd"] > 0
+    with db.cursor() as cur:
+        cur.execute("select count(*) from extractions")
+        assert cur.fetchone()[0] == 1

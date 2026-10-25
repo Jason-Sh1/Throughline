@@ -26,20 +26,12 @@ import psycopg
 
 from common.db import connect
 from common.runs import pipeline_run
-from llm import prompts
+from llm import batch, extract, prompts, synthesize
+from llm.batch import anthropic_client
 from llm.card import one_liner_card
-from llm.extract import ExtractionFailed, extract_cluster, extract_model, gemini_caller
+from llm.extract import ExtractionFailed, ExtractJob, extract_model, gemini_caller
 from llm.inputs import build_sources, docs_to_json, load_cluster_rows
-from llm.synthesize import (
-    anthropic_client,
-    build_job,
-    collect,
-    estimate_cost,
-    submit,
-    synth_effort,
-    synth_model,
-    wait_for,
-)  # fmt: skip
+from llm.synthesize import build_job, synth_effort, synth_model
 
 WINDOW_HOURS = 36
 MIN_OUTLETS = 2
@@ -132,56 +124,107 @@ def latest_card(conn: psycopg.Connection, cluster_id: int) -> int | None:
     return row[0] if row else None
 
 
+SPEND_KEYS = ("input_tokens", "output_tokens", "cost_usd")
+
+
+def _add(total: dict, part: dict) -> None:
+    for k in SPEND_KEYS:
+        total[k] = total.get(k, 0) + part.get(k, 0)
+
+
+class OverBudget(RuntimeError):
+    pass
+
+
+def _check_budget(stats: dict, step: str, estimate: float) -> None:
+    """Refuse to submit if this edition's estimated LLM spend would pass the cap."""
+    stats[f"{step}_estimate_usd"] = round(estimate, 4)
+    so_far = sum(v for k, v in stats.items() if k.endswith("_estimate_usd"))
+    if so_far > MAX_EDITION_COST_USD:
+        raise OverBudget(
+            f"estimated edition cost ${so_far:.3f} exceeds MAX_EDITION_COST_USD "
+            f"${MAX_EDITION_COST_USD:.2f}; not submitting {step}"
+        )
+
+
+def _run_batch(conn, client, submit, collect, wait_s: int, stats: dict, step: str) -> bool:
+    """Submit, wait, collect. False if the batch is still running at the deadline
+    (the next run's collect_open picks it up, and its results land in the cache)."""
+    row_id, provider_id = submit()
+    print(f"submitted {step} batch {provider_id}")
+    if not batch.wait_for(client, provider_id, wait_s):
+        stats[f"{step}_batch_pending"] = provider_id
+        return False
+    stats[step] = collect(conn, client, row_id)
+    _add(stats, stats[step])
+    return True
+
+
+def run_extraction(conn, ranked: list[int], edition_id: int, wait_s: int, stats: dict) -> dict:
+    """cluster id -> extraction id, for every ranked cluster that has one."""
+    model = extract_model()
+    ids: dict[int, int] = {}
+    if model.startswith("gemini"):
+        call = gemini_caller(model)
+        for cid in ranked:
+            try:
+                ex_id, spend = extract.extract_sync(conn, cid, call, model)
+            except ExtractionFailed as e:
+                stats["extraction_failed"] = stats.get("extraction_failed", 0) + 1
+                print(f"  cluster {cid}: {e}")
+                continue
+            _add(stats, spend)
+            if ex_id:
+                ids[cid] = ex_id
+        return ids
+
+    jobs: list[ExtractJob] = []
+    for cid in ranked:
+        planned = extract.plan(conn, cid, model)
+        if isinstance(planned, ExtractJob):
+            jobs.append(planned)
+        elif planned:
+            ids[cid] = planned
+    stats.update(new_extractions=len(jobs), cached_extractions=len(ids))
+    if jobs:
+        _check_budget(stats, "extraction", extract.estimate_cost(jobs, model))
+        client = anthropic_client()
+        _run_batch(conn, client, lambda: extract.submit(conn, client, jobs, model, edition_id),
+                   extract.collect, wait_s, stats, "extraction")  # fmt: skip
+        with conn.cursor() as cur:
+            cur.execute(
+                "select content_hash, id from extractions where content_hash = any(%s)",
+                ([j.content_hash for j in jobs],),
+            )
+            by_hash = dict(cur.fetchall())
+        ids |= {j.cluster_id: by_hash[j.content_hash] for j in jobs if j.content_hash in by_hash}
+    return ids
+
+
 def build(conn, slot: str, n_full: int, n_tail: int, wait_s: int, stats: dict) -> int:
+    """Returns the edition id. Spend lands in stats, which pipeline_run records."""
     edition_id = get_edition(conn, slot, datetime.now(UTC).date())
     ranked = rank_clusters(conn)[: n_full + n_tail]
     stats.update(ranked=len(ranked), edition_id=edition_id)
+    for k in SPEND_KEYS:
+        stats.setdefault(k, 0)
 
-    call, ex_model = gemini_caller(extract_model()), extract_model()
-    extraction_ids: dict[int, int] = {}
-    spend = {"input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0}
-    for cid in ranked:
-        try:
-            ex_id, s = extract_cluster(conn, cid, call, ex_model)
-            for k in spend:
-                spend[k] += s[k]
-            if ex_id:
-                extraction_ids[cid] = ex_id
-        except ExtractionFailed as e:
-            stats["extraction_failed"] = stats.get("extraction_failed", 0) + 1
-            print(f"  cluster {cid}: {e}")
-    stats["extraction"] = dict(spend)
-    full = [c for c in ranked[:n_full] if c in extraction_ids]
-    tail = [c for c in ranked[n_full:] if c in extraction_ids]
+    ex_ids = run_extraction(conn, ranked, edition_id, wait_s, stats)
+    full = [c for c in ranked[:n_full] if c in ex_ids]
+    tail = [c for c in ranked[n_full:] if c in ex_ids]
 
     model, effort = synth_model(), synth_effort()
-    jobs = [j for c in full if (j := build_job(conn, c, extraction_ids[c], model))]
+    jobs = [j for c in full if (j := build_job(conn, c, ex_ids[c], model))]
     stats.update(full=len(full), tail=len(tail), new_cards=len(jobs),
                  cached_cards=len(full) - len(jobs))  # fmt: skip
     if jobs:
-        est = estimate_cost(jobs, model)
-        stats["estimated_cost_usd"] = round(est, 4)
-        if est > MAX_EDITION_COST_USD:
-            raise RuntimeError(
-                f"estimated synthesis cost ${est:.3f} exceeds MAX_EDITION_COST_USD "
-                f"${MAX_EDITION_COST_USD:.2f}; not submitting"
-            )
+        _check_budget(stats, "synthesis", synthesize.estimate_cost(jobs, model))
         client = anthropic_client()
-        batch_row = submit(conn, client, jobs, model, effort, edition_id)
-        with conn.cursor() as cur:
-            cur.execute("select provider_batch_id from llm_batches where id = %s", (batch_row,))
-            provider_id = cur.fetchone()[0]
-        print(f"submitted batch {provider_id} with {len(jobs)} requests (est ${est:.3f})")
-        if wait_for(client, provider_id, wait_s):
-            stats["synthesis"] = syn = collect(conn, client, batch_row, effort)
-            for k in spend:
-                spend[k] += syn[k]
-        else:
-            stats["batch_pending"] = provider_id
-            print("batch still running; run `make edition-collect` later")
+        _run_batch(conn, client,
+                   lambda: synthesize.submit(conn, client, jobs, model, effort, edition_id),
+                   synthesize.collect, wait_s, stats, "synthesis")  # fmt: skip
 
-    assemble(conn, edition_id, full, tail, extraction_ids)
-    stats.update(spend)  # pipeline_run copies these onto the run row
+    assemble(conn, edition_id, full, tail, ex_ids)
     return edition_id
 
 
@@ -207,18 +250,15 @@ def assemble(conn, edition_id: int, full: list[int], tail: list[int], ex_ids: di
 
 
 def collect_open(conn, stats: dict) -> None:
+    """Ingest finished batches that an earlier run stopped waiting for. Their
+    results go into the extraction / card caches, so re-running the edition
+    then uses them without paying again."""
     client = anthropic_client()
-    with conn.cursor() as cur:
-        cur.execute(
-            """select id, provider_batch_id, edition_id from llm_batches
-               where status in ('submitted', 'ended') order by id"""
-        )
-        open_batches = cur.fetchall()
-    for row_id, provider_id, _edition_id in open_batches:
-        if wait_for(client, provider_id, 0):
-            stats[provider_id] = syn = collect(conn, client, row_id, synth_effort())
-            for k in ("input_tokens", "output_tokens", "cost_usd"):
-                stats[k] = stats.get(k, 0) + syn[k]
+    collectors = {"extract": extract.collect, "synthesize": synthesize.collect}
+    for row_id, provider_id, kind in batch.open_batches(conn):
+        if batch.wait_for(client, provider_id, 0):
+            stats[provider_id] = collectors[kind](conn, client, row_id)
+            _add(stats, stats[provider_id])
 
 
 def export(conn, out: Path, edition_id: int | None = None) -> dict:

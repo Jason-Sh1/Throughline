@@ -21,11 +21,12 @@ class Price:
 
 
 PRICES = {
-    # Batch API prices (50% off). Synthesis always goes through the Batch API.
+    # Batch API prices (50% off). Editions always go through the Batch API; the
+    # one retry for an invalid response is a standard request.
     ("claude-haiku-5-5", "batch"): Price(0.05, 0.25, cache_read=0.005, cache_write=0.0625),
     ("claude-haiku-5-5", "standard"): Price(0.10, 0.50, cache_read=0.01, cache_write=0.125),
-    # Paid-tier price. On the free tier extraction costs nothing (but Google may
-    # use free-tier inputs to improve its products).
+    # Optional extraction backend. Paid-tier price; the free tier is free but
+    # capped at 20 requests/day.
     ("gemini-2.5-flash-lite", "standard"): Price(0.10, 0.40),
 }
 

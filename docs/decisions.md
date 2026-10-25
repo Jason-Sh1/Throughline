@@ -4,21 +4,25 @@ Short notes on non-obvious choices, newest first.
 
 ## 2026-10-25 — M3
 
-- **Models: Claude Haiku 5.5 for synthesis, Gemini 2.5 Flash-Lite for extraction.**
-  Checked 2026-10-25. Haiku 5.5 on the Batch API is $0.05 / $0.25 per million input /
-  output tokens, a tenth of Haiku 4.5 (which CLAUDE.md first named). Gemini 2.5
-  Flash-Lite is the cheapest Flash-Lite ($0.10 / $0.40 paid, free on the free tier);
-  the newer 3.x Flash-Lites cost 2.5-6x more for a step we validate anyway. Gemini's
-  free tier may use inputs to improve Google's products; inputs are headlines and
-  RSS summaries that publishers syndicate publicly, plus Guardian text.
+- **Model: Claude Haiku 5.5 for both extraction and synthesis.** Checked
+  2026-10-25. Haiku 5.5 on the Batch API is $0.05 / $0.25 per million input /
+  output tokens, a tenth of Haiku 4.5 (which CLAUDE.md first named). CLAUDE.md also
+  named a Gemini Flash-Lite model for extraction; that backend works
+  (`EXTRACT_MODEL=gemini-2.5-flash-lite`), but the free tier allows 20 requests a
+  day per model, and an edition needs up to 80. Paid Gemini 2.5 Flash-Lite
+  ($0.10 / $0.40) costs about twice as much as batched Haiku for this step, the
+  newer 3.x Flash-Lites 2.5-6x more, and one provider means one bill and one
+  spend cap. The free tier would also let Google use the inputs to improve its
+  products.
 - **No `temperature` on Claude.** Current Claude models reject sampling parameters.
   Determinism comes from structured outputs (`output_config.format` with the card's
   JSON schema), a strict prompt and `effort: low`.
-- **Extraction is synchronous, synthesis is batched.** Extraction is ~$0.001 a story
-  and the synthesis batch needs its claims. Synthesis goes through the Message
-  Batches API (half price; an edition isn't latency-sensitive). A batch is recorded
-  in `llm_batches`, so if it outlives the run's `--wait`, `make edition-collect`
-  picks it up later.
+- **Two batches per edition: extraction, then synthesis.** Both go through the
+  Message Batches API (half price; an edition isn't latency-sensitive). Synthesis
+  needs the extracted claims, so it waits for the first batch. Each batch is
+  recorded in `llm_batches`; if one outlives the run's `--wait`,
+  `make edition-collect` stores its results in the caches and the next run uses
+  them. One retry on invalid JSON is sent as a normal request with the same params.
 - **Local source ids ("S1".."S12") instead of database ids** in prompts: shorter,
   and an id outside the list is obviously invented. Code maps them back to article
   ids. The citation filter keeps only ids in the list and drops any sentence left

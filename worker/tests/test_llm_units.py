@@ -7,6 +7,7 @@ import anthropic
 import pytest
 
 from llm import prompts
+from llm.batch import message_text
 from llm.citations import CardRejected, filter_card, filter_extraction
 from llm.cost import cost_usd
 from llm.edition import score
@@ -139,10 +140,11 @@ def msg(text, stop="end_turn"):
 def test_parse_draft():
     import json
 
-    assert parse_draft(msg(json.dumps(draft_dict()))).headline.text == "Fed holds rates steady"
+    good = msg(json.dumps(draft_dict()))
+    assert parse_draft(message_text(good)).headline.text == "Fed holds rates steady"
     for bad in (msg("{}"), msg("not json"), msg("", "refusal"), msg("{", "max_tokens")):
         with pytest.raises(ValueError):
-            parse_draft(bad)
+            parse_draft(message_text(bad))
 
 
 def test_clean_text_and_opinion():

@@ -30,13 +30,13 @@ Claude: check items off as they're completed and add a one-line note (date, anyt
 - [x] ~~**Human:**~~ inspect 50 clusters, tune threshold, note results in `/docs/decisions.md` — 2026-10-25; delegated to Claude: threshold 0.62→0.66, gray margin 0.10→0.05 from a 12-config sweep (`cluster/sweep.py`) over a live 72h window
 
 ### M3 — LLM extraction & synthesis (Week 3)
-- [ ] Pydantic/JSON schemas for extraction output and story card
-- [ ] Extraction prompt v1 (entities, atomic claims w/ source_ids, dates, numbers, locations, viz_hint)
-- [ ] Synthesis prompt v1 (full card schema, per-sentence source_ids)
-- [ ] Batch API submission + polling + result ingestion
-- [ ] Prompt caching for system prompt
-- [ ] Citation filter: drop any sentence without valid source_ids
-- [ ] Edition builder: rank clusters, select top 40–60, long tail gets one-liners
+- [x] Pydantic/JSON schemas for extraction output and story card — 2026-10-25; `worker/llm/schemas.py`
+- [x] Extraction prompt v1 (entities, atomic claims w/ source_ids, dates, numbers, locations, viz_hint) — 2026-10-25; Claude Haiku 5.5 (Gemini free tier too small, see decisions.md)
+- [x] Synthesis prompt v1 (full card schema, per-sentence source_ids) — 2026-10-25; Claude Haiku 5.5, effort low, structured outputs
+- [x] Batch API submission + polling + result ingestion — 2026-10-25; `llm_batches` table, `make edition-collect` for late batches
+- [x] Prompt caching for system prompt — 2026-10-25
+- [x] Citation filter: drop any sentence without valid source_ids — 2026-10-25; also strips invented ids
+- [x] Edition builder: rank clusters, select top 40–60, long tail gets one-liners — 2026-10-25; top 50 + 30 one-liners, spend guard
 - [ ] Render first cards as static JSON
 
 ### M4 — Verification & evals (Week 4)
