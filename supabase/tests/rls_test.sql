@@ -14,12 +14,12 @@ insert into cards (cluster_id, content_hash, prompt_version, model, status, card
 insert into cards (cluster_id, content_hash, prompt_version, model, status, card, source_count)
   select id, 'pub-hash', 'v1', 'm', 'published', '{}', 1 from clusters;
 insert into auth.users values ('00000000-0000-0000-0000-00000000000a'), ('00000000-0000-0000-0000-00000000000b');
-insert into users (id) values ('00000000-0000-0000-0000-00000000000a'), ('00000000-0000-0000-0000-00000000000b');
 insert into profiles (user_id, topics) values ('00000000-0000-0000-0000-00000000000a', '{tech}'), ('00000000-0000-0000-0000-00000000000b', '{science}');
 
 do $$
 declare n int;
 begin
+  select count(*) into n from users;     assert n = 2, 'signup trigger creates users rows';
   set local role anon;
   select count(*) into n from articles;  assert n = 0, 'anon must not read articles';
   select count(*) into n from sources;   assert n = 1, 'anon can read sources';

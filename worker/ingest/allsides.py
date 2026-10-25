@@ -54,7 +54,7 @@ _HEADER_ALIASES = {
 
 def normalize_rating(raw: str) -> BiasRating:
     key = re.sub(r"[^a-z]+", " ", raw.lower()).strip()
-    key = key.removeprefix("allsides media bias rating ").removeprefix("ratings ")
+    key = key.removeprefix("allsides media bias rating ")
     if key not in _RATING_ALIASES:
         raise ValueError(f"unknown AllSides rating: {raw!r}")
     return _RATING_ALIASES[key]
