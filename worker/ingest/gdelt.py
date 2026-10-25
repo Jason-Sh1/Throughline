@@ -26,6 +26,10 @@ HOST = "api.gdeltproject.org"
 MIN_INTERVAL_SECONDS = 5.0
 # Long OR-queries get rejected, so we ask about a few outlets per request.
 DOMAINS_PER_QUERY = 8
+# GDELT's TLS handshake is often slow (it timed out at our 5 s default in the
+# first live run), so give it longer and retry transport errors once.
+TIMEOUT = httpx.Timeout(30.0, connect=20.0)
+ATTEMPTS = 2
 
 
 def domain_of(url: str) -> str:
@@ -98,11 +102,17 @@ def fetch(
     errors: list[str] = []
     for i in range(0, len(domains), DOMAINS_PER_QUERY):
         chunk = domains[i : i + DOMAINS_PER_QUERY]
-        try:
-            resp = client.get(build_url(chunk, timespan))
-            resp.raise_for_status()
-            found, _ = parse_response(resp.text, source_by_domain)
-            articles.extend(found)
-        except (httpx.HTTPError, ValueError) as exc:
-            errors.append(f"gdelt {chunk[0]}..: {exc}")
+        for attempt in range(1, ATTEMPTS + 1):
+            try:
+                resp = client.get(build_url(chunk, timespan), timeout=TIMEOUT)
+                resp.raise_for_status()
+                found, _ = parse_response(resp.text, source_by_domain)
+                articles.extend(found)
+                break
+            except httpx.TransportError as exc:
+                if attempt == ATTEMPTS:
+                    errors.append(f"gdelt {chunk[0]}..: {exc!r}")
+            except (httpx.HTTPError, ValueError) as exc:
+                errors.append(f"gdelt {chunk[0]}..: {exc}")
+                break
     return articles, errors

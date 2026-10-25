@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 from cluster.online import Candidate, ClusterConfig, choose_cluster
-from cluster.recluster import NOISE, plan_recluster, run_hdbscan
+from cluster.recluster import NOISE, enforce_coherence, plan_recluster, run_hdbscan
 
 CFG = ClusterConfig(threshold=0.7, tie_margin=0.03, gray_margin=0.1, min_entity_overlap=2)
 
@@ -107,13 +107,16 @@ def test_plan_splits_cluster_into_new_group():
     assert plan.moves == {4: "new:1", 5: "new:1"}
 
 
-def test_plan_noise_stays_unless_cluster_merged():
+def test_plan_partial_overlap_moves_articles_without_merging():
     current = {1: 10, 2: 10, 3: 20, 4: 20, 5: 20}
     labels = {1: 0, 2: 0, 3: 0, 4: NOISE, 5: 0}
     plan = plan_recluster(current, labels)
-    # 20 has 2 members in label 0 vs 10's 2 -> tie on overlap, oldest id (10) survives
-    assert plan.merges == {20: 10}
-    assert plan.moves[4] == 10  # noise follows its merged cluster
+    # 20 still has article 4 (noise), so it isn't merged away; 3 and 5 move to 10.
+    assert plan.merges == {}
+    assert plan.moves == {3: 10, 5: 10}
+
+
+def test_plan_noise_stays_put():
     plan = plan_recluster({1: 10, 2: 10, 3: 10}, {1: 0, 2: 0, 3: NOISE})
     assert plan.moves == {}
 
@@ -143,3 +146,18 @@ def test_hdbscan_finds_separated_groups():
 
 def test_hdbscan_too_few_points_is_noise():
     assert list(run_hdbscan(np.array([[1.0, 0.0]], dtype=np.float32))) == [NOISE]
+
+
+def test_coherence_drops_weak_members_and_tiny_groups():
+    tight = [vec_at(c, E[0], E[i]) for c, i in ((0.95, 1), (0.93, 2), (0.94, 3))]
+    loose = vec_at(0.4, E[0], E[4])  # same topic, not the same event
+    pair = [E[5], vec_at(0.3, E[5], E[6])]  # a "group" of two unrelated items
+    x = np.vstack([*tight, loose, *pair]).astype(np.float32)
+    labels = np.array([0, 0, 0, 0, 1, 1])
+    out = enforce_coherence(x, labels, min_sim=0.62)
+    assert out.tolist() == [0, 0, 0, NOISE, NOISE, NOISE]
+
+
+def test_coherence_keeps_good_groups_untouched():
+    x = np.vstack([E[0], vec_at(0.9, E[0], E[1])]).astype(np.float32)
+    assert enforce_coherence(x, np.array([0, 0]), 0.62).tolist() == [0, 0]

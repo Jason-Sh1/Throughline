@@ -200,6 +200,27 @@ def test_gdelt_fetch_chunks_domains_and_collects_errors():
     assert c.host_intervals[gdelt.HOST] == gdelt.MIN_INTERVAL_SECONDS
 
 
+def test_gdelt_retries_transport_errors_once():
+    calls = []
+
+    def handler(req):
+        calls.append(1)
+        if len(calls) == 1:
+            raise httpx.ConnectTimeout("handshake timed out", request=req)
+        return httpx.Response(200, text=GDELT_BODY)
+
+    articles, errors = gdelt.fetch(client_for(handler, robots=False), {"npr.org": 5})
+    assert len(calls) == 2 and len(articles) == 1 and errors == []
+
+
+def test_gdelt_gives_up_after_second_transport_error():
+    def handler(req):
+        raise httpx.ConnectTimeout("handshake timed out", request=req)
+
+    articles, errors = gdelt.fetch(client_for(handler, robots=False), {"npr.org": 5})
+    assert articles == [] and "ConnectTimeout" in errors[0]
+
+
 # --- Guardian -----------------------------------------------------------------
 
 

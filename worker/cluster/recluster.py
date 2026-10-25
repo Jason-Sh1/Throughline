@@ -13,6 +13,18 @@ noise articles where online clustering put them, so a quiet night doesn't
 shuffle stable clusters. We use scikit-learn's HDBSCAN rather than the separate
 `hdbscan` package: same algorithm, one less compiled dependency.
 
+Guarding against over-merging. HDBSCAN finds *dense regions*, not "same event",
+and on real news it happily grouped every story about political ads, or about
+the Middle East, into one blob. Over-merging is the worst failure for us (facts
+from one event leak into another's briefing), so two guards:
+1. a coherence floor: an article less similar to the rest of its group than the
+   online threshold is turned back into noise (`enforce_coherence`), so HDBSCAN
+   can only make a merge that online clustering would also accept;
+2. a cluster is only merged away if *all* its articles moved into the group;
+   otherwise just the moved articles go and the cluster stays.
+(HDBSCAN's "leaf" selection, which prefers smaller clusters, is available via
+--selection leaf, but in testing it split good clusters, so it isn't the default.)
+
 Cluster ids are kept stable where possible (each new group reuses the existing
 cluster it overlaps most), so links to a story survive a re-cluster.
 """
@@ -29,7 +41,7 @@ import psycopg
 from pgvector.psycopg import register_vector
 
 from cluster.embed import to_array
-from cluster.online import attach_duplicates, refresh_cluster_stats
+from cluster.online import ClusterConfig, attach_duplicates, refresh_cluster_stats
 
 NOISE = -1
 
@@ -42,7 +54,7 @@ class Plan:
     new_groups: dict[str, list[int]] = field(default_factory=dict)
 
 
-def plan_recluster(current: dict[int, int | None], labels: dict[int, int]) -> Plan:
+def plan_recluster(current: dict[int, int | None], labels: dict[int, int]) -> Plan:  # noqa: C901
     """Turn HDBSCAN labels into moves/merges against the current assignment.
 
     current: article_id -> cluster id (None if unclustered)
@@ -70,6 +82,8 @@ def plan_recluster(current: dict[int, int | None], labels: dict[int, int]) -> Pl
     for cid, (_, label) in best.items():
         home[cid] = label
 
+    sizes = Counter(cid for cid in current.values() if cid is not None)
+
     plan = Plan()
     target_of: dict[int, int | str] = {}
     for label in sorted(members):
@@ -83,7 +97,8 @@ def plan_recluster(current: dict[int, int | None], labels: dict[int, int]) -> Pl
         survivor = max(homed, key=lambda cid: (overlap[label][cid], -cid))
         target_of[label] = survivor
         for cid in homed:
-            if cid != survivor:
+            # Merge only when the whole cluster moved into this group (guard 2).
+            if cid != survivor and overlap[label][cid] == sizes[cid]:
                 plan.merges[cid] = survivor
 
     for label, aids in members.items():
@@ -92,15 +107,47 @@ def plan_recluster(current: dict[int, int | None], labels: dict[int, int]) -> Pl
             if current.get(aid) != target:
                 plan.moves[aid] = target
 
-    # Noise articles stay put, unless their cluster was merged away.
-    for aid, label in labels.items():
-        cid = current.get(aid)
-        if label == NOISE and cid in plan.merges:
-            plan.moves[aid] = plan.merges[cid]
+    # Noise articles stay put. (A merged cluster never has noise members: guard 2.)
     return plan
 
 
-def run_hdbscan(vectors: np.ndarray, min_cluster_size: int = 2, epsilon: float = 0.0) -> np.ndarray:
+def enforce_coherence(vectors: np.ndarray, labels: np.ndarray, min_sim: float) -> np.ndarray:
+    """Turn weak group members into noise (guard 1).
+
+    A member is weak when its similarity to the centroid of the *other* members
+    is below `min_sim`: the same test online clustering would apply if it
+    arrived last. (Including the member itself in the centroid would be far too
+    lenient for small groups: two unrelated articles each sit close to their
+    own midpoint.) Repeats until stable, since dropping one member moves the
+    centroid; groups left with fewer than 2 members become noise.
+    """
+    labels = labels.copy()
+    while True:
+        changed = False
+        for label in set(labels.tolist()) - {NOISE}:
+            idx = np.flatnonzero(labels == label)
+            if len(idx) < 2:
+                labels[idx] = NOISE
+                changed = True
+                continue
+            members = vectors[idx]
+            others = members.sum(axis=0) - members  # row i: sum of everyone but i
+            others /= np.linalg.norm(others, axis=1, keepdims=True).clip(min=1e-9)
+            sims = np.einsum("ij,ij->i", members, others)
+            # Drop only the weakest member per pass, so one outlier can't drag
+            # good members below the floor with it.
+            worst = int(np.argmin(sims))
+            if sims[worst] < min_sim:
+                labels[idx[worst]] = NOISE
+                changed = True
+        if not changed:
+            break
+    return labels
+
+
+def run_hdbscan(
+    vectors: np.ndarray, min_cluster_size: int = 2, selection: str = "eom"
+) -> np.ndarray:
     from sklearn.cluster import HDBSCAN
 
     if len(vectors) < max(2, min_cluster_size):
@@ -109,7 +156,7 @@ def run_hdbscan(vectors: np.ndarray, min_cluster_size: int = 2, epsilon: float =
     # distance (d^2 = 2 - 2cos), so this is cosine clustering in effect.
     model = HDBSCAN(
         min_cluster_size=min_cluster_size,
-        cluster_selection_epsilon=epsilon,
+        cluster_selection_method=selection,
         metric="euclidean",
         copy=True,
     )
@@ -175,6 +222,16 @@ def apply_plan(cur: psycopg.Cursor, plan: Plan) -> dict:
             """,
             (ids,),
         )
+        # Similarity to the (new) centroid, so `make clusters` shows real numbers.
+        cur.execute(
+            """
+            update cluster_articles ca set similarity = 1 - (a.embedding <=> c.centroid)
+            from articles a, clusters c
+            where a.id = ca.article_id and c.id = ca.cluster_id
+              and ca.cluster_id = any(%s) and a.embedding is not null
+            """,
+            (ids,),
+        )
         refresh_cluster_stats(cur, ids)
     # Clusters left with no articles after their articles moved are archived.
     cur.execute(
@@ -192,7 +249,10 @@ def apply_plan(cur: psycopg.Cursor, plan: Plan) -> dict:
 
 
 def run(conn: psycopg.Connection, window_hours: int = 72, min_cluster_size: int = 2,
-        epsilon: float = 0.0) -> dict:  # fmt: skip
+        min_sim: float | None = None, selection: str = "eom") -> dict:  # fmt: skip
+    """min_sim defaults to the online threshold (CLUSTER_THRESHOLD)."""
+    if min_sim is None:
+        min_sim = ClusterConfig.from_env().threshold
     register_vector(conn)
     with conn.transaction(), conn.cursor() as cur:
         cur.execute(
@@ -211,7 +271,9 @@ def run(conn: psycopg.Connection, window_hours: int = 72, min_cluster_size: int 
         ids = [r[0] for r in rows]
         vectors = np.vstack([to_array(r[1]) for r in rows])
         vectors /= np.linalg.norm(vectors, axis=1, keepdims=True).clip(min=1e-9)
-        labels = run_hdbscan(vectors, min_cluster_size, epsilon)
+        labels = enforce_coherence(
+            vectors, run_hdbscan(vectors, min_cluster_size, selection), min_sim
+        )
         plan = plan_recluster(
             {r[0]: r[2] for r in rows}, dict(zip(ids, labels.tolist(), strict=True))
         )
@@ -226,11 +288,12 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Nightly HDBSCAN re-cluster")
     ap.add_argument("--hours", type=int, default=72)
     ap.add_argument("--min-cluster-size", type=int, default=2)
-    ap.add_argument("--epsilon", type=float, default=0.0,
-                    help="merge clusters closer than this (euclidean on unit vectors)")  # fmt: skip
+    ap.add_argument("--min-sim", type=float, default=None,
+                    help="coherence floor; defaults to CLUSTER_THRESHOLD")  # fmt: skip
+    ap.add_argument("--selection", choices=["eom", "leaf"], default="eom")
     args = ap.parse_args(argv)
     with connect() as conn, pipeline_run(conn, "recluster") as stats:
-        stats.update(run(conn, args.hours, args.min_cluster_size, args.epsilon))
+        stats.update(run(conn, args.hours, args.min_cluster_size, args.min_sim, args.selection))
         print(stats)
     return 0
 

@@ -10,8 +10,10 @@
 # Ratings: AllSides Media Bias Ratings, https://www.allsides.com/media-bias,
 # licensed CC BY-NC 4.0.
 #
-# Feed URLs were written from public RSS directories and have not been fetched
-# yet (the dev sandbox blocks news sites). The M2 fetcher reports dead feeds.
+# Feed URLs are checked by the "Ingest smoke test" workflow, which annotates any
+# feed not answering 200/304. First live run (2026-10-25): Atlantic entertainment
+# feed 404 (replaced), WSJ disallows crawlers in robots.txt (removed), WaPo
+# business 502 (kept for now, may be transient).
 #
 # Schema: worker/ingest/feeds_config.py. Validate with `make validate-feeds`.
 
@@ -30,6 +32,8 @@ outlets:
         category: tech
       - url: https://feeds.npr.org/1128/rss.xml
         category: health
+      - url: https://feeds.npr.org/1008/rss.xml
+        category: culture
 
   - slug: new-york-times
     name: The New York Times
@@ -66,8 +70,8 @@ outlets:
     region: US
     allsides_rating: lean_left
     feeds:
-      - url: https://www.theatlantic.com/feed/channel/entertainment/
-        category: culture
+      - url: https://www.theatlantic.com/feed/all/
+        category: us
 
   # --- Center ----------------------------------------------------------------
   - slug: the-hill
@@ -80,14 +84,7 @@ outlets:
         category: health
       - url: https://thehill.com/homenews/feed/
         category: politics
-
-  - slug: wall-street-journal
-    name: The Wall Street Journal
-    homepage: https://www.wsj.com
-    region: US
-    allsides_rating: center
-    feeds:
-      - url: https://feeds.a.dj.com/rss/WSJcomUSBusiness.xml
+      - url: https://thehill.com/business/feed/
         category: business
 
   - slug: newsweek

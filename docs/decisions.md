@@ -22,6 +22,13 @@ Short notes on non-obvious choices, newest first.
   extraction step will produce typed entities.
 - **scikit-learn's HDBSCAN** instead of the `hdbscan` package: same algorithm,
   no extra compiled dependency. Noise points keep their online assignment.
+- **Guards on the nightly re-cluster.** The first live run (529 articles, 24
+  feeds) showed plain HDBSCAN over-merging: one 22-article "cluster" mixed three
+  different election-ad stories, and another mixed IMF, Iran and Houthi stories.
+  Two guards were added. A leave-one-out coherence floor at the online threshold
+  turns weak members back into noise; it measures each member against the
+  *other* members, because including the member itself is far too lenient for
+  small groups. And a cluster is merged only when all of its articles moved.
 - **GDELT only for outlets we already track.** Untracked domains have no
   spectrum label, so storing them would skew the coverage bar.
 - **sentence-transformers is installed by `make embed-deps`, not locked.** The

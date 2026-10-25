@@ -81,6 +81,16 @@ dense groups without being told how many to expect, and leaves outliers as
 - leave "noise" articles where they were, so a quiet night doesn't shuffle
   stable stories.
 
+HDBSCAN finds dense regions, which isn't the same as "one event". On the first
+live run it lumped all the political-ad stories together, and all the
+Middle East stories together. Two guards stop that:
+
+- **Coherence floor:** an article whose similarity to the rest of its group is
+  below the online threshold goes back to "noise". So the nightly pass can only
+  make merges that online clustering would also have accepted.
+- **Whole-cluster merges only:** a cluster is merged away only if *all* of its
+  articles landed in the new group. Otherwise only the matching articles move.
+
 Cluster ids stay stable where possible, so links to a story survive.
 
 ## Tuning (ROADMAP M2 human step)
