@@ -1,0 +1,210 @@
+# Throughline curated feed list.
+#
+# Starter set (~20 feeds) for development only. The launch list (150+ feeds,
+# >= 25 per category, spectrum-balanced) is curated by hand: see ROADMAP M1.
+#
+# allsides_rating values below are best-guess placeholders. Run the AllSides
+# import (`make allsides CSV=...`) to replace them with current ratings and
+# fill in allsides_url. Non-U.S. outlets are always `not_rated`.
+#
+# Ratings: AllSides Media Bias Ratings, https://www.allsides.com/media-bias,
+# licensed CC BY-NC 4.0.
+#
+# Feed URLs were written from public RSS directories and have not been fetched
+# yet (the dev sandbox blocks news sites). The M2 fetcher reports dead feeds.
+#
+# Schema: worker/ingest/feeds_config.py. Validate with `make validate-feeds`.
+
+version: 1
+outlets:
+  # --- Left / lean left -----------------------------------------------------
+  - slug: npr
+    name: NPR
+    homepage: https://www.npr.org
+    region: US
+    allsides_rating: lean_left
+    feeds:
+      - url: https://feeds.npr.org/1001/rss.xml
+        category: us
+      - url: https://feeds.npr.org/1019/rss.xml
+        category: tech
+      - url: https://feeds.npr.org/1128/rss.xml
+        category: health
+
+  - slug: new-york-times
+    name: The New York Times
+    homepage: https://www.nytimes.com
+    region: US
+    allsides_rating: lean_left
+    feeds:
+      - url: https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml
+        category: politics
+      - url: https://rss.nytimes.com/services/xml/rss/nyt/Climate.xml
+        category: climate
+
+  - slug: washington-post
+    name: The Washington Post
+    homepage: https://www.washingtonpost.com
+    region: US
+    allsides_rating: lean_left
+    feeds:
+      - url: https://feeds.washingtonpost.com/rss/business
+        category: business
+
+  - slug: vox
+    name: Vox
+    homepage: https://www.vox.com
+    region: US
+    allsides_rating: left
+    feeds:
+      - url: https://www.vox.com/rss/index.xml
+        category: politics
+
+  - slug: the-atlantic
+    name: The Atlantic
+    homepage: https://www.theatlantic.com
+    region: US
+    allsides_rating: lean_left
+    feeds:
+      - url: https://www.theatlantic.com/feed/channel/entertainment/
+        category: culture
+
+  # --- Center ----------------------------------------------------------------
+  - slug: the-hill
+    name: The Hill
+    homepage: https://thehill.com
+    region: US
+    allsides_rating: center
+    feeds:
+      - url: https://thehill.com/policy/healthcare/feed/
+        category: health
+      - url: https://thehill.com/homenews/feed/
+        category: politics
+
+  - slug: wall-street-journal
+    name: The Wall Street Journal
+    homepage: https://www.wsj.com
+    region: US
+    allsides_rating: center
+    feeds:
+      - url: https://feeds.a.dj.com/rss/WSJcomUSBusiness.xml
+        category: business
+
+  - slug: newsweek
+    name: Newsweek
+    homepage: https://www.newsweek.com
+    region: US
+    allsides_rating: center
+    feeds:
+      - url: https://www.newsweek.com/rss
+        category: us
+
+  # --- Lean right / right ----------------------------------------------------
+  - slug: fox-news
+    name: Fox News
+    homepage: https://www.foxnews.com
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://moxie.foxnews.com/google-publisher/politics.xml
+        category: politics
+      - url: https://moxie.foxnews.com/google-publisher/sports.xml
+        category: sports
+
+  - slug: new-york-post
+    name: New York Post
+    homepage: https://nypost.com
+    region: US
+    allsides_rating: lean_right
+    feeds:
+      - url: https://nypost.com/us-news/feed/
+        category: us
+      - url: https://nypost.com/business/feed/
+        category: business
+
+  - slug: washington-examiner
+    name: Washington Examiner
+    homepage: https://www.washingtonexaminer.com
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://www.washingtonexaminer.com/feed
+        category: politics
+
+  - slug: reason
+    name: Reason
+    homepage: https://reason.com
+    region: US
+    allsides_rating: lean_right
+    feeds:
+      - url: https://reason.com/feed/
+        category: politics
+
+  - slug: the-dispatch
+    name: The Dispatch
+    homepage: https://thedispatch.com
+    region: US
+    allsides_rating: lean_right
+    feeds:
+      - url: https://thedispatch.com/feed/
+        category: us
+
+  # --- Specialist / not rated -----------------------------------------------
+  - slug: ars-technica
+    name: Ars Technica
+    homepage: https://arstechnica.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://feeds.arstechnica.com/arstechnica/index
+        category: tech
+
+  - slug: sciencedaily
+    name: ScienceDaily
+    homepage: https://www.sciencedaily.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.sciencedaily.com/rss/top/science.xml
+        category: science
+
+  # --- International (always not_rated) -------------------------------------
+  - slug: bbc-news
+    name: BBC News
+    homepage: https://www.bbc.com/news
+    region: GB
+    allsides_rating: not_rated
+    feeds:
+      - url: https://feeds.bbci.co.uk/news/world/rss.xml
+        category: world
+      - url: https://feeds.bbci.co.uk/news/science_and_environment/rss.xml
+        category: science
+
+  - slug: the-guardian
+    name: The Guardian
+    homepage: https://www.theguardian.com
+    region: GB
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.theguardian.com/environment/climate-crisis/rss
+        category: climate
+      - url: https://www.theguardian.com/sport/rss
+        category: sports
+
+  - slug: al-jazeera
+    name: Al Jazeera English
+    homepage: https://www.aljazeera.com
+    region: QA
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.aljazeera.com/xml/rss/all.xml
+        category: world
+
+  - slug: dw
+    name: DW
+    homepage: https://www.dw.com/en
+    region: DE
+    allsides_rating: not_rated
+    feeds:
+      - url: https://rss.dw.com/rdf/rss-en-world
+        category: world
