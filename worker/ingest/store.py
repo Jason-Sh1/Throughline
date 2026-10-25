@@ -9,11 +9,13 @@ import psycopg
 
 from cluster.dedupe import (
     SIMHASH_MAX_DISTANCE,
+    TITLE_MIN_JACCARD,
     canonicalize_url,
     hamming,
     simhash,
     simhash_text,
     title_hash,
+    title_jaccard,
 )
 from ingest.models import ArticleIn
 
@@ -42,12 +44,13 @@ class _Recent:
     id: int
     title_hash: str
     simhash: int | None
+    title: str
 
 
 def _load_recent(cur: psycopg.Cursor, hours: int) -> list[_Recent]:
     cur.execute(
         """
-        select id, title_hash, simhash from articles
+        select id, title_hash, simhash, title from articles
         where duplicate_of is null and fetched_at > now() - make_interval(hours => %s)
         order by id
         """,
@@ -56,14 +59,20 @@ def _load_recent(cur: psycopg.Cursor, hours: int) -> list[_Recent]:
     return [_Recent(*row) for row in cur.fetchall()]
 
 
-def find_original(recent: list[_Recent], th: str, sh: int | None) -> tuple[int | None, str | None]:
+def find_original(
+    recent: list[_Recent], th: str, sh: int | None, title: str
+) -> tuple[int | None, str | None]:
     """Earliest recent article this one duplicates, and which layer matched."""
     for r in recent:
         if r.title_hash == th:
             return r.id, "title"
     if sh is not None:
         for r in recent:
-            if r.simhash is not None and hamming(r.simhash, sh) <= SIMHASH_MAX_DISTANCE:
+            if (
+                r.simhash is not None
+                and hamming(r.simhash, sh) <= SIMHASH_MAX_DISTANCE
+                and title_jaccard(r.title, title) >= TITLE_MIN_JACCARD
+            ):
                 return r.id, "simhash"
     return None, None
 
@@ -105,7 +114,7 @@ def store_articles(
 
             stats.inserted += 1
             stats.new_ids.append(article_id)
-            original, layer = find_original(recent, th, sh)
+            original, layer = find_original(recent, th, sh, a.title)
             if original is not None:
                 cur.execute(
                     "update articles set duplicate_of = %s where id = %s", (original, article_id)
@@ -115,5 +124,5 @@ def store_articles(
                 else:
                     stats.near_dupes += 1
             else:
-                recent.append(_Recent(article_id, th, sh))
+                recent.append(_Recent(article_id, th, sh, a.title))
     return stats

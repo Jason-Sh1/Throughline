@@ -212,7 +212,8 @@ def run_online(conn: psycopg.Connection, cfg: ClusterConfig | None = None) -> di
             select a.id, a.embedding, a.title from articles a
             where a.embedding is not null and a.duplicate_of is null
               and not exists (select 1 from cluster_articles ca where ca.article_id = a.id)
-              and a.fetched_at > now() - make_interval(hours => %s)
+              -- Window on publish time: feeds re-serve months-old items we've only just fetched.
+              and coalesce(a.published_at, a.fetched_at) > now() - make_interval(hours => %s)
             order by coalesce(a.published_at, a.fetched_at), a.id
             """,
             (cfg.window_hours,),

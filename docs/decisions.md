@@ -65,3 +65,24 @@ Short notes on non-obvious choices, newest first.
 - **CI tests migrations against plain Postgres + pgvector** with a small shim
   (`supabase/tests/local_auth_shim.sql`) for `auth.users`, `auth.uid()` and the
   `anon`/`authenticated` roles, instead of booting the full Supabase stack.
+
+### M2 follow-up: fixes from the first full live run (2026-10-25)
+
+The first smoke run over the full feed list (~7.9k articles) showed three problems:
+
+- **False near-duplicates.** Unrelated articles were marked as SimHash duplicates. With only
+  title + RSS summary to fingerprint, stopwords ("the", "said", "that") and newsletter
+  boilerplate dominated the features. Fix: SimHash now ignores stopwords, and a near-duplicate
+  must *also* share at least half of its headline content words (`TITLE_MIN_JACCARD = 0.5`).
+  Real wire copies keep the headline mostly intact; boilerplate collisions don't. With
+  stopwords gone each word weighs more, so lightly edited copies measured 5-11 bits apart;
+  the threshold moved from 10 to 12 (independent coverage still sits ~29 bits away).
+- **Old articles clustered.** Some feeds re-serve items from months ago. The clustering window
+  used `fetched_at`, so a March article fetched today counted as fresh. Online clustering and
+  the nightly re-cluster now window on `coalesce(published_at, fetched_at)`.
+- **Embedding cap.** The first run hit the 5,000-article embed limit. Raised to 20,000
+  (all-MiniLM-L6-v2 on CPU does that in a few minutes).
+
+Feeds: 52 dead feeds (404, robots.txt disallow, bot blocks) were dropped and replaced, mostly
+with extra sections from outlets whose other feeds already worked. The list is 268 feeds and
+passes `make validate-feeds STRICT=1` (every category ≥25, left/right ratio 78/53 = 1.47).
