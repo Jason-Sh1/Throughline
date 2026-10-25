@@ -114,8 +114,7 @@ outlets:
     region: US
     allsides_name: RollingStone.com
     allsides_rating: left
-    allsides_url: 
-      https://www.allsides.com/news-source/rollingstonecom-media-bias
+    allsides_url: https://www.allsides.com/news-source/rollingstonecom-media-bias
     feeds:
       - url: https://www.rollingstone.com/feed/
         category: culture
@@ -157,8 +156,7 @@ outlets:
     homepage: https://www.nytimes.com
     region: US
     allsides_rating: lean_left
-    allsides_url: 
-      https://www.allsides.com/news-source/new-york-times-news-media-bias
+    allsides_url: https://www.allsides.com/news-source/new-york-times-news-media-bias
     feeds:
       - url: https://rss.nytimes.com/services/xml/rss/nyt/US.xml
         category: us
@@ -196,8 +194,7 @@ outlets:
     homepage: https://www.cbsnews.com
     region: US
     allsides_rating: lean_left
-    allsides_url: 
-      https://www.allsides.com/news-source/cbs-news-online-media-bias
+    allsides_url: https://www.allsides.com/news-source/cbs-news-online-media-bias
     feeds:
       - url: https://www.cbsnews.com/latest/rss/us
         category: us
@@ -273,8 +270,7 @@ outlets:
     homepage: https://www.latimes.com
     region: US
     allsides_rating: lean_left
-    allsides_url: 
-      https://www.allsides.com/news-source/los-angeles-times-media-bias
+    allsides_url: https://www.allsides.com/news-source/los-angeles-times-media-bias
     feeds:
       - url: https://www.latimes.com/world-nation/rss2.0.xml
         category: world
@@ -297,8 +293,7 @@ outlets:
     region: US
     allsides_name: Time Magazine
     allsides_rating: lean_left
-    allsides_url: 
-      https://www.allsides.com/news-source/time-magazine-news-media-bias
+    allsides_url: https://www.allsides.com/news-source/time-magazine-news-media-bias
     feeds:
       - url: https://time.com/feed/
         category: us
@@ -337,8 +332,7 @@ outlets:
     homepage: https://www.businessinsider.com
     region: US
     allsides_rating: lean_left
-    allsides_url: 
-      https://www.allsides.com/news-source/business-insider-media-bias
+    allsides_url: https://www.allsides.com/news-source/business-insider-media-bias
     feeds:
       - url: https://feeds.businessinsider.com/custom/all
         category: business
@@ -383,8 +377,7 @@ outlets:
     homepage: https://www.csmonitor.com
     region: US
     allsides_rating: center
-    allsides_url: 
-      https://www.allsides.com/news-source/christian-science-monitor-media-bias
+    allsides_url: https://www.allsides.com/news-source/christian-science-monitor-media-bias
     feeds:
       - url: https://rss.csmonitor.com/feeds/usa
         category: us
@@ -423,8 +416,7 @@ outlets:
     homepage: https://nypost.com
     region: US
     allsides_rating: right
-    allsides_url: 
-      https://www.allsides.com/news-source/new-york-post-news-media-bias
+    allsides_url: https://www.allsides.com/news-source/new-york-post-news-media-bias
     feeds:
       - url: https://nypost.com/us-news/feed/
         category: us
@@ -453,6 +445,8 @@ outlets:
       - url: https://nypost.com/feed/
         category: us
 
+      - url: https://nypost.com/living/feed/
+        category: culture
   - slug: reason
     name: Reason
     homepage: https://reason.com
@@ -488,8 +482,7 @@ outlets:
     homepage: https://freebeacon.com
     region: US
     allsides_rating: right
-    allsides_url: 
-      https://www.allsides.com/news-source/washington-free-beacon-media-bias
+    allsides_url: https://www.allsides.com/news-source/washington-free-beacon-media-bias
     feeds:
       - url: https://freebeacon.com/feed/
         category: politics
@@ -526,8 +519,7 @@ outlets:
     homepage: https://www.nationalreview.com
     region: US
     allsides_rating: lean_right
-    allsides_url: 
-      https://www.allsides.com/news-source/national-review-news-media-bias
+    allsides_url: https://www.allsides.com/news-source/national-review-news-media-bias
     feeds:
       - url: https://www.nationalreview.com/feed/
         category: politics
@@ -620,8 +612,7 @@ outlets:
     homepage: https://www.westernjournal.com
     region: US
     allsides_rating: right
-    allsides_url: 
-      https://www.allsides.com/news-source/western-journal-media-bias
+    allsides_url: https://www.allsides.com/news-source/western-journal-media-bias
     feeds:
       - url: https://www.westernjournal.com/feed/
         category: us
@@ -662,8 +653,7 @@ outlets:
     homepage: https://spectator.org
     region: US
     allsides_rating: right
-    allsides_url: 
-      https://www.allsides.com/news-source/american-spectator-media-bias
+    allsides_url: https://www.allsides.com/news-source/american-spectator-media-bias
     feeds:
       - url: https://spectator.org/feed/
         category: politics
@@ -688,6 +678,14 @@ outlets:
       - url: https://www.theepochtimes.com/c-tech/feed
         category: tech
 
+      - url: https://www.theepochtimes.com/c-health/feed
+        category: health
+      - url: https://www.theepochtimes.com/c-science/feed
+        category: science
+      - url: https://www.theepochtimes.com/c-entertainment/feed
+        category: culture
+      - url: https://www.theepochtimes.com/c-economy/feed
+        category: business
   - slug: fox-business
     name: Fox Business
     homepage: https://www.foxbusiness.com
@@ -695,32 +693,70 @@ outlets:
     allsides_rating: lean_right
     allsides_url: https://www.allsides.com/news-source/fox-business-media-bias
     feeds:
-      - url: https://moxie.foxbusiness.com/google-publisher/latest.xml
+      - url: https://feeds.foxbusiness.com/foxbusiness/latest
         category: business
-      - url: https://moxie.foxbusiness.com/google-publisher/markets.xml
+      - url: https://feeds.foxbusiness.com/foxbusiness/markets
         category: business
-      - url: https://moxie.foxbusiness.com/google-publisher/economy.xml
+      - url: https://feeds.foxbusiness.com/foxbusiness/economy
         category: business
-      - url: https://moxie.foxbusiness.com/google-publisher/technology.xml
+      - url: https://feeds.foxbusiness.com/foxbusiness/technology
         category: tech
-      - url: https://moxie.foxbusiness.com/google-publisher/politics.xml
-        category: politics
-      - url: https://moxie.foxbusiness.com/google-publisher/energy.xml
-        category: climate
-
-  # --- Lean right --------------------------------------------------------------
   - slug: washington-examiner
     name: Washington Examiner
     homepage: https://www.washingtonexaminer.com
     region: US
     allsides_rating: lean_right
-    allsides_url: 
-      https://www.allsides.com/news-source/washington-examiner-media-bias
+    allsides_url: https://www.allsides.com/news-source/washington-examiner-media-bias
     feeds:
       - url: https://www.washingtonexaminer.com/feed
         category: politics
 
   # --- Specialist / not rated --------------------------------------------------
+  - slug: just-the-news
+    name: Just The News
+    homepage: https://justthenews.com
+    region: US
+    allsides_rating: lean_right
+    allsides_url: https://www.allsides.com/news-source/just-news-media-bias
+    feeds:
+      - url: https://justthenews.com/rss.xml
+        category: politics
+  - slug: the-center-square
+    name: The Center Square
+    homepage: https://www.thecentersquare.com
+    region: US
+    allsides_rating: lean_right
+    allsides_url: https://www.allsides.com/news-source/center-square-media-bias
+    feeds:
+      - url: https://www.thecentersquare.com/search/?f=rss&t=article&l=50&s=start_time&sd=desc
+        category: us
+  - slug: independent-journal-review
+    name: Independent Journal Review
+    homepage: https://ijr.com
+    region: US
+    allsides_rating: right
+    allsides_url: https://www.allsides.com/news-source/independent-journal-review-media-bias
+    feeds:
+      - url: https://ijr.com/feed/
+        category: politics
+  - slug: oan
+    name: One America News Network (OAN)
+    homepage: https://www.oann.com
+    region: US
+    allsides_rating: right
+    allsides_url: https://www.allsides.com/news-source/one-america-news-network-oan-media-bias
+    feeds:
+      - url: https://www.oann.com/feed/
+        category: us
+  - slug: post-millennial
+    name: The Post Millennial
+    homepage: https://thepostmillennial.com
+    region: US
+    allsides_rating: right
+    allsides_url: https://www.allsides.com/news-source/post-millennial-media-bias
+    feeds:
+      - url: https://thepostmillennial.com/feed
+        category: us
   - slug: ars-technica
     name: Ars Technica
     homepage: https://arstechnica.com
@@ -931,8 +967,7 @@ outlets:
     homepage: https://www.hollywoodreporter.com
     region: US
     allsides_rating: lean_left
-    allsides_url: 
-      https://www.allsides.com/news-source/hollywood-reporter-media-bias
+    allsides_url: https://www.allsides.com/news-source/hollywood-reporter-media-bias
     feeds:
       - url: https://www.hollywoodreporter.com/feed/
         category: culture
@@ -999,8 +1034,7 @@ outlets:
     homepage: https://www.scientificamerican.com
     region: US
     allsides_rating: lean_left
-    allsides_url: 
-      https://www.allsides.com/news-source/scientific-american-media-bias-0
+    allsides_url: https://www.allsides.com/news-source/scientific-american-media-bias-0
     feeds:
       - url: https://www.scientificamerican.com/platform/syndication/rss/
         category: science
@@ -1179,8 +1213,7 @@ outlets:
     region: US
     allsides_name: Centers for Disease Control and Prevention
     allsides_rating: not_rated
-    allsides_url: 
-      https://www.allsides.com/news-source/centers-disease-control-and-prevention-media-bias
+    allsides_url: https://www.allsides.com/news-source/centers-disease-control-and-prevention-media-bias
     feeds:
       - url: https://tools.cdc.gov/api/v2/resources/media/132608.rss
         category: health

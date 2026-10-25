@@ -31,7 +31,7 @@ from cluster.embed import to_array
 from cluster.online import ClusterConfig
 from common.db import connect
 
-LOOSE_MEMBER_SIM = 0.45
+LOOSE_MEMBER_SIM = 0.55
 
 
 @dataclass
@@ -142,9 +142,9 @@ def main() -> None:
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument("--thresholds", type=float, nargs="+", default=[0.62, 0.66, 0.70, 0.74])
     p.add_argument("--gray", type=float, nargs="+", default=[0.0, 0.05, 0.10])
-    p.add_argument("--show", nargs="*", default=["0.66:0.05", "0.70:0.05"],
+    p.add_argument("--show", nargs="*", default=["0.62:0.10", "0.66:0.05", "0.70:0.05"],
                    help="threshold:gray configs whose biggest clusters to print")  # fmt: skip
-    p.add_argument("--top", type=int, default=6)
+    p.add_argument("--top", type=int, default=5)
     args = p.parse_args()
 
     base = ClusterConfig.from_env()
@@ -170,10 +170,10 @@ def main() -> None:
         for grp in s["groups"][: args.top]:
             outlets = len({items[i].source for i in grp})
             print(f"-- {len(grp)} articles, {outlets} outlets")
-            for i in grp[:8]:
+            for i in grp[:6]:
                 print(f"   {items[i].source[:20]:20}  {items[i].title[:90]}")
-            if len(grp) > 8:
-                print(f"   ... {len(grp) - 8} more")
+            if len(grp) > 6:
+                print(f"   ... {len(grp) - 6} more")
 
 
 if __name__ == "__main__":

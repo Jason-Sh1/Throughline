@@ -84,6 +84,22 @@ jobs:
             "select origin, count(*), count(duplicate_of), count(embedding) from articles group by 1"
           report notice "Pipeline runs" psql "$DATABASE_URL" -At -F ' | ' -c \
             "select kind, status, stats::text from pipeline_runs order by id"
-          report notice "Threshold sweep" cat /tmp/sweep.txt
           report notice "Online clusters (before re-cluster)" cat /tmp/online.txt
           report notice "Clusters with 2+ outlets (after re-cluster)" make -s clusters ARGS="--min-outlets 2 --limit 25 --headlines 5"
+      # Annotations are cut at ~4 KB and capped at 10 notices per step, so the
+      # sweep gets its own step, split into chunks on line boundaries.
+      - name: Report sweep as annotations
+        if: always()
+        run: |
+          [ -f /tmp/sweep.txt ] || exit 0
+          python3 - <<'PY'
+          chunks, cur = [], ""
+          for line in open("/tmp/sweep.txt"):
+              if len(cur) + len(line) > 3800:
+                  chunks.append(cur); cur = ""
+              cur += line
+          chunks.append(cur)
+          for i, c in enumerate(chunks[:10], 1):
+              body = c.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+              print(f"::notice title=Threshold sweep {i}/{len(chunks)}::{body}")
+          PY
