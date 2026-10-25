@@ -68,6 +68,7 @@ def run(conn: psycopg.Connection, client: PoliteClient, rss=True, use_gdelt=True
             conn.commit()
         if use_gdelt:
             found, errors = gdelt.fetch(client, source_domains(cur))
+            stats["gdelt_fetched"] = len(found)
             articles.extend(found)
             stats["errors"].extend(errors)
         if use_guardian:
@@ -75,6 +76,9 @@ def run(conn: psycopg.Connection, client: PoliteClient, rss=True, use_gdelt=True
             row = cur.fetchone()
             if row:
                 found, errors = guardian.fetch(client, row[0])
+                # Guardian API items often share a URL with the Guardian RSS copy, so they
+                # show up as url_dupes (backfilling raw_text) rather than new rows.
+                stats["guardian_fetched"] = len(found)
                 articles.extend(found)
                 stats["errors"].extend(errors)
 

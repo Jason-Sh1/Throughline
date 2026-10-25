@@ -112,7 +112,19 @@ def fetch(
             except httpx.TransportError as exc:
                 if attempt == ATTEMPTS:
                     errors.append(f"gdelt {chunk[0]}..: {exc!r}")
-            except (httpx.HTTPError, ValueError) as exc:
+            except httpx.HTTPStatusError as exc:
+                code = exc.response.status_code
+                errors.append(f"gdelt {chunk[0]}..: HTTP {code}")
+                if code == 429:
+                    # Rate limited: the remaining queries would be refused too, and
+                    # retrying straight away is impolite. Try again next run.
+                    errors.append("gdelt: rate limited, skipped remaining queries")
+                    return articles, errors
+                break
+            except httpx.HTTPError as exc:
+                errors.append(f"gdelt {chunk[0]}..: {type(exc).__name__}")
+                break
+            except ValueError as exc:  # our own parse errors; message is short and safe
                 errors.append(f"gdelt {chunk[0]}..: {exc}")
                 break
     return articles, errors

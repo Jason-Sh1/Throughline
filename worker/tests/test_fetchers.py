@@ -221,6 +221,22 @@ def test_gdelt_gives_up_after_second_transport_error():
     assert articles == [] and "ConnectTimeout" in errors[0]
 
 
+def test_gdelt_stops_after_rate_limit():
+    calls = []
+
+    def handler(req):
+        calls.append(1)
+        return httpx.Response(429, text="Too Many Requests")
+
+    domains = {f"site{i}.com": i for i in range(gdelt.DOMAINS_PER_QUERY * 3)}
+    articles, errors = gdelt.fetch(client_for(handler, robots=False), domains)
+    assert len(calls) == 1
+    assert errors == [
+        "gdelt site0.com..: HTTP 429",
+        "gdelt: rate limited, skipped remaining queries",
+    ]
+
+
 # --- Guardian -----------------------------------------------------------------
 
 
