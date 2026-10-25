@@ -1,60 +1,28 @@
 # Throughline curated feed list.
 #
-# Starter set (~20 feeds) for development only. The launch list (150+ feeds,
-# >= 25 per category, spectrum-balanced) is curated by hand: see ROADMAP M1.
+# Launch list: grouped by outlet, >= 25 feeds per category, spectrum-balanced
+# overall. Drafted by Claude on 2026-10-25 (Jason delegated curation); Jason
+# reviews the spectrum labels.
 #
-# allsides_rating values below are best-guess placeholders. Run the AllSides
-# import (`make allsides CSV=...`) to replace them with current ratings and
-# fill in allsides_url. Non-U.S. outlets are always `not_rated`.
+# allsides_rating values are best-guess placeholders until the AllSides import
+# (`make allsides CSV=...`) replaces them with current ratings and fills in
+# allsides_url. Non-U.S. outlets are always `not_rated`. Specialist outlets
+# (tech, science, health, sports, culture trade press) are `not_rated` unless
+# AllSides rates them.
 #
 # Ratings: AllSides Media Bias Ratings, https://www.allsides.com/media-bias,
 # licensed CC BY-NC 4.0.
 #
-# Feed URLs are checked by the "Ingest smoke test" workflow, which annotates any
-# feed not answering 200/304. First live run (2026-10-25): Atlantic entertainment
-# feed 404 (replaced), WSJ disallows crawlers in robots.txt (removed), WaPo
-# business 502 (kept for now, may be transient).
+# Every URL is checked by the "Ingest smoke test" workflow, which annotates any
+# feed not answering 200/304. Removed after live checks: WSJ (robots.txt
+# disallows crawlers), Atlantic entertainment feed (404).
 #
-# Schema: worker/ingest/feeds_config.py. Validate with `make validate-feeds`.
+# Schema: worker/ingest/feeds_config.py. Validate with `make validate-feeds`
+# (STRICT=1 for the launch targets).
 
 version: 1
 outlets:
-  # --- Left / lean left -----------------------------------------------------
-  - slug: npr
-    name: NPR
-    homepage: https://www.npr.org
-    region: US
-    allsides_rating: lean_left
-    feeds:
-      - url: https://feeds.npr.org/1001/rss.xml
-        category: us
-      - url: https://feeds.npr.org/1019/rss.xml
-        category: tech
-      - url: https://feeds.npr.org/1128/rss.xml
-        category: health
-      - url: https://feeds.npr.org/1008/rss.xml
-        category: culture
-
-  - slug: new-york-times
-    name: The New York Times
-    homepage: https://www.nytimes.com
-    region: US
-    allsides_rating: lean_left
-    feeds:
-      - url: https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml
-        category: politics
-      - url: https://rss.nytimes.com/services/xml/rss/nyt/Climate.xml
-        category: climate
-
-  - slug: washington-post
-    name: The Washington Post
-    homepage: https://www.washingtonpost.com
-    region: US
-    allsides_rating: lean_left
-    feeds:
-      - url: https://feeds.washingtonpost.com/rss/business
-        category: business
-
+  # --- Left / lean left --------------------------------------------------------
   - slug: vox
     name: Vox
     homepage: https://www.vox.com
@@ -63,6 +31,203 @@ outlets:
     feeds:
       - url: https://www.vox.com/rss/index.xml
         category: politics
+
+  - slug: huffpost
+    name: HuffPost
+    homepage: https://www.huffpost.com
+    region: US
+    allsides_rating: left
+    feeds:
+      - url: https://www.huffpost.com/section/front-page/feed
+        category: us
+      - url: https://www.huffpost.com/section/politics/feed
+        category: politics
+      - url: https://www.huffpost.com/section/world-news/feed
+        category: world
+      - url: https://www.huffpost.com/section/entertainment/feed
+        category: culture
+      - url: https://www.huffpost.com/section/environment/feed
+        category: climate
+
+  - slug: slate
+    name: Slate
+    homepage: https://slate.com
+    region: US
+    allsides_rating: left
+    feeds:
+      - url: https://slate.com/feeds/all.rss
+        category: culture
+
+  - slug: mother-jones
+    name: Mother Jones
+    homepage: https://www.motherjones.com
+    region: US
+    allsides_rating: left
+    feeds:
+      - url: https://www.motherjones.com/feed/
+        category: politics
+
+  - slug: the-nation
+    name: The Nation
+    homepage: https://www.thenation.com
+    region: US
+    allsides_rating: left
+    feeds:
+      - url: https://www.thenation.com/feed/?post_type=article
+        category: politics
+
+  - slug: salon
+    name: Salon
+    homepage: https://www.salon.com
+    region: US
+    allsides_rating: left
+    feeds:
+      - url: https://www.salon.com/feed/
+        category: us
+
+  - slug: daily-beast
+    name: The Daily Beast
+    homepage: https://www.thedailybeast.com
+    region: US
+    allsides_rating: left
+    feeds:
+      - url: https://www.thedailybeast.com/arc/outboundfeeds/rss/articles/
+        category: us
+
+  - slug: grist
+    name: Grist
+    homepage: https://grist.org
+    region: US
+    allsides_rating: left
+    feeds:
+      - url: https://grist.org/feed/
+        category: climate
+
+  - slug: rolling-stone
+    name: Rolling Stone
+    homepage: https://www.rollingstone.com
+    region: US
+    allsides_rating: left
+    feeds:
+      - url: https://www.rollingstone.com/feed/
+        category: culture
+
+  - slug: npr
+    name: NPR
+    homepage: https://www.npr.org
+    region: US
+    allsides_rating: lean_left
+    feeds:
+      - url: https://feeds.npr.org/1001/rss.xml
+        category: us
+      - url: https://feeds.npr.org/1004/rss.xml
+        category: world
+      - url: https://feeds.npr.org/1014/rss.xml
+        category: politics
+      - url: https://feeds.npr.org/1006/rss.xml
+        category: business
+      - url: https://feeds.npr.org/1019/rss.xml
+        category: tech
+      - url: https://feeds.npr.org/1007/rss.xml
+        category: science
+      - url: https://feeds.npr.org/1128/rss.xml
+        category: health
+      - url: https://feeds.npr.org/1025/rss.xml
+        category: climate
+      - url: https://feeds.npr.org/1008/rss.xml
+        category: culture
+      - url: https://feeds.npr.org/1055/rss.xml
+        category: sports
+      - url: https://feeds.npr.org/1039/rss.xml
+        category: culture
+
+  - slug: new-york-times
+    name: The New York Times
+    homepage: https://www.nytimes.com
+    region: US
+    allsides_rating: lean_left
+    feeds:
+      - url: https://rss.nytimes.com/services/xml/rss/nyt/US.xml
+        category: us
+      - url: https://rss.nytimes.com/services/xml/rss/nyt/World.xml
+        category: world
+      - url: https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml
+        category: politics
+      - url: https://rss.nytimes.com/services/xml/rss/nyt/Business.xml
+        category: business
+      - url: https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml
+        category: tech
+      - url: https://rss.nytimes.com/services/xml/rss/nyt/Science.xml
+        category: science
+      - url: https://rss.nytimes.com/services/xml/rss/nyt/Health.xml
+        category: health
+      - url: https://rss.nytimes.com/services/xml/rss/nyt/Climate.xml
+        category: climate
+      - url: https://rss.nytimes.com/services/xml/rss/nyt/Sports.xml
+        category: sports
+      - url: https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml
+        category: culture
+
+  - slug: washington-post
+    name: The Washington Post
+    homepage: https://www.washingtonpost.com
+    region: US
+    allsides_rating: lean_left
+    feeds:
+      - url: https://feeds.washingtonpost.com/rss/politics
+        category: politics
+      - url: https://feeds.washingtonpost.com/rss/world
+        category: world
+      - url: https://feeds.washingtonpost.com/rss/business
+        category: business
+      - url: https://feeds.washingtonpost.com/rss/climate-environment
+        category: climate
+
+  - slug: cbs-news
+    name: CBS News
+    homepage: https://www.cbsnews.com
+    region: US
+    allsides_rating: lean_left
+    feeds:
+      - url: https://www.cbsnews.com/latest/rss/us
+        category: us
+      - url: https://www.cbsnews.com/latest/rss/world
+        category: world
+      - url: https://www.cbsnews.com/latest/rss/politics
+        category: politics
+      - url: https://www.cbsnews.com/latest/rss/moneywatch
+        category: business
+      - url: https://www.cbsnews.com/latest/rss/technology
+        category: tech
+      - url: https://www.cbsnews.com/latest/rss/science
+        category: science
+      - url: https://www.cbsnews.com/latest/rss/health
+        category: health
+      - url: https://www.cbsnews.com/latest/rss/entertainment
+        category: culture
+
+  - slug: abc-news
+    name: ABC News
+    homepage: https://abcnews.go.com
+    region: US
+    allsides_rating: lean_left
+    feeds:
+      - url: https://abcnews.go.com/abcnews/usheadlines
+        category: us
+      - url: https://abcnews.go.com/abcnews/internationalheadlines
+        category: world
+      - url: https://abcnews.go.com/abcnews/politicsheadlines
+        category: politics
+      - url: https://abcnews.go.com/abcnews/moneyheadlines
+        category: business
+      - url: https://abcnews.go.com/abcnews/technologyheadlines
+        category: tech
+      - url: https://abcnews.go.com/abcnews/healthheadlines
+        category: health
+      - url: https://abcnews.go.com/abcnews/entertainmentheadlines
+        category: culture
+      - url: https://abcnews.go.com/abcnews/sportsheadlines
+        category: sports
 
   - slug: the-atlantic
     name: The Atlantic
@@ -73,19 +238,116 @@ outlets:
       - url: https://www.theatlantic.com/feed/all/
         category: us
 
-  # --- Center ----------------------------------------------------------------
+  - slug: politico
+    name: Politico
+    homepage: https://www.politico.com
+    region: US
+    allsides_rating: lean_left
+    feeds:
+      - url: https://rss.politico.com/politics-news.xml
+        category: politics
+      - url: https://rss.politico.com/healthcare.xml
+        category: health
+      - url: https://rss.politico.com/energy.xml
+        category: climate
+      - url: https://rss.politico.com/economy.xml
+        category: business
+      - url: https://rss.politico.com/technology.xml
+        category: tech
+
+  - slug: los-angeles-times
+    name: Los Angeles Times
+    homepage: https://www.latimes.com
+    region: US
+    allsides_rating: lean_left
+    feeds:
+      - url: https://www.latimes.com/world-nation/rss2.0.xml
+        category: world
+      - url: https://www.latimes.com/politics/rss2.0.xml
+        category: politics
+      - url: https://www.latimes.com/business/rss2.0.xml
+        category: business
+      - url: https://www.latimes.com/science/rss2.0.xml
+        category: science
+      - url: https://www.latimes.com/environment/rss2.0.xml
+        category: climate
+      - url: https://www.latimes.com/sports/rss2.0.xml
+        category: sports
+      - url: https://www.latimes.com/entertainment-arts/rss2.0.xml
+        category: culture
+
+  - slug: time
+    name: Time
+    homepage: https://time.com
+    region: US
+    allsides_rating: lean_left
+    feeds:
+      - url: https://time.com/feed/
+        category: us
+
+  - slug: axios
+    name: Axios
+    homepage: https://www.axios.com
+    region: US
+    allsides_rating: lean_left
+    feeds:
+      - url: https://api.axios.com/feed/
+        category: us
+
+  - slug: cnbc
+    name: CNBC
+    homepage: https://www.cnbc.com
+    region: US
+    allsides_rating: lean_left
+    feeds:
+      - url: https://www.cnbc.com/id/100003114/device/rss/rss.html
+        category: business
+      - url: https://www.cnbc.com/id/19854910/device/rss/rss.html
+        category: tech
+      - url: https://www.cnbc.com/id/10000664/device/rss/rss.html
+        category: business
+
+  - slug: inside-climate-news
+    name: Inside Climate News
+    homepage: https://insideclimatenews.org
+    region: US
+    allsides_rating: lean_left
+    feeds:
+      - url: https://insideclimatenews.org/feed/
+        category: climate
+
+  - slug: business-insider
+    name: Business Insider
+    homepage: https://www.businessinsider.com
+    region: US
+    allsides_rating: lean_left
+    feeds:
+      - url: https://feeds.businessinsider.com/custom/all
+        category: business
+
+  # --- Center ------------------------------------------------------------------
   - slug: the-hill
     name: The Hill
     homepage: https://thehill.com
     region: US
     allsides_rating: center
     feeds:
-      - url: https://thehill.com/policy/healthcare/feed/
-        category: health
       - url: https://thehill.com/homenews/feed/
         category: politics
+      - url: https://thehill.com/homenews/campaign/feed/
+        category: politics
+      - url: https://thehill.com/policy/international/feed/
+        category: world
       - url: https://thehill.com/business/feed/
         category: business
+      - url: https://thehill.com/policy/technology/feed/
+        category: tech
+      - url: https://thehill.com/policy/healthcare/feed/
+        category: health
+      - url: https://thehill.com/policy/energy-environment/feed/
+        category: climate
+      - url: https://thehill.com/homenews/sports/feed/
+        category: sports
 
   - slug: newsweek
     name: Newsweek
@@ -96,18 +358,62 @@ outlets:
       - url: https://www.newsweek.com/rss
         category: us
 
-  # --- Lean right / right ----------------------------------------------------
-  - slug: fox-news
-    name: Fox News
-    homepage: https://www.foxnews.com
+  - slug: christian-science-monitor
+    name: The Christian Science Monitor
+    homepage: https://www.csmonitor.com
     region: US
-    allsides_rating: right
+    allsides_rating: center
     feeds:
-      - url: https://moxie.foxnews.com/google-publisher/politics.xml
+      - url: https://rss.csmonitor.com/feeds/usa
+        category: us
+      - url: https://rss.csmonitor.com/feeds/world
+        category: world
+      - url: https://rss.csmonitor.com/feeds/politics
         category: politics
-      - url: https://moxie.foxnews.com/google-publisher/sports.xml
-        category: sports
+      - url: https://rss.csmonitor.com/feeds/science
+        category: science
+      - url: https://rss.csmonitor.com/feeds/environment
+        category: climate
+      - url: https://rss.csmonitor.com/feeds/business
+        category: business
 
+  - slug: marketwatch
+    name: MarketWatch
+    homepage: https://www.marketwatch.com
+    region: US
+    allsides_rating: center
+    feeds:
+      - url: https://feeds.content.dowjones.io/public/rss/mw_topstories
+        category: business
+
+  - slug: forbes
+    name: Forbes
+    homepage: https://www.forbes.com
+    region: US
+    allsides_rating: center
+    feeds:
+      - url: https://www.forbes.com/business/feed/
+        category: business
+
+  - slug: realclearpolitics
+    name: RealClearPolitics
+    homepage: https://www.realclearpolitics.com
+    region: US
+    allsides_rating: center
+    feeds:
+      - url: https://www.realclearpolitics.com/index.xml
+        category: politics
+
+  - slug: foreign-policy
+    name: Foreign Policy
+    homepage: https://foreignpolicy.com
+    region: US
+    allsides_rating: center
+    feeds:
+      - url: https://foreignpolicy.com/feed/
+        category: world
+
+  # --- Lean right / right ------------------------------------------------------
   - slug: new-york-post
     name: New York Post
     homepage: https://nypost.com
@@ -116,17 +422,20 @@ outlets:
     feeds:
       - url: https://nypost.com/us-news/feed/
         category: us
+      - url: https://nypost.com/world-news/feed/
+        category: world
+      - url: https://nypost.com/politics/feed/
+        category: politics
       - url: https://nypost.com/business/feed/
         category: business
-
-  - slug: washington-examiner
-    name: Washington Examiner
-    homepage: https://www.washingtonexaminer.com
-    region: US
-    allsides_rating: right
-    feeds:
-      - url: https://www.washingtonexaminer.com/feed
-        category: politics
+      - url: https://nypost.com/tech/feed/
+        category: tech
+      - url: https://nypost.com/health/feed/
+        category: health
+      - url: https://nypost.com/sports/feed/
+        category: sports
+      - url: https://nypost.com/entertainment/feed/
+        category: culture
 
   - slug: reason
     name: Reason
@@ -146,7 +455,247 @@ outlets:
       - url: https://thedispatch.com/feed/
         category: us
 
-  # --- Specialist / not rated -----------------------------------------------
+  - slug: washington-times
+    name: The Washington Times
+    homepage: https://www.washingtontimes.com
+    region: US
+    allsides_rating: lean_right
+    feeds:
+      - url: https://www.washingtontimes.com/rss/headlines/news/national/
+        category: us
+      - url: https://www.washingtontimes.com/rss/headlines/news/world/
+        category: world
+      - url: https://www.washingtontimes.com/rss/headlines/news/politics/
+        category: politics
+      - url: https://www.washingtontimes.com/rss/headlines/news/business-economy/
+        category: business
+      - url: https://www.washingtontimes.com/rss/headlines/news/technology/
+        category: tech
+      - url: https://www.washingtontimes.com/rss/headlines/news/health/
+        category: health
+      - url: https://www.washingtontimes.com/rss/headlines/news/sports/
+        category: sports
+      - url: https://www.washingtontimes.com/rss/headlines/news/entertainment/
+        category: culture
+      - url: https://www.washingtontimes.com/rss/headlines/news/energy-environment/
+        category: climate
+
+  - slug: the-free-press
+    name: The Free Press
+    homepage: https://www.thefp.com
+    region: US
+    allsides_rating: lean_right
+    feeds:
+      - url: https://www.thefp.com/feed
+        category: us
+
+  - slug: washington-free-beacon
+    name: Washington Free Beacon
+    homepage: https://freebeacon.com
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://freebeacon.com/feed/
+        category: politics
+      - url: https://freebeacon.com/category/national-security/feed/
+        category: world
+      - url: https://freebeacon.com/category/culture/feed/
+        category: culture
+
+  - slug: fox-news
+    name: Fox News
+    homepage: https://www.foxnews.com
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://moxie.foxnews.com/google-publisher/us.xml
+        category: us
+      - url: https://moxie.foxnews.com/google-publisher/world.xml
+        category: world
+      - url: https://moxie.foxnews.com/google-publisher/politics.xml
+        category: politics
+      - url: https://moxie.foxnews.com/google-publisher/tech.xml
+        category: tech
+      - url: https://moxie.foxnews.com/google-publisher/science.xml
+        category: science
+      - url: https://moxie.foxnews.com/google-publisher/health.xml
+        category: health
+      - url: https://moxie.foxnews.com/google-publisher/sports.xml
+        category: sports
+      - url: https://moxie.foxnews.com/google-publisher/entertainment.xml
+        category: culture
+
+  - slug: washington-examiner
+    name: Washington Examiner
+    homepage: https://www.washingtonexaminer.com
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://www.washingtonexaminer.com/feed
+        category: politics
+
+  - slug: national-review
+    name: National Review
+    homepage: https://www.nationalreview.com
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://www.nationalreview.com/feed/
+        category: politics
+
+  - slug: the-federalist
+    name: The Federalist
+    homepage: https://thefederalist.com
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://thefederalist.com/feed/
+        category: politics
+      - url: https://thefederalist.com/category/culture/feed/
+        category: culture
+
+  - slug: daily-caller
+    name: The Daily Caller
+    homepage: https://dailycaller.com
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://dailycaller.com/feed/
+        category: us
+      - url: https://dailycaller.com/section/politics/feed/
+        category: politics
+      - url: https://dailycaller.com/section/business/feed/
+        category: business
+      - url: https://dailycaller.com/section/energy/feed/
+        category: climate
+      - url: https://dailycaller.com/section/entertainment/feed/
+        category: culture
+      - url: https://dailycaller.com/section/sports/feed/
+        category: sports
+      - url: https://dailycaller.com/section/health/feed/
+        category: health
+
+  - slug: breitbart
+    name: Breitbart News
+    homepage: https://www.breitbart.com
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://feeds.feedburner.com/breitbart
+        category: us
+      - url: https://www.breitbart.com/politics/feed/
+        category: politics
+      - url: https://www.breitbart.com/economy/feed/
+        category: business
+      - url: https://www.breitbart.com/tech/feed/
+        category: tech
+      - url: https://www.breitbart.com/sports/feed/
+        category: sports
+      - url: https://www.breitbart.com/entertainment/feed/
+        category: culture
+      - url: https://www.breitbart.com/world-news/feed/
+        category: world
+
+  - slug: newsmax
+    name: Newsmax
+    homepage: https://www.newsmax.com
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://www.newsmax.com/rss/Newsfront/16/
+        category: us
+
+  - slug: the-blaze
+    name: TheBlaze
+    homepage: https://www.theblaze.com
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://www.theblaze.com/feeds/feed.rss
+        category: politics
+
+  - slug: daily-signal
+    name: The Daily Signal
+    homepage: https://www.dailysignal.com
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://www.dailysignal.com/feed/
+        category: politics
+
+  - slug: daily-wire
+    name: The Daily Wire
+    homepage: https://www.dailywire.com
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://www.dailywire.com/feeds/rss.xml
+        category: us
+
+  - slug: western-journal
+    name: The Western Journal
+    homepage: https://www.westernjournal.com
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://www.westernjournal.com/feed/
+        category: us
+
+  - slug: townhall
+    name: Townhall
+    homepage: https://townhall.com
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://townhall.com/rss/political-columnists/
+        category: politics
+
+  - slug: hot-air
+    name: Hot Air
+    homepage: https://hotair.com
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://hotair.com/feed
+        category: politics
+
+  - slug: pj-media
+    name: PJ Media
+    homepage: https://pjmedia.com
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://pjmedia.com/feed
+        category: politics
+
+  - slug: redstate
+    name: RedState
+    homepage: https://redstate.com
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://redstate.com/feed
+        category: politics
+
+  - slug: american-spectator
+    name: The American Spectator
+    homepage: https://spectator.org
+    region: US
+    allsides_rating: right
+    feeds:
+      - url: https://spectator.org/feed/
+        category: politics
+
+  - slug: epoch-times
+    name: The Epoch Times
+    homepage: https://www.theepochtimes.com
+    region: US
+    allsides_rating: lean_right
+    feeds:
+      - url: https://www.theepochtimes.com/c-us/feed
+        category: us
+
+  # --- Specialist / not rated --------------------------------------------------
   - slug: ars-technica
     name: Ars Technica
     homepage: https://arstechnica.com
@@ -154,6 +703,53 @@ outlets:
     allsides_rating: not_rated
     feeds:
       - url: https://feeds.arstechnica.com/arstechnica/index
+        category: tech
+      - url: https://feeds.arstechnica.com/arstechnica/science
+        category: science
+
+  - slug: the-verge
+    name: The Verge
+    homepage: https://www.theverge.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.theverge.com/rss/index.xml
+        category: tech
+
+  - slug: wired
+    name: Wired
+    homepage: https://www.wired.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.wired.com/feed/rss
+        category: tech
+
+  - slug: techcrunch
+    name: TechCrunch
+    homepage: https://techcrunch.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://techcrunch.com/feed/
+        category: tech
+
+  - slug: engadget
+    name: Engadget
+    homepage: https://www.engadget.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.engadget.com/rss.xml
+        category: tech
+
+  - slug: mit-technology-review
+    name: MIT Technology Review
+    homepage: https://www.technologyreview.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.technologyreview.com/feed/
         category: tech
 
   - slug: sciencedaily
@@ -164,8 +760,506 @@ outlets:
     feeds:
       - url: https://www.sciencedaily.com/rss/top/science.xml
         category: science
+      - url: https://www.sciencedaily.com/rss/top/health.xml
+        category: health
+      - url: https://www.sciencedaily.com/rss/earth_climate.xml
+        category: climate
 
-  # --- International (always not_rated) -------------------------------------
+  - slug: science-news
+    name: Science News
+    homepage: https://www.sciencenews.org
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.sciencenews.org/feed
+        category: science
+
+  - slug: phys-org
+    name: Phys.org
+    homepage: https://phys.org
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://phys.org/rss-feed/
+        category: science
+
+  - slug: quanta
+    name: Quanta Magazine
+    homepage: https://www.quantamagazine.org
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.quantamagazine.org/feed/
+        category: science
+
+  - slug: nasa
+    name: NASA
+    homepage: https://www.nasa.gov
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.nasa.gov/news-release/feed/
+        category: science
+
+  - slug: stat
+    name: STAT
+    homepage: https://www.statnews.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.statnews.com/feed/
+        category: health
+
+  - slug: kff-health-news
+    name: KFF Health News
+    homepage: https://kffhealthnews.org
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://kffhealthnews.org/feed/
+        category: health
+
+  - slug: medical-xpress
+    name: Medical Xpress
+    homepage: https://medicalxpress.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://medicalxpress.com/rss-feed/
+        category: health
+
+  - slug: yale-e360
+    name: Yale Environment 360
+    homepage: https://e360.yale.edu
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://e360.yale.edu/feed.xml
+        category: climate
+
+  - slug: espn
+    name: ESPN
+    homepage: https://www.espn.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.espn.com/espn/rss/news
+        category: sports
+      - url: https://www.espn.com/espn/rss/nfl/news
+        category: sports
+      - url: https://www.espn.com/espn/rss/nba/news
+        category: sports
+      - url: https://www.espn.com/espn/rss/mlb/news
+        category: sports
+      - url: https://www.espn.com/espn/rss/soccer/news
+        category: sports
+
+  - slug: cbs-sports
+    name: CBS Sports
+    homepage: https://www.cbssports.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.cbssports.com/rss/headlines/
+        category: sports
+
+  - slug: yahoo-sports
+    name: Yahoo Sports
+    homepage: https://sports.yahoo.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://sports.yahoo.com/rss/
+        category: sports
+
+  - slug: variety
+    name: Variety
+    homepage: https://variety.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://variety.com/feed/
+        category: culture
+
+  - slug: hollywood-reporter
+    name: The Hollywood Reporter
+    homepage: https://www.hollywoodreporter.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.hollywoodreporter.com/feed/
+        category: culture
+
+  - slug: pitchfork
+    name: Pitchfork
+    homepage: https://pitchfork.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://pitchfork.com/rss/news/
+        category: culture
+
+  - slug: yahoo-finance
+    name: Yahoo Finance
+    homepage: https://finance.yahoo.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://finance.yahoo.com/news/rssindex
+        category: business
+
+  - slug: fortune
+    name: Fortune
+    homepage: https://fortune.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://fortune.com/feed/
+        category: business
+
+  - slug: quartz
+    name: Quartz
+    homepage: https://qz.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://qz.com/rss
+        category: business
+
+  - slug: cnet
+    name: CNET
+    homepage: https://www.cnet.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.cnet.com/rss/news/
+        category: tech
+
+  - slug: zdnet
+    name: ZDNET
+    homepage: https://www.zdnet.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.zdnet.com/news/rss.xml
+        category: tech
+
+  - slug: 404-media
+    name: 404 Media
+    homepage: https://www.404media.co
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.404media.co/rss/
+        category: tech
+
+  - slug: gizmodo
+    name: Gizmodo
+    homepage: https://gizmodo.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://gizmodo.com/rss
+        category: tech
+
+  - slug: scientific-american
+    name: Scientific American
+    homepage: https://www.scientificamerican.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.scientificamerican.com/platform/syndication/rss/
+        category: science
+
+  - slug: live-science
+    name: Live Science
+    homepage: https://www.livescience.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.livescience.com/feeds/all
+        category: science
+
+  - slug: space-com
+    name: Space.com
+    homepage: https://www.space.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.space.com/feeds/all
+        category: science
+
+  - slug: smithsonian
+    name: Smithsonian Magazine
+    homepage: https://www.smithsonianmag.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.smithsonianmag.com/rss/latest_articles/
+        category: science
+
+  - slug: popular-science
+    name: Popular Science
+    homepage: https://www.popsci.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.popsci.com/feed/
+        category: science
+
+  - slug: medpage-today
+    name: MedPage Today
+    homepage: https://www.medpagetoday.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.medpagetoday.com/rss/headlines.xml
+        category: health
+
+  - slug: fierce-healthcare
+    name: Fierce Healthcare
+    homepage: https://www.fiercehealthcare.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.fiercehealthcare.com/rss/xml
+        category: health
+
+  - slug: the-conversation-us
+    name: The Conversation (US)
+    homepage: https://theconversation.com/us
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://theconversation.com/us/articles.atom
+        category: health
+
+  - slug: webmd
+    name: WebMD
+    homepage: https://www.webmd.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://rssfeeds.webmd.com/rss/rss.aspx?RSSSource=RSS_PUBLIC
+        category: health
+
+  - slug: canary-media
+    name: Canary Media
+    homepage: https://www.canarymedia.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.canarymedia.com/rss
+        category: climate
+
+  - slug: electrek
+    name: Electrek
+    homepage: https://electrek.co
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://electrek.co/feed/
+        category: climate
+
+  - slug: heatmap
+    name: Heatmap
+    homepage: https://heatmap.news
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://heatmap.news/feeds/feed.rss
+        category: climate
+
+  - slug: mongabay
+    name: Mongabay
+    homepage: https://news.mongabay.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://news.mongabay.com/feed/
+        category: climate
+
+  - slug: sporting-news
+    name: Sporting News
+    homepage: https://www.sportingnews.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.sportingnews.com/us/rss
+        category: sports
+
+  - slug: sb-nation
+    name: SB Nation
+    homepage: https://www.sbnation.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.sbnation.com/rss/current
+        category: sports
+
+  - slug: the-ringer
+    name: The Ringer
+    homepage: https://www.theringer.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.theringer.com/rss/index.xml
+        category: sports
+
+  - slug: av-club
+    name: The A.V. Club
+    homepage: https://www.avclub.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.avclub.com/rss
+        category: culture
+
+  - slug: indiewire
+    name: IndieWire
+    homepage: https://www.indiewire.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.indiewire.com/feed/
+        category: culture
+
+  - slug: deadline
+    name: Deadline
+    homepage: https://deadline.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://deadline.com/feed/
+        category: culture
+
+  - slug: billboard
+    name: Billboard
+    homepage: https://www.billboard.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.billboard.com/feed/
+        category: culture
+
+  - slug: big-think
+    name: Big Think
+    homepage: https://bigthink.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://bigthink.com/feed/
+        category: science
+
+  - slug: new-atlas
+    name: New Atlas
+    homepage: https://newatlas.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://newatlas.com/index.rss
+        category: science
+
+  - slug: universe-today
+    name: Universe Today
+    homepage: https://www.universetoday.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.universetoday.com/feed/
+        category: science
+
+  - slug: sky-and-telescope
+    name: Sky & Telescope
+    homepage: https://skyandtelescope.org
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://skyandtelescope.org/feed/
+        category: science
+
+  - slug: eurekalert
+    name: EurekAlert!
+    homepage: https://www.eurekalert.org
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.eurekalert.org/rss.xml
+        category: science
+
+  - slug: nih
+    name: National Institutes of Health
+    homepage: https://www.nih.gov
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.nih.gov/news-releases/feed.xml
+        category: health
+
+  - slug: cdc
+    name: CDC Newsroom
+    homepage: https://www.cdc.gov
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://tools.cdc.gov/api/v2/resources/media/132608.rss
+        category: health
+
+  - slug: harvard-health
+    name: Harvard Health Publishing
+    homepage: https://www.health.harvard.edu
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.health.harvard.edu/blog/feed
+        category: health
+
+  - slug: medical-news-today
+    name: Medical News Today
+    homepage: https://www.medicalnewstoday.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.medicalnewstoday.com/newsfeeds/rss/medical_all
+        category: health
+
+  - slug: healthday
+    name: HealthDay
+    homepage: https://www.healthday.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.healthday.com/rss/health-news
+        category: health
+
+  - slug: cleantechnica
+    name: CleanTechnica
+    homepage: https://cleantechnica.com
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://cleantechnica.com/feed/
+        category: climate
+
+  - slug: climate-central
+    name: Climate Central
+    homepage: https://www.climatecentral.org
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.climatecentral.org/feed
+        category: climate
+
+  - slug: noaa
+    name: NOAA
+    homepage: https://www.noaa.gov
+    region: US
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.noaa.gov/rss.xml
+        category: climate
+
+  # --- International (always not_rated) ----------------------------------------
   - slug: bbc-news
     name: BBC News
     homepage: https://www.bbc.com/news
@@ -174,8 +1268,22 @@ outlets:
     feeds:
       - url: https://feeds.bbci.co.uk/news/world/rss.xml
         category: world
+      - url: https://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml
+        category: us
+      - url: https://feeds.bbci.co.uk/news/business/rss.xml
+        category: business
+      - url: https://feeds.bbci.co.uk/news/technology/rss.xml
+        category: tech
       - url: https://feeds.bbci.co.uk/news/science_and_environment/rss.xml
         category: science
+      - url: https://feeds.bbci.co.uk/news/health/rss.xml
+        category: health
+      - url: https://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml
+        category: culture
+      - url: https://feeds.bbci.co.uk/sport/rss.xml
+        category: sports
+      - url: https://feeds.bbci.co.uk/sport/football/rss.xml
+        category: sports
 
   - slug: the-guardian
     name: The Guardian
@@ -183,9 +1291,31 @@ outlets:
     region: GB
     allsides_rating: not_rated
     feeds:
+      - url: https://www.theguardian.com/world/rss
+        category: world
+      - url: https://www.theguardian.com/us-news/rss
+        category: us
+      - url: https://www.theguardian.com/us-news/us-politics/rss
+        category: politics
+      - url: https://www.theguardian.com/business/rss
+        category: business
+      - url: https://www.theguardian.com/technology/rss
+        category: tech
+      - url: https://www.theguardian.com/science/rss
+        category: science
+      - url: https://www.theguardian.com/society/health/rss
+        category: health
       - url: https://www.theguardian.com/environment/climate-crisis/rss
         category: climate
       - url: https://www.theguardian.com/sport/rss
+        category: sports
+      - url: https://www.theguardian.com/culture/rss
+        category: culture
+      - url: https://www.theguardian.com/environment/rss
+        category: climate
+      - url: https://www.theguardian.com/football/rss
+        category: sports
+      - url: https://www.theguardian.com/sport/us-sport/rss
         category: sports
 
   - slug: al-jazeera
@@ -205,3 +1335,175 @@ outlets:
     feeds:
       - url: https://rss.dw.com/rdf/rss-en-world
         category: world
+      - url: https://rss.dw.com/rdf/rss-en-bus
+        category: business
+      - url: https://rss.dw.com/rdf/rss-en-sci
+        category: science
+      - url: https://rss.dw.com/rdf/rss-en-env
+        category: climate
+
+  - slug: france-24
+    name: France 24
+    homepage: https://www.france24.com/en
+    region: FR
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.france24.com/en/rss
+        category: world
+
+  - slug: cbc-news
+    name: CBC News
+    homepage: https://www.cbc.ca/news
+    region: CA
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.cbc.ca/webfeed/rss/rss-world
+        category: world
+      - url: https://www.cbc.ca/webfeed/rss/rss-technology
+        category: tech
+      - url: https://www.cbc.ca/webfeed/rss/rss-health
+        category: health
+
+  - slug: abc-australia
+    name: ABC News (Australia)
+    homepage: https://www.abc.net.au/news
+    region: AU
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.abc.net.au/news/feed/51120/rss.xml
+        category: world
+
+  - slug: times-of-india
+    name: The Times of India
+    homepage: https://timesofindia.indiatimes.com
+    region: IN
+    allsides_rating: not_rated
+    feeds:
+      - url: https://timesofindia.indiatimes.com/rssfeedstopstories.cms
+        category: world
+
+  - slug: japan-times
+    name: The Japan Times
+    homepage: https://www.japantimes.co.jp
+    region: JP
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.japantimes.co.jp/feed/
+        category: world
+
+  - slug: scmp
+    name: South China Morning Post
+    homepage: https://www.scmp.com
+    region: HK
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.scmp.com/rss/91/feed
+        category: world
+
+  - slug: kyiv-independent
+    name: The Kyiv Independent
+    homepage: https://kyivindependent.com
+    region: UA
+    allsides_rating: not_rated
+    feeds:
+      - url: https://kyivindependent.com/rss/
+        category: world
+
+  - slug: times-of-israel
+    name: The Times of Israel
+    homepage: https://www.timesofisrael.com
+    region: IL
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.timesofisrael.com/feed/
+        category: world
+
+  - slug: euronews
+    name: Euronews
+    homepage: https://www.euronews.com
+    region: FR
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.euronews.com/rss?level=theme&name=news
+        category: world
+
+  - slug: new-scientist
+    name: New Scientist
+    homepage: https://www.newscientist.com
+    region: GB
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.newscientist.com/feed/home/
+        category: science
+
+  - slug: nature
+    name: Nature
+    homepage: https://www.nature.com
+    region: GB
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.nature.com/nature.rss
+        category: science
+
+  - slug: carbon-brief
+    name: Carbon Brief
+    homepage: https://www.carbonbrief.org
+    region: GB
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.carbonbrief.org/feed/
+        category: climate
+
+  - slug: sky-sports
+    name: Sky Sports
+    homepage: https://www.skysports.com
+    region: GB
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.skysports.com/rss/12040
+        category: sports
+
+  - slug: the-register
+    name: The Register
+    homepage: https://www.theregister.com
+    region: GB
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.theregister.com/headlines.atom
+        category: tech
+
+  - slug: climate-home-news
+    name: Climate Home News
+    homepage: https://www.climatechangenews.com
+    region: GB
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.climatechangenews.com/feed/
+        category: climate
+
+  - slug: financial-times
+    name: Financial Times
+    homepage: https://www.ft.com
+    region: GB
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.ft.com/rss/home
+        category: business
+
+  - slug: the-economist
+    name: The Economist
+    homepage: https://www.economist.com
+    region: GB
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.economist.com/business/rss.xml
+        category: business
+
+  - slug: who
+    name: World Health Organization
+    homepage: https://www.who.int
+    region: CH
+    allsides_rating: not_rated
+    feeds:
+      - url: https://www.who.int/rss-feeds/news-english.xml
+        category: health

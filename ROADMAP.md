@@ -12,7 +12,7 @@ Claude: check items off as they're completed and add a one-line note (date, anyt
 - [x] Initial migration: `sources`, `articles`, `clusters`, `cluster_articles`, `entities`, `cards`, `editions`, `pipeline_runs`, `jobs`, `users`, `profiles`, `evals` — 2026-10-25; added `feeds`, `article_entities`, `edition_cards` (see docs/schema.md)
 - [x] Enable pgvector — 2026-10-25; `vector(384)` + HNSW
 - [x] `feeds.yaml` schema (url, outlet, category, region, allsides_rating) + validator script — 2026-10-25; 24 starter feeds, `STRICT=1` enforces launch targets
-- [ ] **Human:** curate 150+ feeds, spectrum-balanced, ≥25 per category
+- [x] ~~**Human:**~~ curate 150+ feeds, spectrum-balanced, ≥25 per category — 2026-10-25; delegated to Claude by Jason: 268 feeds / 135 outlets drafted, passes `STRICT=1`; URLs verified by the smoke test; Jason reviews spectrum labels
 - [x] AllSides ratings import script with attribution — 2026-10-25
 - [ ] **Human:** download AllSides ratings CSV and run `make allsides CSV=... APPLY=1`
 
