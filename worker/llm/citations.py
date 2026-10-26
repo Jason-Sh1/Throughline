@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from collections import Counter
 
-from llm.schemas import CardDraft, Extraction, Sentence
+from llm.schemas import CardDraft, Extraction, Sentence, VizHint
 
 
 class CardRejected(Exception):
@@ -65,7 +65,24 @@ def filter_card(draft: CardDraft, valid: set[str]) -> tuple[CardDraft, Counter]:
             draft.viz_data.chart = None
     if not draft.brief:
         raise CardRejected("no brief bullet survived the citation filter")
+    draft.viz_hint = settle_viz_hint(draft)
     return draft, stats
+
+
+MIN_TIMELINE_FOR_VIZ = 3
+
+
+def settle_viz_hint(draft: CardDraft) -> VizHint:
+    """The visual must have data behind it after filtering; otherwise show none.
+    (The first live edition asked for a timeline on every card, some with 2 dates.)"""
+    hint, viz = draft.viz_hint, draft.viz_data
+    if hint == VizHint.TIMELINE and len(draft.timeline) < MIN_TIMELINE_FOR_VIZ:
+        return VizHint.NONE
+    if hint == VizHint.MAP and not viz.places:
+        return VizHint.NONE
+    if hint == VizHint.CHART and viz.chart is None:
+        return VizHint.NONE
+    return hint
 
 
 def filter_extraction(ex: Extraction, valid: set[str]) -> tuple[Extraction, Counter]:

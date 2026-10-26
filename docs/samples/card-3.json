@@ -1,0 +1,336 @@
+{
+  "brief": [
+    {
+      "text": "Elon Musk said Ukraine's military violated Starlink terms of service by using the service for offensive drone strikes.",
+      "source_ids": [
+        2627,
+        1148,
+        3765,
+        7879,
+        3045
+      ]
+    },
+    {
+      "text": "Ukraine disputed the claim, saying commercial Starlink limits prevented medium- and long-range strike use.",
+      "source_ids": [
+        2127,
+        9221
+      ]
+    },
+    {
+      "text": "Ukraine's access to Starlink and Starshield has been restored to previous speeds, according to President Volodymyr Zelenskyy.",
+      "source_ids": [
+        65
+      ]
+    }
+  ],
+  "framing": {
+    "representative": {
+      "widely_reported": [
+        {
+          "url": "https://abcnews.com/International/wireStory/ukraine-disputes-elon-musks-claim-military-violated-starlinks-137552738",
+          "outlet": "ABC News",
+          "headline": "Ukraine disputes Musk's claim that its military violated Starlink's terms of service",
+          "article_id": 1148,
+          "is_opinion": false,
+          "published_at": "2026-10-25T16:55:31+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.cnbc.com/2026/10/25/ukraine-musk-starlink-terms-dispute.html",
+          "outlet": "CNBC",
+          "headline": "Ukraine disputes Elon Musk’s claim that its military violated Starlink terms during drone operations",
+          "article_id": 2127,
+          "is_opinion": false,
+          "published_at": "2026-10-25T18:18:49+00:00",
+          "allsides_rating": "lean_left"
+        }
+      ],
+      "analysis_opinion": [],
+      "reported_by_some": [
+        {
+          "url": "https://techcrunch.com/2026/10/24/starlink-seems-to-be-working-normally-again-in-ukraine/",
+          "outlet": "TechCrunch",
+          "headline": "Starlink seems to be working normally again in Ukraine",
+          "article_id": 4033,
+          "is_opinion": false,
+          "published_at": "2026-10-24T20:46:34+00:00",
+          "allsides_rating": "center"
+        },
+        {
+          "url": "https://www.thedailybeast.com/pentagon-pete-hegseth-hit-with-demand-to-explain-military-starlink-fiasco",
+          "outlet": "The Daily Beast",
+          "headline": "Pentagon Pete Hit With Demand to Explain Military Fiasco",
+          "article_id": 210,
+          "is_opinion": false,
+          "published_at": "2026-10-25T20:04:19+00:00",
+          "allsides_rating": "left"
+        }
+      ]
+    },
+    "widely_reported": [
+      {
+        "text": "Musk said Ukraine's military violated Starlink terms of service by using the service for offensive drone strikes.",
+        "source_ids": [
+          2627,
+          1148,
+          3765,
+          7879,
+          3045
+        ]
+      },
+      {
+        "text": "Ukraine disputes Musk's claim that its military violated Starlink terms.",
+        "source_ids": [
+          2127,
+          9221,
+          1148
+        ]
+      }
+    ],
+    "analysis_opinion": [],
+    "reported_by_some": [
+      {
+        "text": "Some outlets reported that Musk ordered SpaceX to throttle Ukraine's Starlink access.",
+        "source_ids": [
+          4033
+        ]
+      },
+      {
+        "text": "Adam Schiff said that somebody is lying about the Starlink restrictions.",
+        "source_ids": [
+          210
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "url": "https://thehill.com/policy/technology/6170777-jason-crow-criticizes-elon-musk-starlink-control-ukraine/",
+      "outlet": "The Hill",
+      "headline": "Crow: Elon Musk having control to cut off Starlink to Ukraine is 'beyond disturbing to me'",
+      "article_id": 2388,
+      "is_opinion": false,
+      "published_at": "2026-10-25T19:30:00+00:00",
+      "allsides_rating": "center"
+    },
+    {
+      "url": "https://www.cnbc.com/2026/10/25/ukraine-musk-starlink-terms-dispute.html",
+      "outlet": "CNBC",
+      "headline": "Ukraine disputes Elon Musk’s claim that its military violated Starlink terms during drone operations",
+      "article_id": 2127,
+      "is_opinion": false,
+      "published_at": "2026-10-25T18:18:49+00:00",
+      "allsides_rating": "lean_left"
+    },
+    {
+      "url": "https://dailycaller.com/2026/10/25/musk-closes-starlink-loophole-ukraine-drone-strikes",
+      "outlet": "The Daily Caller",
+      "headline": "‘May You Burn In Hell’: Elon Musk Clears The Air Over Ukraine’s Use Of Starlink To Wage War",
+      "article_id": 3293,
+      "is_opinion": false,
+      "published_at": "2026-10-25T15:03:29+00:00",
+      "allsides_rating": "lean_right"
+    },
+    {
+      "url": "https://www.thedailybeast.com/pentagon-pete-hegseth-hit-with-demand-to-explain-military-starlink-fiasco",
+      "outlet": "The Daily Beast",
+      "headline": "Pentagon Pete Hit With Demand to Explain Military Fiasco",
+      "article_id": 210,
+      "is_opinion": false,
+      "published_at": "2026-10-25T20:04:19+00:00",
+      "allsides_rating": "left"
+    },
+    {
+      "url": "https://timesofindia.indiatimes.com/world/middle-east/physically-impossible-ukraine-hits-back-at-musk-over-starlink-restrictions-disputes-offensive-drone-strike-claim/articleshow/135201379.cms",
+      "outlet": "The Times of India",
+      "headline": "‘Physically impossible’: Ukraine disputes Musk’s Starlink claim drone strike claim",
+      "article_id": 9221,
+      "is_opinion": false,
+      "published_at": "2026-10-26T02:56:47+00:00",
+      "allsides_rating": "not_rated"
+    },
+    {
+      "url": "https://nypost.com/2026/10/25/us-news/musk-confirms-spacex-was-behind-thwarting-of-ukraines-starlink-access-evil-warmongers/",
+      "outlet": "New York Post",
+      "headline": "Musk confirms SpaceX was behind thwarting of Ukraine’s Starlink access: ‘Evil warmongers’",
+      "article_id": 2627,
+      "is_opinion": false,
+      "published_at": "2026-10-25T15:20:17+00:00",
+      "allsides_rating": "right"
+    },
+    {
+      "url": "https://techcrunch.com/2026/10/24/starlink-seems-to-be-working-normally-again-in-ukraine/",
+      "outlet": "TechCrunch",
+      "headline": "Starlink seems to be working normally again in Ukraine",
+      "article_id": 4033,
+      "is_opinion": false,
+      "published_at": "2026-10-24T20:46:34+00:00",
+      "allsides_rating": "center"
+    },
+    {
+      "url": "https://abcnews.com/International/wireStory/ukraine-disputes-elon-musks-claim-military-violated-starlinks-137552738",
+      "outlet": "ABC News",
+      "headline": "Ukraine disputes Musk's claim that its military violated Starlink's terms of service",
+      "article_id": 1148,
+      "is_opinion": false,
+      "published_at": "2026-10-25T16:55:31+00:00",
+      "allsides_rating": "lean_left"
+    },
+    {
+      "url": "https://justthenews.com/nation/technology/musk-says-ukraine-military-violated-starlink-terms-service-leading-speed-limits?utm_source=justthenews.com&utm_medium=feed&utm_campaign=external-news-aggregators",
+      "outlet": "Just The News",
+      "headline": "Musk says Ukraine military 'violated Starlink terms of service,' leading to speed limits",
+      "article_id": 3765,
+      "is_opinion": false,
+      "published_at": "2026-10-25T00:00:00+00:00",
+      "allsides_rating": "lean_right"
+    },
+    {
+      "url": "https://www.huffpost.com/entry/russia-ukraine-war-starlink-elon-musk_n_6add1961e4b027da9ae6dcb0",
+      "outlet": "HuffPost",
+      "headline": "Musk Says He Was Behind Starlink Speed Restriction After Service In Ukraine Is Restored",
+      "article_id": 65,
+      "is_opinion": false,
+      "published_at": "2026-10-24T20:51:53+00:00",
+      "allsides_rating": "left"
+    },
+    {
+      "url": "https://www.bbc.co.uk/news/articles/cvx28ljp8n4xo?at_medium=RSS&at_campaign=rss",
+      "outlet": "BBC News",
+      "headline": "Musk says SpaceX restricted Ukraine's Starlink connection as service restored",
+      "article_id": 7879,
+      "is_opinion": false,
+      "published_at": "2026-10-25T09:00:00+00:00",
+      "allsides_rating": "not_rated"
+    },
+    {
+      "url": "https://www.foxnews.com/politics/ukraines-starlink-restored-elon-musk-claims-kyiv-violated-terms-service-kill-people",
+      "outlet": "Fox News",
+      "headline": "Ukraine's Starlink restored as Elon Musk claims Kyiv violated terms of service 'to kill people'",
+      "article_id": 3045,
+      "is_opinion": false,
+      "published_at": "2026-10-25T00:24:35+00:00",
+      "allsides_rating": "right"
+    }
+  ],
+  "ai_label": "AI-generated from 12 sources",
+  "category": "world",
+  "glossary": [
+    {
+      "term": "Starshield",
+      "definition": "A defense-focused variant of the Starlink network, according to The Daily Beast.",
+      "source_ids": [
+        210
+      ]
+    }
+  ],
+  "headline": {
+    "text": "Musk says Ukraine violated Starlink terms; Ukraine disputes the claim",
+    "source_ids": [
+      2627,
+      1148,
+      2127
+    ]
+  },
+  "timeline": [
+    {
+      "date": "2026-10-24",
+      "event": "Starlink service in Ukraine restored to previous speeds after Musk-linked speed restriction.",
+      "source_ids": [
+        4033,
+        65
+      ]
+    },
+    {
+      "date": "2026-10-24",
+      "event": "Musk posted that using Starlink for offensive drone strikes has never been allowed.",
+      "source_ids": [
+        2627
+      ]
+    }
+  ],
+  "verified": false,
+  "viz_data": {
+    "chart": null,
+    "places": []
+  },
+  "viz_hint": "timeline",
+  "key_facts": [
+    {
+      "text": "Musk said Starlink is critical to Ukraine's defense and the front line would collapse immediately if it were turned off.",
+      "source_ids": [
+        3765
+      ]
+    },
+    {
+      "text": "Musk said the loophole that allowed the strikes was closed last week.",
+      "source_ids": [
+        3293,
+        3045
+      ]
+    },
+    {
+      "text": "Ukraine's access to Starlink and Starshield has been restored to previous speeds.",
+      "source_ids": [
+        65
+      ]
+    }
+  ],
+  "background": [
+    {
+      "text": "Musk said Starlink restrictions were the reason for the speed limits on Ukraine's service.",
+      "source_ids": [
+        3765,
+        65
+      ]
+    },
+    {
+      "text": "A Wall Street Journal report said Trump reached out directly to Musk and demanded he undo the slowdown on Starshield.",
+      "source_ids": [
+        210
+      ]
+    }
+  ],
+  "cluster_id": 79,
+  "confidence": {
+    "spectrum": {
+      "left": 2,
+      "right": 4,
+      "center": 3,
+      "lean_left": 5,
+      "not_rated": 2,
+      "lean_right": 3
+    },
+    "developing": true,
+    "outlet_count": 19,
+    "article_count": 30
+  },
+  "whats_next": [
+    {
+      "text": "Sen. Adam Schiff demanded that Defense Secretary Pete Hegseth testify on Capitol Hill about the removal of speed restrictions.",
+      "source_ids": [
+        210
+      ]
+    }
+  ],
+  "headline_label": "Throughline headline",
+  "schema_version": 1,
+  "why_it_matters": [
+    {
+      "text": "Ukrainian officials said the speed restrictions significantly impaired their drone operations.",
+      "source_ids": [
+        9221
+      ]
+    },
+    {
+      "text": "Rep. Jason Crow said Musk having the ability to cut off Starlink access to Ukraine is beyond disturbing to him.",
+      "source_ids": [
+        2388
+      ]
+    }
+  ],
+  "rank": 3,
+  "tier": "full",
+  "status": "draft"
+}

@@ -1,0 +1,367 @@
+{
+  "brief": [
+    {
+      "text": "The Justice Department filed a lawsuit asking a federal court to delay or block certification of the Alaska Senate election if voter confusion could cost Republican Sen. Dan Sullivan the race.",
+      "source_ids": [
+        3808,
+        3550
+      ]
+    },
+    {
+      "text": "Attorney General Todd Blanche defended the lawsuit on Sunday, saying it seeks to address potential voter confusion involving two candidates named Dan Sullivan.",
+      "source_ids": [
+        3372,
+        9315
+      ]
+    },
+    {
+      "text": "The lawsuit is pending, and critics say it is meant to block a Democratic victory in the race.",
+      "source_ids": [
+        9124,
+        2945
+      ]
+    }
+  ],
+  "framing": {
+    "representative": {
+      "widely_reported": [
+        {
+          "url": "https://www.thecentersquare.com/national/article_bd59ae3f-f672-4e1c-93eb-ec7f411c16a1.html?a",
+          "outlet": "The Center Square",
+          "headline": "Trump administration sues to block Alaska election results",
+          "article_id": 3808,
+          "is_opinion": false,
+          "published_at": "2026-10-23T17:25:00+00:00",
+          "allsides_rating": "lean_right"
+        },
+        {
+          "url": "https://www.newsmax.com/newsfront/todd-blanche-alaska-senate-dan-sullivan/2026/10/25/id/1273957",
+          "outlet": "Newsmax",
+          "headline": "AG Blanche: DOJ Suit Over Alaska Ballot About Confusion",
+          "article_id": 3372,
+          "is_opinion": false,
+          "published_at": "2026-10-25T16:16:02+00:00",
+          "allsides_rating": "right"
+        }
+      ],
+      "analysis_opinion": [
+        {
+          "url": "https://www.nytimes.com/2026/10/25/us/politics/trumps-election-alaska.html",
+          "outlet": "The New York Times",
+          "headline": "Trump’s Election Attacks Enter New Pre-emptive Phase",
+          "article_id": 452,
+          "is_opinion": false,
+          "published_at": "2026-10-26T01:12:21+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.thefp.com/p/whos-really-trying-to-rig-the-alaska",
+          "outlet": "The Free Press",
+          "headline": "Who’s Really Trying to Rig the Alaska Senate Race?",
+          "article_id": 2945,
+          "is_opinion": false,
+          "published_at": "2026-10-26T01:28:40+00:00",
+          "allsides_rating": "lean_right"
+        }
+      ],
+      "reported_by_some": [
+        {
+          "url": "https://thehill.com/homenews/campaign/6170783-thom-tillis-look-at-alaska-ballot-with-two-dan-sullivans-running/",
+          "outlet": "The Hill",
+          "headline": "Tillis says it's 'appropriate to take a look at' Alaska ballot with two Dan Sullivans running",
+          "article_id": 2331,
+          "is_opinion": false,
+          "published_at": "2026-10-25T23:46:52+00:00",
+          "allsides_rating": "center"
+        },
+        {
+          "url": "https://www.scmp.com/news/world/united-states-canada/article/3372093/trump-not-trying-meddle-alaska-election-results-suing-over-senate-race-blanche",
+          "outlet": "South China Morning Post",
+          "headline": "Trump ‘not trying to meddle’ in Alaska election results by suing over Senate race: Blanche",
+          "article_id": 9315,
+          "is_opinion": false,
+          "published_at": "2026-10-25T18:49:08+00:00",
+          "allsides_rating": "not_rated"
+        }
+      ]
+    },
+    "widely_reported": [
+      {
+        "text": "The Justice Department sued to delay or block certification of the Alaska Senate result if the race is lost by Sen. Dan Sullivan.",
+        "source_ids": [
+          3808,
+          3550
+        ]
+      },
+      {
+        "text": "Blanche defended the lawsuit as a way to avoid voter confusion.",
+        "source_ids": [
+          3372,
+          9315
+        ]
+      }
+    ],
+    "analysis_opinion": [
+      {
+        "text": "A New York Times article described the lawsuit as a new pre-emptive tactic by the president to shape election results.",
+        "source_ids": [
+          452
+        ]
+      },
+      {
+        "text": "A Free Press column by Jed Rubenfeld argued the lawsuit will not work and that a suspicious candidate may be the real spoiler.",
+        "source_ids": [
+          2945
+        ]
+      }
+    ],
+    "reported_by_some": [
+      {
+        "text": "Some outlets reported that Trump said on Friday that he was \"the one that said do it.\"",
+        "source_ids": [
+          9315
+        ]
+      },
+      {
+        "text": "Some outlets reported that Sen. Thom Tillis said it was \"appropriate to take a look at\" the race outcome.",
+        "source_ids": [
+          2331
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "url": "https://thehill.com/homenews/campaign/6170783-thom-tillis-look-at-alaska-ballot-with-two-dan-sullivans-running/",
+      "outlet": "The Hill",
+      "headline": "Tillis says it's 'appropriate to take a look at' Alaska ballot with two Dan Sullivans running",
+      "article_id": 2331,
+      "is_opinion": false,
+      "published_at": "2026-10-25T23:46:52+00:00",
+      "allsides_rating": "center"
+    },
+    {
+      "url": "https://www.nytimes.com/2026/10/25/us/politics/trumps-election-alaska.html",
+      "outlet": "The New York Times",
+      "headline": "Trump’s Election Attacks Enter New Pre-emptive Phase",
+      "article_id": 452,
+      "is_opinion": false,
+      "published_at": "2026-10-26T01:12:21+00:00",
+      "allsides_rating": "lean_left"
+    },
+    {
+      "url": "https://www.thefp.com/p/whos-really-trying-to-rig-the-alaska",
+      "outlet": "The Free Press",
+      "headline": "Who’s Really Trying to Rig the Alaska Senate Race?",
+      "article_id": 2945,
+      "is_opinion": false,
+      "published_at": "2026-10-26T01:28:40+00:00",
+      "allsides_rating": "lean_right"
+    },
+    {
+      "url": "https://www.huffpost.com/entry/trump-lisa-murkowski-worst-senator-doj-lawsuit_n_6ade46f3e4b0320e45d2c974",
+      "outlet": "HuffPost",
+      "headline": "Trump Seethes Over GOP's 'Worst Senator' Who Knocked His DOJ's Lawsuit",
+      "article_id": 11,
+      "is_opinion": false,
+      "published_at": "2026-10-25T19:09:22+00:00",
+      "allsides_rating": "left"
+    },
+    {
+      "url": "https://www.aljazeera.com/news/2026/10/25/us-attorney-general-todd-blanche-defends-alaska-senate-election-lawsuit?traffic_source=rss",
+      "outlet": "Al Jazeera English",
+      "headline": "US Attorney General Todd Blanche defends Alaska Senate election lawsuit",
+      "article_id": 9124,
+      "is_opinion": false,
+      "published_at": "2026-10-25T21:41:10+00:00",
+      "allsides_rating": "not_rated"
+    },
+    {
+      "url": "https://www.newsmax.com/newsfront/todd-blanche-alaska-senate-dan-sullivan/2026/10/25/id/1273957",
+      "outlet": "Newsmax",
+      "headline": "AG Blanche: DOJ Suit Over Alaska Ballot About Confusion",
+      "article_id": 3372,
+      "is_opinion": false,
+      "published_at": "2026-10-25T16:16:02+00:00",
+      "allsides_rating": "right"
+    },
+    {
+      "url": "https://fortune.com/2026/10/25/attorney-general-alaska-senate-trump-lawsuit-certification-dan-sullivan-mary-peltola/",
+      "outlet": "Fortune",
+      "headline": "With Senate control at stake, attorney general defends Trump’s lawsuit to block certification of Alaska race if the GOP candidate loses",
+      "article_id": 5114,
+      "is_opinion": false,
+      "published_at": "2026-10-25T18:21:24+00:00",
+      "allsides_rating": "center"
+    },
+    {
+      "url": "https://www.cnbc.com/2026/10/25/blanche-doj-alaska-senate-certification-lawsuit.html",
+      "outlet": "CNBC",
+      "headline": "Blanche defends Trump-ordered lawsuit over Alaska Senate election certification",
+      "article_id": 2126,
+      "is_opinion": false,
+      "published_at": "2026-10-25T20:28:55+00:00",
+      "allsides_rating": "lean_left"
+    },
+    {
+      "url": "https://www.thecentersquare.com/national/article_bd59ae3f-f672-4e1c-93eb-ec7f411c16a1.html?a",
+      "outlet": "The Center Square",
+      "headline": "Trump administration sues to block Alaska election results",
+      "article_id": 3808,
+      "is_opinion": false,
+      "published_at": "2026-10-23T17:25:00+00:00",
+      "allsides_rating": "lean_right"
+    },
+    {
+      "url": "https://www.thedailybeast.com/trump-goon-todd-blanche-loses-it-on-cnn-over-trumps-election-meddling-in-alaska",
+      "outlet": "The Daily Beast",
+      "headline": "Trump Goon Loses It On CNN Over Nightmare Election Scenario",
+      "article_id": 217,
+      "is_opinion": false,
+      "published_at": "2026-10-25T15:28:02+00:00",
+      "allsides_rating": "left"
+    },
+    {
+      "url": "https://www.scmp.com/news/world/united-states-canada/article/3372093/trump-not-trying-meddle-alaska-election-results-suing-over-senate-race-blanche",
+      "outlet": "South China Morning Post",
+      "headline": "Trump ‘not trying to meddle’ in Alaska election results by suing over Senate race: Blanche",
+      "article_id": 9315,
+      "is_opinion": false,
+      "published_at": "2026-10-25T18:49:08+00:00",
+      "allsides_rating": "not_rated"
+    },
+    {
+      "url": "https://www.dailywire.com/news/trump-doj-sues-alaska-over-spoiler-candidate-in-crucial-senate-race",
+      "outlet": "The Daily Wire",
+      "headline": "Trump DOJ Sues Alaska Over ‘Spoiler’ Candidate In Crucial Senate Race",
+      "article_id": 3550,
+      "is_opinion": false,
+      "published_at": "2026-10-23T13:46:46+00:00",
+      "allsides_rating": "right"
+    }
+  ],
+  "ai_label": "AI-generated from 12 sources",
+  "category": "politics",
+  "glossary": [
+    {
+      "term": "Certification",
+      "definition": "The official step in which election results are confirmed by the state.",
+      "source_ids": [
+        3808
+      ]
+    }
+  ],
+  "headline": {
+    "text": "Justice Department sues over Alaska Senate ballot with two Dan Sullivans",
+    "source_ids": [
+      3808,
+      3550
+    ]
+  },
+  "timeline": [
+    {
+      "date": "2026-10-23",
+      "event": "Justice Department filed lawsuit over Alaska Senate election certification",
+      "source_ids": [
+        3808,
+        3550
+      ]
+    },
+    {
+      "date": "2026-11-03",
+      "event": "Midterm election day",
+      "source_ids": [
+        9315
+      ]
+    }
+  ],
+  "verified": false,
+  "viz_data": {
+    "chart": null,
+    "places": []
+  },
+  "viz_hint": "timeline",
+  "key_facts": [
+    {
+      "text": "The Justice Department filed the lawsuit on Thursday.",
+      "source_ids": [
+        5114,
+        3550
+      ]
+    },
+    {
+      "text": "The other candidate is Daniel J. Sullivan Jr., a retired teacher running against the incumbent.",
+      "source_ids": [
+        3550
+      ]
+    },
+    {
+      "text": "Blanche said Trump is not trying to overturn state election results in any way.",
+      "source_ids": [
+        9315
+      ]
+    },
+    {
+      "text": "Midterm election day is November 3.",
+      "source_ids": [
+        9315
+      ]
+    }
+  ],
+  "background": [
+    {
+      "text": "The Trump administration claimed, without providing evidence, that the other Dan Sullivan was put into the race as a Democratic ploy to confuse Republican voters.",
+      "source_ids": [
+        217
+      ]
+    },
+    {
+      "text": "Democrats have maintained they have no connection to Daniel J. Sullivan.",
+      "source_ids": [
+        2126
+      ]
+    }
+  ],
+  "cluster_id": 315,
+  "confidence": {
+    "spectrum": {
+      "left": 5,
+      "right": 2,
+      "center": 3,
+      "lean_left": 7,
+      "not_rated": 4,
+      "lean_right": 3
+    },
+    "developing": true,
+    "outlet_count": 24,
+    "article_count": 34
+  },
+  "whats_next": [
+    {
+      "text": "The midterm election is scheduled for November 3.",
+      "source_ids": [
+        9315
+      ]
+    }
+  ],
+  "headline_label": "Throughline headline",
+  "schema_version": 1,
+  "why_it_matters": [
+    {
+      "text": "The lawsuit concerns a race for control of the Senate, and it could affect how the Alaska result is certified.",
+      "source_ids": [
+        5114,
+        3808
+      ]
+    },
+    {
+      "text": "The lawsuit centers on a candidate, Daniel J. Sullivan Jr., who shares a name with the incumbent.",
+      "source_ids": [
+        3550
+      ]
+    }
+  ],
+  "rank": 1,
+  "tier": "full",
+  "status": "draft"
+}

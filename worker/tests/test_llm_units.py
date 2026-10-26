@@ -195,3 +195,18 @@ def test_cost():
     # 1M in + 1M out on the Haiku 5.5 batch rate card
     assert cost_usd("claude-haiku-5-5", "batch", 1_000_000, 1_000_000) == pytest.approx(0.30)
     assert cost_usd("unknown", "batch", 10, 10) == 0.0
+
+
+def test_viz_hint_needs_data_behind_it():
+    two_dates = [{"date": "2026-10-2" + str(i), "event": "e", "source_ids": ["S1"]} for i in (1, 2)]
+    draft, _ = filter_card(CardDraft.model_validate(draft_dict(viz_hint="timeline",
+                           timeline=two_dates)), VALID)  # fmt: skip
+    assert draft.viz_hint == "none"
+    three = two_dates + [{"date": "2026-10-23", "event": "e", "source_ids": ["S2"]}]
+    draft, _ = filter_card(CardDraft.model_validate(draft_dict(viz_hint="timeline",
+                           timeline=three)), VALID)  # fmt: skip
+    assert draft.viz_hint == "timeline"
+    draft, _ = filter_card(CardDraft.model_validate(draft_dict(viz_hint="map")), VALID)
+    assert draft.viz_hint == "none"  # no places
+    draft, _ = filter_card(CardDraft.model_validate(draft_dict()), VALID)
+    assert draft.viz_hint == "none"  # chart lost a point to the filter

@@ -1,0 +1,361 @@
+{
+  "brief": [
+    {
+      "text": "Serbia held a parliamentary election on October 25, 2026, which was widely seen as a test of the student-led protest movement against Aleksandar Vučić.",
+      "source_ids": [
+        109,
+        3823,
+        8558
+      ]
+    },
+    {
+      "text": "Vučić conceded defeat in a speech, saying \"it is clear that we have lost these elections.\"",
+      "source_ids": [
+        467,
+        7876,
+        8558
+      ]
+    },
+    {
+      "text": "Vučić said preliminary results suggest the Student List could win 135 to 140 of the 250 seats, and final results are not yet available.",
+      "source_ids": [
+        3823,
+        8558
+      ]
+    }
+  ],
+  "framing": {
+    "representative": {
+      "widely_reported": [
+        {
+          "url": "https://www.nytimes.com/2026/10/25/world/europe/serbia-vucic-election-defeat.html",
+          "outlet": "The New York Times",
+          "headline": "Aleksandar Vucic Concedes Defeat in Serbian Election",
+          "article_id": 467,
+          "is_opinion": false,
+          "published_at": "2026-10-26T01:57:24+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.theguardian.com/world/2026/oct/25/serbian-leader-aleksandar-vucic-concedes-defeat-in-fiercely-contested-parliamentary-election",
+          "outlet": "The Guardian",
+          "headline": "Serbian leader Aleksandar Vučić ousted by student movement in seismic election",
+          "article_id": 8558,
+          "is_opinion": false,
+          "published_at": "2026-10-25T23:42:32+00:00",
+          "allsides_rating": "not_rated"
+        }
+      ],
+      "analysis_opinion": [],
+      "reported_by_some": [
+        {
+          "url": "https://www.cbsnews.com/news/serbia-election-aleksandar-vucic-concedes-defeat/",
+          "outlet": "CBS News",
+          "headline": "Vucic concedes defeat in Serbia's parliamentary election",
+          "article_id": 912,
+          "is_opinion": false,
+          "published_at": "2026-10-25T21:30:57+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.csmonitor.com/World/Europe/2026/1023/serbia-election-vucic-student-list-corruption-protests?icid=rss",
+          "outlet": "The Christian Science Monitor",
+          "headline": "For Serbia’s students, years of protest come down to this weekend’s elections",
+          "article_id": 2480,
+          "is_opinion": false,
+          "published_at": "2026-10-23T18:00:11+00:00",
+          "allsides_rating": "center"
+        }
+      ]
+    },
+    "widely_reported": [
+      {
+        "text": "Vučić conceded defeat in the election.",
+        "source_ids": [
+          467,
+          7876,
+          3362,
+          912,
+          61,
+          3823,
+          9552,
+          8558
+        ]
+      },
+      {
+        "text": "The student-backed movement won the most votes according to preliminary results.",
+        "source_ids": [
+          9114,
+          3823,
+          8558
+        ]
+      }
+    ],
+    "analysis_opinion": [],
+    "reported_by_some": [
+      {
+        "text": "Some outlets reported that Vučić denounced the student movement as a foreign-led attempt to unseat him.",
+        "source_ids": [
+          912
+        ]
+      },
+      {
+        "text": "Some outlets described Vučić's party as widely regarded as corrupt.",
+        "source_ids": [
+          2480
+        ]
+      },
+      {
+        "text": "Mother Jones said the result broadly resembles Hungarian opposition leader Péter Magyar's April defeat of a longtime leader.",
+        "source_ids": [
+          109
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "url": "https://www.csmonitor.com/World/Europe/2026/1023/serbia-election-vucic-student-list-corruption-protests?icid=rss",
+      "outlet": "The Christian Science Monitor",
+      "headline": "For Serbia’s students, years of protest come down to this weekend’s elections",
+      "article_id": 2480,
+      "is_opinion": false,
+      "published_at": "2026-10-23T18:00:11+00:00",
+      "allsides_rating": "center"
+    },
+    {
+      "url": "https://www.nytimes.com/2026/10/25/world/europe/serbia-vucic-election-defeat.html",
+      "outlet": "The New York Times",
+      "headline": "Aleksandar Vucic Concedes Defeat in Serbian Election",
+      "article_id": 467,
+      "is_opinion": false,
+      "published_at": "2026-10-26T01:57:24+00:00",
+      "allsides_rating": "lean_left"
+    },
+    {
+      "url": "https://www.motherjones.com/politics/2026/10/serbia-vucic-concedes/",
+      "outlet": "Mother Jones",
+      "headline": "A Serbian Nationalist Leader Who Courted MAGA Just Lost in a Landslide",
+      "article_id": 109,
+      "is_opinion": false,
+      "published_at": "2026-10-25T23:43:16+00:00",
+      "allsides_rating": "left"
+    },
+    {
+      "url": "https://www.bbc.co.uk/news/articles/cw5yn3xlprpmo?at_medium=RSS&at_campaign=rss",
+      "outlet": "BBC News",
+      "headline": "Elation across Serbia after veteran ruler Vučić concedes to student-led protest movement",
+      "article_id": 7876,
+      "is_opinion": false,
+      "published_at": "2026-10-26T01:07:05+00:00",
+      "allsides_rating": "not_rated"
+    },
+    {
+      "url": "https://www.newsmax.com/newsfront/serbia-election-aleksandar-vucic/2026/10/25/id/1273971",
+      "outlet": "Newsmax",
+      "headline": "Serbia's Vucic Concedes Defeat as Student-Led Movement Sweeps Eastern Europe",
+      "article_id": 3362,
+      "is_opinion": false,
+      "published_at": "2026-10-25T21:14:58+00:00",
+      "allsides_rating": "right"
+    },
+    {
+      "url": "https://www.cbsnews.com/news/serbia-election-aleksandar-vucic-concedes-defeat/",
+      "outlet": "CBS News",
+      "headline": "Vucic concedes defeat in Serbia's parliamentary election",
+      "article_id": 912,
+      "is_opinion": false,
+      "published_at": "2026-10-25T21:30:57+00:00",
+      "allsides_rating": "lean_left"
+    },
+    {
+      "url": "https://www.huffpost.com/entry/serbia-election-vucic-defeat_n_6ade6ae3e4b06b41b48d5c8e",
+      "outlet": "HuffPost",
+      "headline": "Serbia’s Strongman Leader Vucic Concedes Defeat To Student-led Movement In Seismic Political Shift",
+      "article_id": 61,
+      "is_opinion": false,
+      "published_at": "2026-10-25T20:50:27+00:00",
+      "allsides_rating": "left"
+    },
+    {
+      "url": "https://www.aljazeera.com/video/newsfeed/2026/10/26/serbia-celebrates-historic-election-win-for-student-backed-movement?traffic_source=rss",
+      "outlet": "Al Jazeera English",
+      "headline": "Serbia celebrates historic election win for student-backed movement",
+      "article_id": 9114,
+      "is_opinion": false,
+      "published_at": "2026-10-26T00:58:21+00:00",
+      "allsides_rating": "not_rated"
+    },
+    {
+      "url": "https://ijr.com/discover/politics-2026-10-25-vucic-says-studentbacked-list-serbia-election-dd82148f?utm_source=rss&utm_medium=syndication&utm_content=story_dd82148f-83c0-45e9-beaf-2c50308a5f08",
+      "outlet": "Independent Journal Review",
+      "headline": "Vučić Says Student-Backed List Won Serbia Election",
+      "article_id": 3823,
+      "is_opinion": false,
+      "published_at": "2026-10-25T20:50:17+00:00",
+      "allsides_rating": "right"
+    },
+    {
+      "url": "https://www.ft.com/content/546f21f5-22d3-4696-8371-7bef8c0410b3?syn-25a6b1a6=1",
+      "outlet": "Financial Times",
+      "headline": "Serbia’s ex-president Vučić concedes defeat to Student List in parliamentary poll",
+      "article_id": 9552,
+      "is_opinion": false,
+      "published_at": "2026-10-26T00:38:57+00:00",
+      "allsides_rating": "not_rated"
+    },
+    {
+      "url": "https://www.foxnews.com/world/serbias-longtime-leader-faces-biggest-political-test-students-mount-election-challenge",
+      "outlet": "Fox News",
+      "headline": "Serbia’s longtime leader faces biggest political test as students mount election challenge",
+      "article_id": 3025,
+      "is_opinion": false,
+      "published_at": "2026-10-23T14:03:19+00:00",
+      "allsides_rating": "right"
+    },
+    {
+      "url": "https://www.theguardian.com/world/2026/oct/25/serbian-leader-aleksandar-vucic-concedes-defeat-in-fiercely-contested-parliamentary-election",
+      "outlet": "The Guardian",
+      "headline": "Serbian leader Aleksandar Vučić ousted by student movement in seismic election",
+      "article_id": 8558,
+      "is_opinion": false,
+      "published_at": "2026-10-25T23:42:32+00:00",
+      "allsides_rating": "not_rated"
+    }
+  ],
+  "ai_label": "AI-generated from 12 sources",
+  "category": "world",
+  "glossary": [],
+  "headline": {
+    "text": "Serbia's longtime leader Vučić concedes election defeat to student-backed list",
+    "source_ids": [
+      467,
+      7876,
+      3823,
+      9552,
+      8558
+    ]
+  },
+  "timeline": [
+    {
+      "date": "2026-04",
+      "event": "Hungarian opposition leader Péter Magyar defeated a longtime leader, according to Mother Jones.",
+      "source_ids": [
+        109
+      ]
+    },
+    {
+      "date": "2026-10-23",
+      "event": "Vučić resigned as president to run for prime minister, according to Fox News.",
+      "source_ids": [
+        3025
+      ]
+    },
+    {
+      "date": "2026-10-25",
+      "event": "Serbian parliamentary election held; Vučić conceded defeat.",
+      "source_ids": [
+        109,
+        3362,
+        3823,
+        8558
+      ]
+    }
+  ],
+  "verified": false,
+  "viz_data": {
+    "chart": null,
+    "places": []
+  },
+  "viz_hint": "timeline",
+  "key_facts": [
+    {
+      "text": "The election was held on October 25, 2026.",
+      "source_ids": [
+        3823
+      ]
+    },
+    {
+      "text": "The Student List was estimated at 135 to 140 seats, according to Vučić's estimate.",
+      "source_ids": [
+        3823
+      ]
+    },
+    {
+      "text": "Vučić's coalition was estimated at about 105 seats.",
+      "source_ids": [
+        3823
+      ]
+    },
+    {
+      "text": "The parliament has 250 seats.",
+      "source_ids": [
+        3823,
+        8558
+      ]
+    },
+    {
+      "text": "Near-record voter turnout was reported.",
+      "source_ids": [
+        9552,
+        8558
+      ]
+    }
+  ],
+  "background": [
+    {
+      "text": "Vučić resigned as president to run for prime minister, facing his biggest electoral challenge in 14 years.",
+      "source_ids": [
+        3025
+      ]
+    },
+    {
+      "text": "The student-led movement had spent two years protesting against Vučić's government.",
+      "source_ids": [
+        8558
+      ]
+    }
+  ],
+  "cluster_id": 815,
+  "confidence": {
+    "spectrum": {
+      "left": 2,
+      "right": 3,
+      "center": 1,
+      "lean_left": 3,
+      "not_rated": 8
+    },
+    "developing": true,
+    "outlet_count": 17,
+    "article_count": 23
+  },
+  "whats_next": [
+    {
+      "text": "Final election results have not yet been announced.",
+      "source_ids": [
+        8558
+      ]
+    }
+  ],
+  "headline_label": "Throughline headline",
+  "schema_version": 1,
+  "why_it_matters": [
+    {
+      "text": "The result could end the 12-year rule of Vučić and give the student movement a majority in the 250-seat parliament.",
+      "source_ids": [
+        7876,
+        8558
+      ]
+    },
+    {
+      "text": "Supporters of the student movement celebrated across Belgrade after the result.",
+      "source_ids": [
+        9114,
+        7876
+      ]
+    }
+  ],
+  "rank": 4,
+  "tier": "full",
+  "status": "draft"
+}
