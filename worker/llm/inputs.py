@@ -14,7 +14,7 @@ import html
 import json
 import re
 from dataclasses import asdict, dataclass
-from datetime import datetime
+from datetime import UTC, datetime
 
 import psycopg
 
@@ -55,10 +55,15 @@ def is_opinion(url: str) -> bool:
     return bool(_OPINION_PATH.search(url))
 
 
+# Sort key for articles without a publish time (feeds sometimes omit it).
+# Must be timezone-aware: timestamptz rows come back aware.
+NEVER = datetime.min.replace(tzinfo=UTC)
+
+
 def pick_rows(rows: list[dict], limit: int = MAX_SOURCES) -> list[dict]:
     """One article per outlet (newest first), rotating across ratings so no side
     of the spectrum crowds out the others, then fill up with second articles."""
-    rows = sorted(rows, key=lambda r: r["published_at"] or datetime.min, reverse=True)
+    rows = sorted(rows, key=lambda r: r["published_at"] or NEVER, reverse=True)
     first, rest, seen = [], [], set()
     for r in rows:
         (rest if r["source_id"] in seen else first).append(r)

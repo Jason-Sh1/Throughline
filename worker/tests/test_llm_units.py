@@ -172,6 +172,11 @@ def test_pick_rows_one_per_outlet_and_rotates_ratings():
     assert 22 not in [r["id"] for r in pick_rows(rows, limit=11)][:10]  # 2nd article last
 
 
+def test_pick_rows_handles_missing_publish_time():
+    rows = [row(1, 1, "left"), row(2, 2, "right") | {"published_at": None}]
+    assert [r["id"] for r in pick_rows(rows, limit=2)] == [1, 2]
+
+
 def doc(i, title="T"):
     return SourceDoc(f"S{i}", i, "O", "center", title, "u", None, "x", False)
 
