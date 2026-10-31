@@ -1,0 +1,2436 @@
+{
+  "edition_id": 1,
+  "date": "2026-10-26",
+  "slot": "morning",
+  "status": "building",
+  "prompt_version": "synthesize_v1",
+  "generated_at": "2026-10-26T03:25:39.442741+00:00",
+  "cards": [
+    {
+      "brief": [
+        {
+          "text": "The Justice Department filed a lawsuit asking a federal court to delay or block certification of the Alaska Senate election if voter confusion could cost Republican Sen. Dan Sullivan the race.",
+          "source_ids": [
+            3808,
+            3550
+          ]
+        },
+        {
+          "text": "Attorney General Todd Blanche defended the lawsuit on Sunday, saying it seeks to address potential voter confusion involving two candidates named Dan Sullivan.",
+          "source_ids": [
+            3372,
+            9315
+          ]
+        },
+        {
+          "text": "The lawsuit is pending, and critics say it is meant to block a Democratic victory in the race.",
+          "source_ids": [
+            9124,
+            2945
+          ]
+        }
+      ],
+      "framing": {
+        "representative": {
+          "widely_reported": [
+            {
+              "url": "https://www.thecentersquare.com/national/article_bd59ae3f-f672-4e1c-93eb-ec7f411c16a1.html?a",
+              "outlet": "The Center Square",
+              "headline": "Trump administration sues to block Alaska election results",
+              "article_id": 3808,
+              "is_opinion": false,
+              "published_at": "2026-10-23T17:25:00+00:00",
+              "allsides_rating": "lean_right"
+            },
+            {
+              "url": "https://www.newsmax.com/newsfront/todd-blanche-alaska-senate-dan-sullivan/2026/10/25/id/1273957",
+              "outlet": "Newsmax",
+              "headline": "AG Blanche: DOJ Suit Over Alaska Ballot About Confusion",
+              "article_id": 3372,
+              "is_opinion": false,
+              "published_at": "2026-10-25T16:16:02+00:00",
+              "allsides_rating": "right"
+            }
+          ],
+          "analysis_opinion": [
+            {
+              "url": "https://www.nytimes.com/2026/10/25/us/politics/trumps-election-alaska.html",
+              "outlet": "The New York Times",
+              "headline": "Trump’s Election Attacks Enter New Pre-emptive Phase",
+              "article_id": 452,
+              "is_opinion": false,
+              "published_at": "2026-10-26T01:12:21+00:00",
+              "allsides_rating": "lean_left"
+            },
+            {
+              "url": "https://www.thefp.com/p/whos-really-trying-to-rig-the-alaska",
+              "outlet": "The Free Press",
+              "headline": "Who’s Really Trying to Rig the Alaska Senate Race?",
+              "article_id": 2945,
+              "is_opinion": false,
+              "published_at": "2026-10-26T01:28:40+00:00",
+              "allsides_rating": "lean_right"
+            }
+          ],
+          "reported_by_some": [
+            {
+              "url": "https://thehill.com/homenews/campaign/6170783-thom-tillis-look-at-alaska-ballot-with-two-dan-sullivans-running/",
+              "outlet": "The Hill",
+              "headline": "Tillis says it's 'appropriate to take a look at' Alaska ballot with two Dan Sullivans running",
+              "article_id": 2331,
+              "is_opinion": false,
+              "published_at": "2026-10-25T23:46:52+00:00",
+              "allsides_rating": "center"
+            },
+            {
+              "url": "https://www.scmp.com/news/world/united-states-canada/article/3372093/trump-not-trying-meddle-alaska-election-results-suing-over-senate-race-blanche",
+              "outlet": "South China Morning Post",
+              "headline": "Trump ‘not trying to meddle’ in Alaska election results by suing over Senate race: Blanche",
+              "article_id": 9315,
+              "is_opinion": false,
+              "published_at": "2026-10-25T18:49:08+00:00",
+              "allsides_rating": "not_rated"
+            }
+          ]
+        },
+        "widely_reported": [
+          {
+            "text": "The Justice Department sued to delay or block certification of the Alaska Senate result if the race is lost by Sen. Dan Sullivan.",
+            "source_ids": [
+              3808,
+              3550
+            ]
+          },
+          {
+            "text": "Blanche defended the lawsuit as a way to avoid voter confusion.",
+            "source_ids": [
+              3372,
+              9315
+            ]
+          }
+        ],
+        "analysis_opinion": [
+          {
+            "text": "A New York Times article described the lawsuit as a new pre-emptive tactic by the president to shape election results.",
+            "source_ids": [
+              452
+            ]
+          },
+          {
+            "text": "A Free Press column by Jed Rubenfeld argued the lawsuit will not work and that a suspicious candidate may be the real spoiler.",
+            "source_ids": [
+              2945
+            ]
+          }
+        ],
+        "reported_by_some": [
+          {
+            "text": "Some outlets reported that Trump said on Friday that he was \"the one that said do it.\"",
+            "source_ids": [
+              9315
+            ]
+          },
+          {
+            "text": "Some outlets reported that Sen. Thom Tillis said it was \"appropriate to take a look at\" the race outcome.",
+            "source_ids": [
+              2331
+            ]
+          }
+        ]
+      },
+      "sources": [
+        {
+          "url": "https://thehill.com/homenews/campaign/6170783-thom-tillis-look-at-alaska-ballot-with-two-dan-sullivans-running/",
+          "outlet": "The Hill",
+          "headline": "Tillis says it's 'appropriate to take a look at' Alaska ballot with two Dan Sullivans running",
+          "article_id": 2331,
+          "is_opinion": false,
+          "published_at": "2026-10-25T23:46:52+00:00",
+          "allsides_rating": "center"
+        },
+        {
+          "url": "https://www.nytimes.com/2026/10/25/us/politics/trumps-election-alaska.html",
+          "outlet": "The New York Times",
+          "headline": "Trump’s Election Attacks Enter New Pre-emptive Phase",
+          "article_id": 452,
+          "is_opinion": false,
+          "published_at": "2026-10-26T01:12:21+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.thefp.com/p/whos-really-trying-to-rig-the-alaska",
+          "outlet": "The Free Press",
+          "headline": "Who’s Really Trying to Rig the Alaska Senate Race?",
+          "article_id": 2945,
+          "is_opinion": false,
+          "published_at": "2026-10-26T01:28:40+00:00",
+          "allsides_rating": "lean_right"
+        },
+        {
+          "url": "https://www.huffpost.com/entry/trump-lisa-murkowski-worst-senator-doj-lawsuit_n_6ade46f3e4b0320e45d2c974",
+          "outlet": "HuffPost",
+          "headline": "Trump Seethes Over GOP's 'Worst Senator' Who Knocked His DOJ's Lawsuit",
+          "article_id": 11,
+          "is_opinion": false,
+          "published_at": "2026-10-25T19:09:22+00:00",
+          "allsides_rating": "left"
+        },
+        {
+          "url": "https://www.aljazeera.com/news/2026/10/25/us-attorney-general-todd-blanche-defends-alaska-senate-election-lawsuit?traffic_source=rss",
+          "outlet": "Al Jazeera English",
+          "headline": "US Attorney General Todd Blanche defends Alaska Senate election lawsuit",
+          "article_id": 9124,
+          "is_opinion": false,
+          "published_at": "2026-10-25T21:41:10+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.newsmax.com/newsfront/todd-blanche-alaska-senate-dan-sullivan/2026/10/25/id/1273957",
+          "outlet": "Newsmax",
+          "headline": "AG Blanche: DOJ Suit Over Alaska Ballot About Confusion",
+          "article_id": 3372,
+          "is_opinion": false,
+          "published_at": "2026-10-25T16:16:02+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://fortune.com/2026/10/25/attorney-general-alaska-senate-trump-lawsuit-certification-dan-sullivan-mary-peltola/",
+          "outlet": "Fortune",
+          "headline": "With Senate control at stake, attorney general defends Trump’s lawsuit to block certification of Alaska race if the GOP candidate loses",
+          "article_id": 5114,
+          "is_opinion": false,
+          "published_at": "2026-10-25T18:21:24+00:00",
+          "allsides_rating": "center"
+        },
+        {
+          "url": "https://www.cnbc.com/2026/10/25/blanche-doj-alaska-senate-certification-lawsuit.html",
+          "outlet": "CNBC",
+          "headline": "Blanche defends Trump-ordered lawsuit over Alaska Senate election certification",
+          "article_id": 2126,
+          "is_opinion": false,
+          "published_at": "2026-10-25T20:28:55+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.thecentersquare.com/national/article_bd59ae3f-f672-4e1c-93eb-ec7f411c16a1.html?a",
+          "outlet": "The Center Square",
+          "headline": "Trump administration sues to block Alaska election results",
+          "article_id": 3808,
+          "is_opinion": false,
+          "published_at": "2026-10-23T17:25:00+00:00",
+          "allsides_rating": "lean_right"
+        },
+        {
+          "url": "https://www.thedailybeast.com/trump-goon-todd-blanche-loses-it-on-cnn-over-trumps-election-meddling-in-alaska",
+          "outlet": "The Daily Beast",
+          "headline": "Trump Goon Loses It On CNN Over Nightmare Election Scenario",
+          "article_id": 217,
+          "is_opinion": false,
+          "published_at": "2026-10-25T15:28:02+00:00",
+          "allsides_rating": "left"
+        },
+        {
+          "url": "https://www.scmp.com/news/world/united-states-canada/article/3372093/trump-not-trying-meddle-alaska-election-results-suing-over-senate-race-blanche",
+          "outlet": "South China Morning Post",
+          "headline": "Trump ‘not trying to meddle’ in Alaska election results by suing over Senate race: Blanche",
+          "article_id": 9315,
+          "is_opinion": false,
+          "published_at": "2026-10-25T18:49:08+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.dailywire.com/news/trump-doj-sues-alaska-over-spoiler-candidate-in-crucial-senate-race",
+          "outlet": "The Daily Wire",
+          "headline": "Trump DOJ Sues Alaska Over ‘Spoiler’ Candidate In Crucial Senate Race",
+          "article_id": 3550,
+          "is_opinion": false,
+          "published_at": "2026-10-23T13:46:46+00:00",
+          "allsides_rating": "right"
+        }
+      ],
+      "ai_label": "AI-generated from 12 sources",
+      "category": "politics",
+      "glossary": [
+        {
+          "term": "Certification",
+          "definition": "The official step in which election results are confirmed by the state.",
+          "source_ids": [
+            3808
+          ]
+        }
+      ],
+      "headline": {
+        "text": "Justice Department sues over Alaska Senate ballot with two Dan Sullivans",
+        "source_ids": [
+          3808,
+          3550
+        ]
+      },
+      "timeline": [
+        {
+          "date": "2026-10-23",
+          "event": "Justice Department filed lawsuit over Alaska Senate election certification",
+          "source_ids": [
+            3808,
+            3550
+          ]
+        },
+        {
+          "date": "2026-11-03",
+          "event": "Midterm election day",
+          "source_ids": [
+            9315
+          ]
+        }
+      ],
+      "verified": false,
+      "viz_data": {
+        "chart": null,
+        "places": []
+      },
+      "viz_hint": "timeline",
+      "key_facts": [
+        {
+          "text": "The Justice Department filed the lawsuit on Thursday.",
+          "source_ids": [
+            5114,
+            3550
+          ]
+        },
+        {
+          "text": "The other candidate is Daniel J. Sullivan Jr., a retired teacher running against the incumbent.",
+          "source_ids": [
+            3550
+          ]
+        },
+        {
+          "text": "Blanche said Trump is not trying to overturn state election results in any way.",
+          "source_ids": [
+            9315
+          ]
+        },
+        {
+          "text": "Midterm election day is November 3.",
+          "source_ids": [
+            9315
+          ]
+        }
+      ],
+      "background": [
+        {
+          "text": "The Trump administration claimed, without providing evidence, that the other Dan Sullivan was put into the race as a Democratic ploy to confuse Republican voters.",
+          "source_ids": [
+            217
+          ]
+        },
+        {
+          "text": "Democrats have maintained they have no connection to Daniel J. Sullivan.",
+          "source_ids": [
+            2126
+          ]
+        }
+      ],
+      "cluster_id": 315,
+      "confidence": {
+        "spectrum": {
+          "left": 5,
+          "right": 2,
+          "center": 3,
+          "lean_left": 7,
+          "not_rated": 4,
+          "lean_right": 3
+        },
+        "developing": true,
+        "outlet_count": 24,
+        "article_count": 34
+      },
+      "whats_next": [
+        {
+          "text": "The midterm election is scheduled for November 3.",
+          "source_ids": [
+            9315
+          ]
+        }
+      ],
+      "headline_label": "Throughline headline",
+      "schema_version": 1,
+      "why_it_matters": [
+        {
+          "text": "The lawsuit concerns a race for control of the Senate, and it could affect how the Alaska result is certified.",
+          "source_ids": [
+            5114,
+            3808
+          ]
+        },
+        {
+          "text": "The lawsuit centers on a candidate, Daniel J. Sullivan Jr., who shares a name with the incumbent.",
+          "source_ids": [
+            3550
+          ]
+        }
+      ],
+      "rank": 1,
+      "tier": "full",
+      "status": "draft"
+    },
+    {
+      "brief": [
+        {
+          "text": "Exiled Nobel laureate María Corina Machado returned to Venezuela on Sunday after about 10 months abroad.",
+          "source_ids": [
+            2358,
+            466
+          ]
+        },
+        {
+          "text": "She wrote on social media, \"I am here. With you.\"",
+          "source_ids": [
+            3635,
+            2358,
+            2624,
+            331
+          ]
+        },
+        {
+          "text": "Her arrival poses a challenge to the Trump-backed interim government, the Financial Times reported.",
+          "source_ids": [
+            9548
+          ]
+        }
+      ],
+      "framing": {
+        "representative": {
+          "widely_reported": [
+            {
+              "url": "https://thehill.com/policy/international/6170833-machado-returns-venezuela/",
+              "outlet": "The Hill",
+              "headline": "Machado returns to Venezuela after 10 months of exile",
+              "article_id": 2358,
+              "is_opinion": false,
+              "published_at": "2026-10-25T17:41:29+00:00",
+              "allsides_rating": "center"
+            },
+            {
+              "url": "https://www.nytimes.com/2026/10/25/world/americas/machado-venezuela-return.html",
+              "outlet": "The New York Times",
+              "headline": "María Corina Machado Returns to Venezuela",
+              "article_id": 466,
+              "is_opinion": false,
+              "published_at": "2026-10-26T00:32:49+00:00",
+              "allsides_rating": "lean_left"
+            }
+          ],
+          "analysis_opinion": [],
+          "reported_by_some": [
+            {
+              "url": "https://www.cbsnews.com/news/venezuela-opposition-maria-corina-machado-return/",
+              "outlet": "CBS News",
+              "headline": "Venezuela opposition leader María Corina Machado returns to country",
+              "article_id": 904,
+              "is_opinion": false,
+              "published_at": "2026-10-26T02:27:34+00:00",
+              "allsides_rating": "lean_left"
+            }
+          ]
+        },
+        "widely_reported": [
+          {
+            "text": "Machado returned to Venezuela after about 10 months in exile.",
+            "source_ids": [
+              2358,
+              466,
+              3011
+            ]
+          },
+          {
+            "text": "Machado wrote \"I am here. With you.\" on social media.",
+            "source_ids": [
+              3635,
+              2358,
+              2624,
+              331
+            ]
+          }
+        ],
+        "analysis_opinion": [],
+        "reported_by_some": [
+          {
+            "text": "Some outlets reported that Machado left Venezuela in December with a private U.S. rescue team.",
+            "source_ids": [
+              904,
+              2358
+            ]
+          }
+        ]
+      },
+      "sources": [
+        {
+          "url": "https://www.csmonitor.com/World/Americas/2026/1025/venezuela-machado-exile-maduro-rodriguez?icid=rss",
+          "outlet": "The Christian Science Monitor",
+          "headline": "Venezuela’s Machado returns from exile, as doubts over democracy deepen",
+          "article_id": 2473,
+          "is_opinion": false,
+          "published_at": "2026-10-25T21:05:22+00:00",
+          "allsides_rating": "center"
+        },
+        {
+          "url": "https://www.cbsnews.com/news/venezuela-opposition-maria-corina-machado-return/",
+          "outlet": "CBS News",
+          "headline": "Venezuela opposition leader María Corina Machado returns to country",
+          "article_id": 904,
+          "is_opinion": false,
+          "published_at": "2026-10-26T02:27:34+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.bbc.co.uk/news/articles/cq8ez592pp0eo?at_medium=RSS&at_campaign=rss",
+          "outlet": "BBC News",
+          "headline": "Venezuelan opposition leader María Machado returns after months in exile",
+          "article_id": 7878,
+          "is_opinion": false,
+          "published_at": "2026-10-26T03:05:22+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://redstate.com/wardclark/2026/10/25/machado-back-in-venezuela-i-am-here-with-you-n2208605",
+          "outlet": "RedState",
+          "headline": "Machado Back in Venezuela: ‘I Am Here. With You.’",
+          "article_id": 3635,
+          "is_opinion": false,
+          "published_at": "2026-10-25T19:57:51+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://thehill.com/policy/international/6170833-machado-returns-venezuela/",
+          "outlet": "The Hill",
+          "headline": "Machado returns to Venezuela after 10 months of exile",
+          "article_id": 2358,
+          "is_opinion": false,
+          "published_at": "2026-10-25T17:41:29+00:00",
+          "allsides_rating": "center"
+        },
+        {
+          "url": "https://www.nytimes.com/2026/10/25/world/americas/machado-venezuela-return.html",
+          "outlet": "The New York Times",
+          "headline": "María Corina Machado Returns to Venezuela",
+          "article_id": 466,
+          "is_opinion": false,
+          "published_at": "2026-10-26T00:32:49+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.japantimes.co.jp/news/2026/10/26/world/machado-venezuela-return/",
+          "outlet": "The Japan Times",
+          "headline": "Machado returns to Venezuela to urge democratic transition",
+          "article_id": 9275,
+          "is_opinion": false,
+          "published_at": "2026-10-26T00:22:00+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://nypost.com/2026/10/25/world-news/venezuelan-opposition-leader-maria-corina-machado-returns/",
+          "outlet": "New York Post",
+          "headline": "Venezuelan opposition leader María Corina Machado returns to Venezuela from exile for first time since Maduro’s ouster",
+          "article_id": 2624,
+          "is_opinion": false,
+          "published_at": "2026-10-25T19:38:58+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://abcnews.com/International/wireStory/venezuelas-opposition-leader-machado-returns-after-months-exile-137555261",
+          "outlet": "ABC News",
+          "headline": "Venezuela opposition leader Machado returns after months in exile",
+          "article_id": 1144,
+          "is_opinion": false,
+          "published_at": "2026-10-25T18:26:22+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.ft.com/content/f691e41e-dd01-4ac0-ade7-5f7ca23d6135?syn-25a6b1a6=1",
+          "outlet": "Financial Times",
+          "headline": "Venezuelan opposition leader Machado returns from exile",
+          "article_id": 9548,
+          "is_opinion": false,
+          "published_at": "2026-10-25T21:55:32+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.foxnews.com/world/venezuelan-opposition-leader-maria-corina-machado-surprise-return-home-after-nearly-year-abroad",
+          "outlet": "Fox News",
+          "headline": "Venezuelan opposition leader María Corina Machado makes surprise return home after nearly a year abroad",
+          "article_id": 3011,
+          "is_opinion": false,
+          "published_at": "2026-10-25T17:47:02+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://www.npr.org/2026/10/25/nx-s1-6016222/venezuela-maria-corina-machado-leader-returns-exile",
+          "outlet": "NPR",
+          "headline": "Venezuela's opposition leader María Corina Machado returns after months in exile",
+          "article_id": 331,
+          "is_opinion": false,
+          "published_at": "2026-10-25T16:18:41+00:00",
+          "allsides_rating": "lean_left"
+        }
+      ],
+      "ai_label": "AI-generated from 12 sources",
+      "category": "world",
+      "glossary": [],
+      "headline": {
+        "text": "Machado returns to Venezuela after nearly 10 months in exile",
+        "source_ids": [
+          2358,
+          466,
+          3011
+        ]
+      },
+      "timeline": [
+        {
+          "date": "2025",
+          "event": "Machado was awarded the 2025 Nobel Peace Prize.",
+          "source_ids": [
+            904,
+            2358
+          ]
+        },
+        {
+          "date": "2025-12",
+          "event": "Machado left Venezuela to accept the 2025 Nobel Peace Prize in Norway.",
+          "source_ids": [
+            904,
+            7878,
+            2358
+          ]
+        },
+        {
+          "date": "2026-10-25",
+          "event": "Machado returned to Venezuela.",
+          "source_ids": [
+            2473,
+            2358,
+            1144,
+            331
+          ]
+        }
+      ],
+      "verified": false,
+      "viz_data": {
+        "chart": null,
+        "places": []
+      },
+      "viz_hint": "timeline",
+      "key_facts": [
+        {
+          "text": "Machado is a 2025 Nobel Peace Prize recipient.",
+          "source_ids": [
+            2358
+          ]
+        },
+        {
+          "text": "She left Venezuela in December with a private U.S. rescue team.",
+          "source_ids": [
+            904,
+            2358
+          ]
+        },
+        {
+          "text": "She had been in exile for 10 months.",
+          "source_ids": [
+            2358
+          ]
+        },
+        {
+          "text": "Machado had left just a month before the U.S. government seized Venezuelan President Nicolás Maduro.",
+          "source_ids": [
+            7878
+          ]
+        },
+        {
+          "text": "Edmundo González vows to join her and push for democratic elections.",
+          "source_ids": [
+            3011
+          ]
+        }
+      ],
+      "background": [
+        {
+          "text": "Machado left Venezuela in December to accept the 2025 Nobel Peace Prize in Norway.",
+          "source_ids": [
+            904,
+            2358
+          ]
+        },
+        {
+          "text": "Machado had left just a month before the U.S. government seized Venezuelan President Nicolás Maduro.",
+          "source_ids": [
+            7878
+          ]
+        }
+      ],
+      "cluster_id": 1765,
+      "confidence": {
+        "spectrum": {
+          "right": 4,
+          "center": 2,
+          "lean_left": 4,
+          "not_rated": 9
+        },
+        "developing": true,
+        "outlet_count": 19,
+        "article_count": 23
+      },
+      "whats_next": [
+        {
+          "text": "Edmundo González vows to join Machado and push for democratic elections, Fox News reported.",
+          "source_ids": [
+            3011
+          ]
+        }
+      ],
+      "headline_label": "Throughline headline",
+      "schema_version": 1,
+      "why_it_matters": [
+        {
+          "text": "Her return could complicate the Trump administration's strategy for Venezuela, according to The Japan Times.",
+          "source_ids": [
+            9275
+          ]
+        },
+        {
+          "text": "The New York Times reported that she came back to challenge leaders who have sidelined her and to press for new elections.",
+          "source_ids": [
+            466
+          ]
+        }
+      ],
+      "rank": 2,
+      "tier": "full",
+      "status": "draft"
+    },
+    {
+      "brief": [
+        {
+          "text": "Elon Musk said Ukraine's military violated Starlink terms of service by using the service for offensive drone strikes.",
+          "source_ids": [
+            2627,
+            1148,
+            3765,
+            7879,
+            3045
+          ]
+        },
+        {
+          "text": "Ukraine disputed the claim, saying commercial Starlink limits prevented medium- and long-range strike use.",
+          "source_ids": [
+            2127,
+            9221
+          ]
+        },
+        {
+          "text": "Ukraine's access to Starlink and Starshield has been restored to previous speeds, according to President Volodymyr Zelenskyy.",
+          "source_ids": [
+            65
+          ]
+        }
+      ],
+      "framing": {
+        "representative": {
+          "widely_reported": [
+            {
+              "url": "https://abcnews.com/International/wireStory/ukraine-disputes-elon-musks-claim-military-violated-starlinks-137552738",
+              "outlet": "ABC News",
+              "headline": "Ukraine disputes Musk's claim that its military violated Starlink's terms of service",
+              "article_id": 1148,
+              "is_opinion": false,
+              "published_at": "2026-10-25T16:55:31+00:00",
+              "allsides_rating": "lean_left"
+            },
+            {
+              "url": "https://www.cnbc.com/2026/10/25/ukraine-musk-starlink-terms-dispute.html",
+              "outlet": "CNBC",
+              "headline": "Ukraine disputes Elon Musk’s claim that its military violated Starlink terms during drone operations",
+              "article_id": 2127,
+              "is_opinion": false,
+              "published_at": "2026-10-25T18:18:49+00:00",
+              "allsides_rating": "lean_left"
+            }
+          ],
+          "analysis_opinion": [],
+          "reported_by_some": [
+            {
+              "url": "https://techcrunch.com/2026/10/24/starlink-seems-to-be-working-normally-again-in-ukraine/",
+              "outlet": "TechCrunch",
+              "headline": "Starlink seems to be working normally again in Ukraine",
+              "article_id": 4033,
+              "is_opinion": false,
+              "published_at": "2026-10-24T20:46:34+00:00",
+              "allsides_rating": "center"
+            },
+            {
+              "url": "https://www.thedailybeast.com/pentagon-pete-hegseth-hit-with-demand-to-explain-military-starlink-fiasco",
+              "outlet": "The Daily Beast",
+              "headline": "Pentagon Pete Hit With Demand to Explain Military Fiasco",
+              "article_id": 210,
+              "is_opinion": false,
+              "published_at": "2026-10-25T20:04:19+00:00",
+              "allsides_rating": "left"
+            }
+          ]
+        },
+        "widely_reported": [
+          {
+            "text": "Musk said Ukraine's military violated Starlink terms of service by using the service for offensive drone strikes.",
+            "source_ids": [
+              2627,
+              1148,
+              3765,
+              7879,
+              3045
+            ]
+          },
+          {
+            "text": "Ukraine disputes Musk's claim that its military violated Starlink terms.",
+            "source_ids": [
+              2127,
+              9221,
+              1148
+            ]
+          }
+        ],
+        "analysis_opinion": [],
+        "reported_by_some": [
+          {
+            "text": "Some outlets reported that Musk ordered SpaceX to throttle Ukraine's Starlink access.",
+            "source_ids": [
+              4033
+            ]
+          },
+          {
+            "text": "Adam Schiff said that somebody is lying about the Starlink restrictions.",
+            "source_ids": [
+              210
+            ]
+          }
+        ]
+      },
+      "sources": [
+        {
+          "url": "https://thehill.com/policy/technology/6170777-jason-crow-criticizes-elon-musk-starlink-control-ukraine/",
+          "outlet": "The Hill",
+          "headline": "Crow: Elon Musk having control to cut off Starlink to Ukraine is 'beyond disturbing to me'",
+          "article_id": 2388,
+          "is_opinion": false,
+          "published_at": "2026-10-25T19:30:00+00:00",
+          "allsides_rating": "center"
+        },
+        {
+          "url": "https://www.cnbc.com/2026/10/25/ukraine-musk-starlink-terms-dispute.html",
+          "outlet": "CNBC",
+          "headline": "Ukraine disputes Elon Musk’s claim that its military violated Starlink terms during drone operations",
+          "article_id": 2127,
+          "is_opinion": false,
+          "published_at": "2026-10-25T18:18:49+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://dailycaller.com/2026/10/25/musk-closes-starlink-loophole-ukraine-drone-strikes",
+          "outlet": "The Daily Caller",
+          "headline": "‘May You Burn In Hell’: Elon Musk Clears The Air Over Ukraine’s Use Of Starlink To Wage War",
+          "article_id": 3293,
+          "is_opinion": false,
+          "published_at": "2026-10-25T15:03:29+00:00",
+          "allsides_rating": "lean_right"
+        },
+        {
+          "url": "https://www.thedailybeast.com/pentagon-pete-hegseth-hit-with-demand-to-explain-military-starlink-fiasco",
+          "outlet": "The Daily Beast",
+          "headline": "Pentagon Pete Hit With Demand to Explain Military Fiasco",
+          "article_id": 210,
+          "is_opinion": false,
+          "published_at": "2026-10-25T20:04:19+00:00",
+          "allsides_rating": "left"
+        },
+        {
+          "url": "https://timesofindia.indiatimes.com/world/middle-east/physically-impossible-ukraine-hits-back-at-musk-over-starlink-restrictions-disputes-offensive-drone-strike-claim/articleshow/135201379.cms",
+          "outlet": "The Times of India",
+          "headline": "‘Physically impossible’: Ukraine disputes Musk’s Starlink claim drone strike claim",
+          "article_id": 9221,
+          "is_opinion": false,
+          "published_at": "2026-10-26T02:56:47+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://nypost.com/2026/10/25/us-news/musk-confirms-spacex-was-behind-thwarting-of-ukraines-starlink-access-evil-warmongers/",
+          "outlet": "New York Post",
+          "headline": "Musk confirms SpaceX was behind thwarting of Ukraine’s Starlink access: ‘Evil warmongers’",
+          "article_id": 2627,
+          "is_opinion": false,
+          "published_at": "2026-10-25T15:20:17+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://techcrunch.com/2026/10/24/starlink-seems-to-be-working-normally-again-in-ukraine/",
+          "outlet": "TechCrunch",
+          "headline": "Starlink seems to be working normally again in Ukraine",
+          "article_id": 4033,
+          "is_opinion": false,
+          "published_at": "2026-10-24T20:46:34+00:00",
+          "allsides_rating": "center"
+        },
+        {
+          "url": "https://abcnews.com/International/wireStory/ukraine-disputes-elon-musks-claim-military-violated-starlinks-137552738",
+          "outlet": "ABC News",
+          "headline": "Ukraine disputes Musk's claim that its military violated Starlink's terms of service",
+          "article_id": 1148,
+          "is_opinion": false,
+          "published_at": "2026-10-25T16:55:31+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://justthenews.com/nation/technology/musk-says-ukraine-military-violated-starlink-terms-service-leading-speed-limits?utm_source=justthenews.com&utm_medium=feed&utm_campaign=external-news-aggregators",
+          "outlet": "Just The News",
+          "headline": "Musk says Ukraine military 'violated Starlink terms of service,' leading to speed limits",
+          "article_id": 3765,
+          "is_opinion": false,
+          "published_at": "2026-10-25T00:00:00+00:00",
+          "allsides_rating": "lean_right"
+        },
+        {
+          "url": "https://www.huffpost.com/entry/russia-ukraine-war-starlink-elon-musk_n_6add1961e4b027da9ae6dcb0",
+          "outlet": "HuffPost",
+          "headline": "Musk Says He Was Behind Starlink Speed Restriction After Service In Ukraine Is Restored",
+          "article_id": 65,
+          "is_opinion": false,
+          "published_at": "2026-10-24T20:51:53+00:00",
+          "allsides_rating": "left"
+        },
+        {
+          "url": "https://www.bbc.co.uk/news/articles/cvx28ljp8n4xo?at_medium=RSS&at_campaign=rss",
+          "outlet": "BBC News",
+          "headline": "Musk says SpaceX restricted Ukraine's Starlink connection as service restored",
+          "article_id": 7879,
+          "is_opinion": false,
+          "published_at": "2026-10-25T09:00:00+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.foxnews.com/politics/ukraines-starlink-restored-elon-musk-claims-kyiv-violated-terms-service-kill-people",
+          "outlet": "Fox News",
+          "headline": "Ukraine's Starlink restored as Elon Musk claims Kyiv violated terms of service 'to kill people'",
+          "article_id": 3045,
+          "is_opinion": false,
+          "published_at": "2026-10-25T00:24:35+00:00",
+          "allsides_rating": "right"
+        }
+      ],
+      "ai_label": "AI-generated from 12 sources",
+      "category": "world",
+      "glossary": [
+        {
+          "term": "Starshield",
+          "definition": "A defense-focused variant of the Starlink network, according to The Daily Beast.",
+          "source_ids": [
+            210
+          ]
+        }
+      ],
+      "headline": {
+        "text": "Musk says Ukraine violated Starlink terms; Ukraine disputes the claim",
+        "source_ids": [
+          2627,
+          1148,
+          2127
+        ]
+      },
+      "timeline": [
+        {
+          "date": "2026-10-24",
+          "event": "Starlink service in Ukraine restored to previous speeds after Musk-linked speed restriction.",
+          "source_ids": [
+            4033,
+            65
+          ]
+        },
+        {
+          "date": "2026-10-24",
+          "event": "Musk posted that using Starlink for offensive drone strikes has never been allowed.",
+          "source_ids": [
+            2627
+          ]
+        }
+      ],
+      "verified": false,
+      "viz_data": {
+        "chart": null,
+        "places": []
+      },
+      "viz_hint": "timeline",
+      "key_facts": [
+        {
+          "text": "Musk said Starlink is critical to Ukraine's defense and the front line would collapse immediately if it were turned off.",
+          "source_ids": [
+            3765
+          ]
+        },
+        {
+          "text": "Musk said the loophole that allowed the strikes was closed last week.",
+          "source_ids": [
+            3293,
+            3045
+          ]
+        },
+        {
+          "text": "Ukraine's access to Starlink and Starshield has been restored to previous speeds.",
+          "source_ids": [
+            65
+          ]
+        }
+      ],
+      "background": [
+        {
+          "text": "Musk said Starlink restrictions were the reason for the speed limits on Ukraine's service.",
+          "source_ids": [
+            3765,
+            65
+          ]
+        },
+        {
+          "text": "A Wall Street Journal report said Trump reached out directly to Musk and demanded he undo the slowdown on Starshield.",
+          "source_ids": [
+            210
+          ]
+        }
+      ],
+      "cluster_id": 79,
+      "confidence": {
+        "spectrum": {
+          "left": 2,
+          "right": 4,
+          "center": 3,
+          "lean_left": 5,
+          "not_rated": 2,
+          "lean_right": 3
+        },
+        "developing": true,
+        "outlet_count": 19,
+        "article_count": 30
+      },
+      "whats_next": [
+        {
+          "text": "Sen. Adam Schiff demanded that Defense Secretary Pete Hegseth testify on Capitol Hill about the removal of speed restrictions.",
+          "source_ids": [
+            210
+          ]
+        }
+      ],
+      "headline_label": "Throughline headline",
+      "schema_version": 1,
+      "why_it_matters": [
+        {
+          "text": "Ukrainian officials said the speed restrictions significantly impaired their drone operations.",
+          "source_ids": [
+            9221
+          ]
+        },
+        {
+          "text": "Rep. Jason Crow said Musk having the ability to cut off Starlink access to Ukraine is beyond disturbing to him.",
+          "source_ids": [
+            2388
+          ]
+        }
+      ],
+      "rank": 3,
+      "tier": "full",
+      "status": "draft"
+    },
+    {
+      "brief": [
+        {
+          "text": "Serbia held a parliamentary election on October 25, 2026, which was widely seen as a test of the student-led protest movement against Aleksandar Vučić.",
+          "source_ids": [
+            109,
+            3823,
+            8558
+          ]
+        },
+        {
+          "text": "Vučić conceded defeat in a speech, saying \"it is clear that we have lost these elections.\"",
+          "source_ids": [
+            467,
+            7876,
+            8558
+          ]
+        },
+        {
+          "text": "Vučić said preliminary results suggest the Student List could win 135 to 140 of the 250 seats, and final results are not yet available.",
+          "source_ids": [
+            3823,
+            8558
+          ]
+        }
+      ],
+      "framing": {
+        "representative": {
+          "widely_reported": [
+            {
+              "url": "https://www.nytimes.com/2026/10/25/world/europe/serbia-vucic-election-defeat.html",
+              "outlet": "The New York Times",
+              "headline": "Aleksandar Vucic Concedes Defeat in Serbian Election",
+              "article_id": 467,
+              "is_opinion": false,
+              "published_at": "2026-10-26T01:57:24+00:00",
+              "allsides_rating": "lean_left"
+            },
+            {
+              "url": "https://www.theguardian.com/world/2026/oct/25/serbian-leader-aleksandar-vucic-concedes-defeat-in-fiercely-contested-parliamentary-election",
+              "outlet": "The Guardian",
+              "headline": "Serbian leader Aleksandar Vučić ousted by student movement in seismic election",
+              "article_id": 8558,
+              "is_opinion": false,
+              "published_at": "2026-10-25T23:42:32+00:00",
+              "allsides_rating": "not_rated"
+            }
+          ],
+          "analysis_opinion": [],
+          "reported_by_some": [
+            {
+              "url": "https://www.cbsnews.com/news/serbia-election-aleksandar-vucic-concedes-defeat/",
+              "outlet": "CBS News",
+              "headline": "Vucic concedes defeat in Serbia's parliamentary election",
+              "article_id": 912,
+              "is_opinion": false,
+              "published_at": "2026-10-25T21:30:57+00:00",
+              "allsides_rating": "lean_left"
+            },
+            {
+              "url": "https://www.csmonitor.com/World/Europe/2026/1023/serbia-election-vucic-student-list-corruption-protests?icid=rss",
+              "outlet": "The Christian Science Monitor",
+              "headline": "For Serbia’s students, years of protest come down to this weekend’s elections",
+              "article_id": 2480,
+              "is_opinion": false,
+              "published_at": "2026-10-23T18:00:11+00:00",
+              "allsides_rating": "center"
+            }
+          ]
+        },
+        "widely_reported": [
+          {
+            "text": "Vučić conceded defeat in the election.",
+            "source_ids": [
+              467,
+              7876,
+              3362,
+              912,
+              61,
+              3823,
+              9552,
+              8558
+            ]
+          },
+          {
+            "text": "The student-backed movement won the most votes according to preliminary results.",
+            "source_ids": [
+              9114,
+              3823,
+              8558
+            ]
+          }
+        ],
+        "analysis_opinion": [],
+        "reported_by_some": [
+          {
+            "text": "Some outlets reported that Vučić denounced the student movement as a foreign-led attempt to unseat him.",
+            "source_ids": [
+              912
+            ]
+          },
+          {
+            "text": "Some outlets described Vučić's party as widely regarded as corrupt.",
+            "source_ids": [
+              2480
+            ]
+          },
+          {
+            "text": "Mother Jones said the result broadly resembles Hungarian opposition leader Péter Magyar's April defeat of a longtime leader.",
+            "source_ids": [
+              109
+            ]
+          }
+        ]
+      },
+      "sources": [
+        {
+          "url": "https://www.csmonitor.com/World/Europe/2026/1023/serbia-election-vucic-student-list-corruption-protests?icid=rss",
+          "outlet": "The Christian Science Monitor",
+          "headline": "For Serbia’s students, years of protest come down to this weekend’s elections",
+          "article_id": 2480,
+          "is_opinion": false,
+          "published_at": "2026-10-23T18:00:11+00:00",
+          "allsides_rating": "center"
+        },
+        {
+          "url": "https://www.nytimes.com/2026/10/25/world/europe/serbia-vucic-election-defeat.html",
+          "outlet": "The New York Times",
+          "headline": "Aleksandar Vucic Concedes Defeat in Serbian Election",
+          "article_id": 467,
+          "is_opinion": false,
+          "published_at": "2026-10-26T01:57:24+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.motherjones.com/politics/2026/10/serbia-vucic-concedes/",
+          "outlet": "Mother Jones",
+          "headline": "A Serbian Nationalist Leader Who Courted MAGA Just Lost in a Landslide",
+          "article_id": 109,
+          "is_opinion": false,
+          "published_at": "2026-10-25T23:43:16+00:00",
+          "allsides_rating": "left"
+        },
+        {
+          "url": "https://www.bbc.co.uk/news/articles/cw5yn3xlprpmo?at_medium=RSS&at_campaign=rss",
+          "outlet": "BBC News",
+          "headline": "Elation across Serbia after veteran ruler Vučić concedes to student-led protest movement",
+          "article_id": 7876,
+          "is_opinion": false,
+          "published_at": "2026-10-26T01:07:05+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.newsmax.com/newsfront/serbia-election-aleksandar-vucic/2026/10/25/id/1273971",
+          "outlet": "Newsmax",
+          "headline": "Serbia's Vucic Concedes Defeat as Student-Led Movement Sweeps Eastern Europe",
+          "article_id": 3362,
+          "is_opinion": false,
+          "published_at": "2026-10-25T21:14:58+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://www.cbsnews.com/news/serbia-election-aleksandar-vucic-concedes-defeat/",
+          "outlet": "CBS News",
+          "headline": "Vucic concedes defeat in Serbia's parliamentary election",
+          "article_id": 912,
+          "is_opinion": false,
+          "published_at": "2026-10-25T21:30:57+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.huffpost.com/entry/serbia-election-vucic-defeat_n_6ade6ae3e4b06b41b48d5c8e",
+          "outlet": "HuffPost",
+          "headline": "Serbia’s Strongman Leader Vucic Concedes Defeat To Student-led Movement In Seismic Political Shift",
+          "article_id": 61,
+          "is_opinion": false,
+          "published_at": "2026-10-25T20:50:27+00:00",
+          "allsides_rating": "left"
+        },
+        {
+          "url": "https://www.aljazeera.com/video/newsfeed/2026/10/26/serbia-celebrates-historic-election-win-for-student-backed-movement?traffic_source=rss",
+          "outlet": "Al Jazeera English",
+          "headline": "Serbia celebrates historic election win for student-backed movement",
+          "article_id": 9114,
+          "is_opinion": false,
+          "published_at": "2026-10-26T00:58:21+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://ijr.com/discover/politics-2026-10-25-vucic-says-studentbacked-list-serbia-election-dd82148f?utm_source=rss&utm_medium=syndication&utm_content=story_dd82148f-83c0-45e9-beaf-2c50308a5f08",
+          "outlet": "Independent Journal Review",
+          "headline": "Vučić Says Student-Backed List Won Serbia Election",
+          "article_id": 3823,
+          "is_opinion": false,
+          "published_at": "2026-10-25T20:50:17+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://www.ft.com/content/546f21f5-22d3-4696-8371-7bef8c0410b3?syn-25a6b1a6=1",
+          "outlet": "Financial Times",
+          "headline": "Serbia’s ex-president Vučić concedes defeat to Student List in parliamentary poll",
+          "article_id": 9552,
+          "is_opinion": false,
+          "published_at": "2026-10-26T00:38:57+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.foxnews.com/world/serbias-longtime-leader-faces-biggest-political-test-students-mount-election-challenge",
+          "outlet": "Fox News",
+          "headline": "Serbia’s longtime leader faces biggest political test as students mount election challenge",
+          "article_id": 3025,
+          "is_opinion": false,
+          "published_at": "2026-10-23T14:03:19+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://www.theguardian.com/world/2026/oct/25/serbian-leader-aleksandar-vucic-concedes-defeat-in-fiercely-contested-parliamentary-election",
+          "outlet": "The Guardian",
+          "headline": "Serbian leader Aleksandar Vučić ousted by student movement in seismic election",
+          "article_id": 8558,
+          "is_opinion": false,
+          "published_at": "2026-10-25T23:42:32+00:00",
+          "allsides_rating": "not_rated"
+        }
+      ],
+      "ai_label": "AI-generated from 12 sources",
+      "category": "world",
+      "glossary": [],
+      "headline": {
+        "text": "Serbia's longtime leader Vučić concedes election defeat to student-backed list",
+        "source_ids": [
+          467,
+          7876,
+          3823,
+          9552,
+          8558
+        ]
+      },
+      "timeline": [
+        {
+          "date": "2026-04",
+          "event": "Hungarian opposition leader Péter Magyar defeated a longtime leader, according to Mother Jones.",
+          "source_ids": [
+            109
+          ]
+        },
+        {
+          "date": "2026-10-23",
+          "event": "Vučić resigned as president to run for prime minister, according to Fox News.",
+          "source_ids": [
+            3025
+          ]
+        },
+        {
+          "date": "2026-10-25",
+          "event": "Serbian parliamentary election held; Vučić conceded defeat.",
+          "source_ids": [
+            109,
+            3362,
+            3823,
+            8558
+          ]
+        }
+      ],
+      "verified": false,
+      "viz_data": {
+        "chart": null,
+        "places": []
+      },
+      "viz_hint": "timeline",
+      "key_facts": [
+        {
+          "text": "The election was held on October 25, 2026.",
+          "source_ids": [
+            3823
+          ]
+        },
+        {
+          "text": "The Student List was estimated at 135 to 140 seats, according to Vučić's estimate.",
+          "source_ids": [
+            3823
+          ]
+        },
+        {
+          "text": "Vučić's coalition was estimated at about 105 seats.",
+          "source_ids": [
+            3823
+          ]
+        },
+        {
+          "text": "The parliament has 250 seats.",
+          "source_ids": [
+            3823,
+            8558
+          ]
+        },
+        {
+          "text": "Near-record voter turnout was reported.",
+          "source_ids": [
+            9552,
+            8558
+          ]
+        }
+      ],
+      "background": [
+        {
+          "text": "Vučić resigned as president to run for prime minister, facing his biggest electoral challenge in 14 years.",
+          "source_ids": [
+            3025
+          ]
+        },
+        {
+          "text": "The student-led movement had spent two years protesting against Vučić's government.",
+          "source_ids": [
+            8558
+          ]
+        }
+      ],
+      "cluster_id": 815,
+      "confidence": {
+        "spectrum": {
+          "left": 2,
+          "right": 3,
+          "center": 1,
+          "lean_left": 3,
+          "not_rated": 8
+        },
+        "developing": true,
+        "outlet_count": 17,
+        "article_count": 23
+      },
+      "whats_next": [
+        {
+          "text": "Final election results have not yet been announced.",
+          "source_ids": [
+            8558
+          ]
+        }
+      ],
+      "headline_label": "Throughline headline",
+      "schema_version": 1,
+      "why_it_matters": [
+        {
+          "text": "The result could end the 12-year rule of Vučić and give the student movement a majority in the 250-seat parliament.",
+          "source_ids": [
+            7876,
+            8558
+          ]
+        },
+        {
+          "text": "Supporters of the student movement celebrated across Belgrade after the result.",
+          "source_ids": [
+            9114,
+            7876
+          ]
+        }
+      ],
+      "rank": 4,
+      "tier": "full",
+      "status": "draft"
+    },
+    {
+      "brief": [
+        {
+          "text": "Luiz Inácio Lula da Silva won Brazil's presidential runoff for a fourth term, according to the electoral court.",
+          "source_ids": [
+            465,
+            905,
+            8543
+          ]
+        },
+        {
+          "text": "His opponent, Flávio Bolsonaro, called for the election to be annulled and said it is impossible to concede.",
+          "source_ids": [
+            465,
+            8543
+          ]
+        },
+        {
+          "text": "The electoral court said Lula held an unassailable lead with 100% of the vote counted.",
+          "source_ids": [
+            905
+          ]
+        }
+      ],
+      "framing": {
+        "representative": {
+          "widely_reported": [
+            {
+              "url": "https://www.nytimes.com/live/2026/10/25/world/brazil-election",
+              "outlet": "The New York Times",
+              "headline": "Brazil Live Updates: Lula Wins Re-Election as Bolsonaro Rejects Result",
+              "article_id": 465,
+              "is_opinion": false,
+              "published_at": "2026-10-26T03:06:40+00:00",
+              "allsides_rating": "lean_left"
+            },
+            {
+              "url": "https://www.cbsnews.com/news/brazil-presidential-runoff-lula-flavio-bolsonaro/",
+              "outlet": "CBS News",
+              "headline": "Lula wins fourth term as Brazil's president",
+              "article_id": 905,
+              "is_opinion": false,
+              "published_at": "2026-10-26T02:11:02+00:00",
+              "allsides_rating": "lean_left"
+            }
+          ],
+          "analysis_opinion": [
+            {
+              "url": "https://hotair.com/tree-hugging-sister/2026/10/25/the-fix-is-in-judge-who-was-lulas-personal-lawyer-extends-brazils-voting-for-two-more-hours-n3820312",
+              "outlet": "Hot Air",
+              "headline": "The Fix Is In: Judge Who Was Lula's Personal Lawyer Extends Brazil's Voting for Two More Hours WELP",
+              "article_id": 3589,
+              "is_opinion": false,
+              "published_at": "2026-10-25T22:40:00+00:00",
+              "allsides_rating": "lean_right"
+            }
+          ],
+          "reported_by_some": [
+            {
+              "url": "https://www.cnbc.com/2026/10/26/brazil-lula-win-presidential-election-runoff-vote.html",
+              "outlet": "CNBC",
+              "headline": "Brazil's Lula wins historic presidential election; Bolsonaro reportedly refuses to concede",
+              "article_id": 2123,
+              "is_opinion": false,
+              "published_at": "2026-10-26T02:18:09+00:00",
+              "allsides_rating": "lean_left"
+            },
+            {
+              "url": "https://www.breitbart.com/latin-america/2026/10/25/marxist-lula-beats-bolsonaro-brazil-presidential-election-unprecedented-voting-time-extension/",
+              "outlet": "Breitbart News",
+              "headline": "Marxist Lula Beats Bolsonaro in Brazil Presidential Election After Unprecedented Voting Time Extension",
+              "article_id": 3313,
+              "is_opinion": false,
+              "published_at": "2026-10-26T00:40:11+00:00",
+              "allsides_rating": "right"
+            }
+          ]
+        },
+        "widely_reported": [
+          {
+            "text": "Lula won the presidential runoff and was elected to a fourth term.",
+            "source_ids": [
+              465,
+              9110,
+              3313,
+              2123,
+              3767,
+              9262,
+              3009,
+              905,
+              8543
+            ]
+          }
+        ],
+        "analysis_opinion": [
+          {
+            "text": "A Hot Air post called the voting extension fixed, pointing to a judge who was once Lula's personal lawyer.",
+            "source_ids": [
+              3589
+            ]
+          }
+        ],
+        "reported_by_some": [
+          {
+            "text": "Some outlets reported that a judge extended voting in Brazil by two more hours.",
+            "source_ids": [
+              3589,
+              3313,
+              3767
+            ]
+          },
+          {
+            "text": "Some outlets reported that Bolsonaro refuses to concede the election.",
+            "source_ids": [
+              2123
+            ]
+          },
+          {
+            "text": "Breitbart reported that both sides alleged irregularities in the race.",
+            "source_ids": [
+              3313
+            ]
+          },
+          {
+            "text": "Al Jazeera described the result as tied to voting confusion and allegations of interference.",
+            "source_ids": [
+              9110
+            ]
+          }
+        ]
+      },
+      "sources": [
+        {
+          "url": "https://www.nytimes.com/live/2026/10/25/world/brazil-election",
+          "outlet": "The New York Times",
+          "headline": "Brazil Live Updates: Lula Wins Re-Election as Bolsonaro Rejects Result",
+          "article_id": 465,
+          "is_opinion": false,
+          "published_at": "2026-10-26T03:06:40+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://hotair.com/tree-hugging-sister/2026/10/25/the-fix-is-in-judge-who-was-lulas-personal-lawyer-extends-brazils-voting-for-two-more-hours-n3820312",
+          "outlet": "Hot Air",
+          "headline": "The Fix Is In: Judge Who Was Lula's Personal Lawyer Extends Brazil's Voting for Two More Hours WELP",
+          "article_id": 3589,
+          "is_opinion": false,
+          "published_at": "2026-10-25T22:40:00+00:00",
+          "allsides_rating": "lean_right"
+        },
+        {
+          "url": "https://www.huffpost.com/entry/ap-lt-brazil-election-lula-bolsonaro_n_6adde30ae4b06b41b48d345f",
+          "outlet": "HuffPost",
+          "headline": "Brazil Votes In A Tense Lula vs. Bolsonaro Runoff With U.S. Influence Over Latin America At Stake",
+          "article_id": 63,
+          "is_opinion": false,
+          "published_at": "2026-10-25T11:17:17+00:00",
+          "allsides_rating": "left"
+        },
+        {
+          "url": "https://www.aljazeera.com/news/2026/10/26/brazil-election-2026-key-takeaways-from-lulas-historic-win?traffic_source=rss",
+          "outlet": "Al Jazeera English",
+          "headline": "Brazil election 2026: Key takeaways from Lula’s historic win",
+          "article_id": 9110,
+          "is_opinion": false,
+          "published_at": "2026-10-26T02:59:50+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.breitbart.com/latin-america/2026/10/25/marxist-lula-beats-bolsonaro-brazil-presidential-election-unprecedented-voting-time-extension/",
+          "outlet": "Breitbart News",
+          "headline": "Marxist Lula Beats Bolsonaro in Brazil Presidential Election After Unprecedented Voting Time Extension",
+          "article_id": 3313,
+          "is_opinion": false,
+          "published_at": "2026-10-26T00:40:11+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://www.cnbc.com/2026/10/26/brazil-lula-win-presidential-election-runoff-vote.html",
+          "outlet": "CNBC",
+          "headline": "Brazil's Lula wins historic presidential election; Bolsonaro reportedly refuses to concede",
+          "article_id": 2123,
+          "is_opinion": false,
+          "published_at": "2026-10-26T02:18:09+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://justthenews.com/politics-policy/elections/brazil-votes-high-stakes-presidential-runoff-between-lula-and-bolsonaro?utm_source=justthenews.com&utm_medium=feed&utm_campaign=external-news-aggregators",
+          "outlet": "Just The News",
+          "headline": "Lula beats Bolsonaro in Brazil presidential election after judge extends voting by two hours",
+          "article_id": 3767,
+          "is_opinion": false,
+          "published_at": "2026-10-25T00:00:00+00:00",
+          "allsides_rating": "lean_right"
+        },
+        {
+          "url": "https://www.japantimes.co.jp/news/2026/10/26/world/politics/brazil-lula-election-victory/",
+          "outlet": "The Japan Times",
+          "headline": "Brazil’s Lula wins record fourth term in a shock comeback",
+          "article_id": 9262,
+          "is_opinion": false,
+          "published_at": "2026-10-26T02:54:00+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.foxnews.com/world/conservative-wave-hits-roadblock-brazil-lula-holds-off-bolsonaro-challenge",
+          "outlet": "Fox News",
+          "headline": "Conservative wave hits roadblock in Brazil as Lula holds off Bolsonaro challenge",
+          "article_id": 3009,
+          "is_opinion": false,
+          "published_at": "2026-10-26T00:27:54+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://www.cbsnews.com/news/brazil-presidential-runoff-lula-flavio-bolsonaro/",
+          "outlet": "CBS News",
+          "headline": "Lula wins fourth term as Brazil's president",
+          "article_id": 905,
+          "is_opinion": false,
+          "published_at": "2026-10-26T02:11:02+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.theguardian.com/world/live/2026/oct/25/brazil-election-runoff-live-updates-flavio-bolsonaro-lula",
+          "outlet": "The Guardian",
+          "headline": "Brazil runoff live updates: Bolsonaro says it is ‘impossible to concede’ election result after historic Lula win",
+          "article_id": 8543,
+          "is_opinion": false,
+          "published_at": "2026-10-26T02:51:14+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.newsmax.com/politics/brazil-election-flavio-bolsonaro-lula/2026/10/25/id/1273946",
+          "outlet": "Newsmax",
+          "headline": "Bolsonaro to Newsmax: 'Brazil Will Win' in Runoff Election",
+          "article_id": 3393,
+          "is_opinion": false,
+          "published_at": "2026-10-25T13:54:19+00:00",
+          "allsides_rating": "right"
+        }
+      ],
+      "ai_label": "AI-generated from 12 sources",
+      "category": "world",
+      "glossary": [
+        {
+          "term": "Runoff",
+          "definition": "A final election between the two leading candidates when no one wins outright in the first round.",
+          "source_ids": [
+            2123,
+            63
+          ]
+        }
+      ],
+      "headline": {
+        "text": "Lula wins Brazil's presidential runoff; Bolsonaro rejects the result",
+        "source_ids": [
+          465,
+          2123,
+          905,
+          8543
+        ]
+      },
+      "timeline": [
+        {
+          "date": "1989",
+          "event": "Brazil returned to direct presidential elections.",
+          "source_ids": [
+            2123
+          ]
+        },
+        {
+          "date": "2026-10-04",
+          "event": "First round of Brazil's presidential election was held; Flávio Bolsonaro finished ahead of Lula.",
+          "source_ids": [
+            3767
+          ]
+        },
+        {
+          "date": "2026-10-25",
+          "event": "Brazilians voted in the presidential runoff on Sunday.",
+          "source_ids": [
+            63,
+            3393,
+            3313
+          ]
+        }
+      ],
+      "verified": false,
+      "viz_data": {
+        "chart": null,
+        "places": []
+      },
+      "viz_hint": "timeline",
+      "key_facts": [
+        {
+          "text": "Lula won the runoff against Flávio Bolsonaro on Sunday, October 25, 2026.",
+          "source_ids": [
+            3313,
+            63
+          ]
+        },
+        {
+          "text": "In the first round on Oct. 4, Flávio Bolsonaro received 47.03% of valid votes and Lula received 45.16%.",
+          "source_ids": [
+            3767
+          ]
+        },
+        {
+          "text": "CBS News reported that Lula is soon to be 81 years old.",
+          "source_ids": [
+            905
+          ]
+        },
+        {
+          "text": "CNBC reported that this is the first time since 1989 that a candidate won the final runoff after losing the first round.",
+          "source_ids": [
+            2123
+          ]
+        }
+      ],
+      "background": [
+        {
+          "text": "Brazil returned to direct presidential elections in 1989.",
+          "source_ids": [
+            2123
+          ]
+        },
+        {
+          "text": "Flávio Bolsonaro, a senator and son of former President Jair Bolsonaro, finished ahead of Lula in the first round.",
+          "source_ids": [
+            3767
+          ]
+        }
+      ],
+      "cluster_id": 562,
+      "confidence": {
+        "spectrum": {
+          "left": 1,
+          "right": 4,
+          "lean_left": 5,
+          "not_rated": 10,
+          "lean_right": 2
+        },
+        "developing": true,
+        "outlet_count": 22,
+        "article_count": 51
+      },
+      "whats_next": [
+        {
+          "text": "Pablo Souza, the municipal transport secretary, is not expected to return to Brazil until Monday, and the arrest warrant against him could not be carried out, according to the city government.",
+          "source_ids": [
+            8543
+          ]
+        }
+      ],
+      "headline_label": "Throughline headline",
+      "schema_version": 1,
+      "why_it_matters": [
+        {
+          "text": "The result ends a string of conservative election wins in Latin America, according to The New York Times.",
+          "source_ids": [
+            465
+          ]
+        }
+      ],
+      "rank": 5,
+      "tier": "full",
+      "status": "draft"
+    },
+    {
+      "tier": "one_liner",
+      "sources": [
+        {
+          "url": "https://thehill.com/homenews/administration/6171296-donald-trump-abdul-el-sayed-pass-through-metal-detector-to-enter-senate/",
+          "outlet": "The Hill",
+          "headline": "Trump says El-Sayed should have to pass through metal detector to enter Senate",
+          "article_id": 2332,
+          "is_opinion": false,
+          "published_at": "2026-10-25T22:52:30+00:00",
+          "allsides_rating": "center"
+        },
+        {
+          "url": "https://www.nytimes.com/2026/10/25/us/elections/trump-michigan-el-sayed-rogers.html",
+          "outlet": "The New York Times",
+          "headline": "In Islamophobic Rant, Trump Seeks to Stir Republican Base in Michigan",
+          "article_id": 448,
+          "is_opinion": false,
+          "published_at": "2026-10-26T02:26:14+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.salon.com/2026/10/25/obama-warns-of-division-as-trump-attacks-muslim-senate-candidate/",
+          "outlet": "Salon",
+          "headline": "Obama warns of division as Trump attacks Muslim Senate candidate",
+          "article_id": 168,
+          "is_opinion": false,
+          "published_at": "2026-10-25T22:05:14+00:00",
+          "allsides_rating": "left"
+        },
+        {
+          "url": "https://www.aljazeera.com/video/newsfeed/2026/10/26/trump-escalates-anti-muslim-rhetoric-in-fierce-attack-on-el-sayed?traffic_source=rss",
+          "outlet": "Al Jazeera English",
+          "headline": "Trump escalates anti-Muslim rhetoric in fierce attack on El-Sayed",
+          "article_id": 9116,
+          "is_opinion": false,
+          "published_at": "2026-10-26T00:02:55+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://redstate.com/rusty-weiss/2026/10/25/trump-says-el-sayed-would-be-the-only-senator-forced-to-go-through-this-if-hes-elected-n2208613",
+          "outlet": "RedState",
+          "headline": "Trump Says El-Sayed Would Be the Only Senator Forced to Go Through This If He’s Elected",
+          "article_id": 3627,
+          "is_opinion": false,
+          "published_at": "2026-10-25T23:05:00+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://www.cbsnews.com/video/trump-attacks-abdul-el-sayed-michigan-campaign-stop/",
+          "outlet": "CBS News",
+          "headline": "Trump attacks Abdul El-Sayed in Michigan campaign stop",
+          "article_id": 882,
+          "is_opinion": false,
+          "published_at": "2026-10-25T23:42:00+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.scmp.com/news/world/united-states-canada/article/3372097/trump-cites-9/11-urging-michigan-voters-oppose-muslim-senate-candidate-el-sayed",
+          "outlet": "South China Morning Post",
+          "headline": "Trump cites 9/11 in urging Michigan voters to oppose Muslim Senate candidate El-Sayed",
+          "article_id": 9309,
+          "is_opinion": false,
+          "published_at": "2026-10-25T22:29:09+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.newsmax.com/politics/trump-michigan-el-sayed/2026/10/25/id/1273973",
+          "outlet": "Newsmax",
+          "headline": "Trump Rips El-Sayed Over Extremism Claims at Michigan Rally",
+          "article_id": 3377,
+          "is_opinion": false,
+          "published_at": "2026-10-25T22:09:21+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://www.latimes.com/politics/story/2026-10-23/muslims-americanness-abdul-el-sayed",
+          "outlet": "Los Angeles Times",
+          "headline": "Commentary: Muslims have always had to prove our Americanness. Enter Abdul El-Sayed",
+          "article_id": 1573,
+          "is_opinion": false,
+          "published_at": "2026-10-23T10:00:00+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://timesofindia.indiatimes.com/world/us/trump-calls-el-sayed-jihadist-ahead-of-michigan-rally-alleges-sharia-law-push/articleshow/135197552.cms",
+          "outlet": "The Times of India",
+          "headline": "Trump calls El-Sayed ‘jihadist’, alleges mother’s Al-Qaeda links at Michigan rally",
+          "article_id": 9241,
+          "is_opinion": false,
+          "published_at": "2026-10-25T21:21:29+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.dailywire.com/news/the-dangerous-liberal-fantasy-of-abdul-el-sayed-and-the-muslim-brotherhood",
+          "outlet": "The Daily Wire",
+          "headline": "The Dangerous Liberal Fantasy Of Abdul El-Sayed And The Muslim Brotherhood",
+          "article_id": 3516,
+          "is_opinion": false,
+          "published_at": "2026-10-25T04:15:53+00:00",
+          "allsides_rating": "right"
+        }
+      ],
+      "ai_label": "AI-generated from 11 sources",
+      "category": "us",
+      "one_liner": {
+        "text": "President Trump attacked Democratic Senate candidate Abdul El-Sayed at a Michigan rally, calling him a jihadist and linking him to Muslim extremism.",
+        "source_ids": [
+          9309,
+          3377,
+          9241
+        ]
+      },
+      "cluster_id": 136,
+      "confidence": {
+        "spectrum": {
+          "left": 1,
+          "right": 3,
+          "center": 1,
+          "lean_left": 3,
+          "not_rated": 3
+        },
+        "developing": true,
+        "outlet_count": 11,
+        "article_count": 12
+      },
+      "schema_version": 1,
+      "rank": 6,
+      "status": "draft"
+    },
+    {
+      "tier": "one_liner",
+      "sources": [
+        {
+          "url": "https://thehill.com/policy/sports-gaming/6170108-nfl-paris-fan-zone-closed/",
+          "outlet": "The Hill",
+          "headline": "NFL forced to close 'NFL House' pop-up due to Paris protests",
+          "article_id": 2362,
+          "is_opinion": false,
+          "published_at": "2026-10-24T16:50:49+00:00",
+          "allsides_rating": "center"
+        },
+        {
+          "url": "https://www.cbsnews.com/video/10252026-cbs-weekend-news/",
+          "outlet": "CBS News",
+          "headline": "10/25: CBS Weekend News",
+          "article_id": 884,
+          "is_opinion": false,
+          "published_at": "2026-10-25T22:30:00+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.rollingstone.com/product-recommendations/lifestyle/where-to-watch-steelers-vs-saints-paris-football-game-live-1235647244/",
+          "outlet": "Rolling Stone",
+          "headline": "The Steelers and Saints Face Off in Historic Paris Game — Here’s Where to Stream It Live",
+          "article_id": 327,
+          "is_opinion": false,
+          "published_at": "2026-10-24T22:00:00+00:00",
+          "allsides_rating": "left"
+        },
+        {
+          "url": "https://www.france24.com/en/video/20261025-france-football-fans-take-over-paris-as-nfl-comes-to-country-for-the-first-time",
+          "outlet": "France 24",
+          "headline": "France: Football fans take over Paris as NFL comes to country for the first time",
+          "article_id": 9175,
+          "is_opinion": false,
+          "published_at": "2026-10-25T18:01:41+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.foxnews.com/outkick-sports/nfl-fans-brave-face-paris-steelers-beat-saints-chaos-city",
+          "outlet": "Fox News",
+          "headline": "NFL fans put on brave face in Paris as Steelers beat Saints with chaos in the city",
+          "article_id": 3188,
+          "is_opinion": false,
+          "published_at": "2026-10-26T00:58:02+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://abcnews.com/Sports/wireStory/good-mood-fans-attending-nfl-game-paris-day-137553887",
+          "outlet": "ABC News",
+          "headline": "Good mood among fans attending the first NFL game in Paris, a day after protests and clashes",
+          "article_id": 1306,
+          "is_opinion": false,
+          "published_at": "2026-10-25T16:41:28+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.thedailybeast.com/pentagon-pete-power-play-gets-shut-down-by-trump-goons",
+          "outlet": "The Daily Beast",
+          "headline": "Pentagon Pete Power Play Gets Shut Down by Trump Goons",
+          "article_id": 228,
+          "is_opinion": false,
+          "published_at": "2026-10-24T20:53:10+00:00",
+          "allsides_rating": "left"
+        },
+        {
+          "url": "https://www.theguardian.com/sport/2026/oct/23/aaron-rodgers-nfl-paris-game-protests-steelers-saints",
+          "outlet": "The Guardian",
+          "headline": "Aaron Rodgers says NFL’s Paris game is safe despite PSG cancellation amid unrest",
+          "article_id": 8912,
+          "is_opinion": false,
+          "published_at": "2026-10-23T19:55:09+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.newsmax.com/us/simon-hankinson-nfl-paris-game-alan-mendoza/2026/10/25/id/1273941",
+          "outlet": "Newsmax",
+          "headline": "Simon Hankinson to Newsmax: NFL Fans in Paris Likely Safe",
+          "article_id": 3401,
+          "is_opinion": false,
+          "published_at": "2026-10-25T13:22:06+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://nypost.com/2026/10/24/sports/nfl-wags-seen-partying-it-up-in-riot-torn-paris-ahead-of-historic-saint-steelers-game/",
+          "outlet": "New York Post",
+          "headline": "NFL WAGs seen partying it up in riot-torn Paris ahead of historic Saints-Steelers game",
+          "article_id": 2635,
+          "is_opinion": false,
+          "published_at": "2026-10-25T00:23:14+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://www.breitbart.com/sports/2026/10/23/trump-says-nfl-probably-could-have-postponed-paris-game-due-riots/",
+          "outlet": "Breitbart News",
+          "headline": "Trump Says NFL Probably Could Have Postponed' Paris Game Due to Riots",
+          "article_id": 3355,
+          "is_opinion": false,
+          "published_at": "2026-10-24T05:15:45+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://www.cbsnews.com/video/thousands-americans-visit-paris-nfl-game-amid-rioting-violence/",
+          "outlet": "CBS News",
+          "headline": "Thousands of Americans visit Paris for NFL game amid rioting, violence",
+          "article_id": 885,
+          "is_opinion": false,
+          "published_at": "2026-10-25T22:00:00+00:00",
+          "allsides_rating": "lean_left"
+        }
+      ],
+      "ai_label": "AI-generated from 12 sources",
+      "category": "us",
+      "one_liner": {
+        "text": "The NFL played its first regular-season game in France in Paris on Sunday amid protests, with the Saints beating... ",
+        "source_ids": [
+          2362,
+          327,
+          9175,
+          3188
+        ]
+      },
+      "cluster_id": 448,
+      "confidence": {
+        "spectrum": {
+          "left": 2,
+          "right": 4,
+          "center": 1,
+          "lean_left": 2,
+          "not_rated": 2
+        },
+        "developing": true,
+        "outlet_count": 11,
+        "article_count": 15
+      },
+      "schema_version": 1,
+      "rank": 7,
+      "status": "draft"
+    },
+    {
+      "tier": "one_liner",
+      "sources": [
+        {
+          "url": "https://www.csmonitor.com/World/Middle-East/2026/1023/israel-vote-election-netanyahu-palestinian?icid=rss",
+          "outlet": "The Christian Science Monitor",
+          "headline": "As Israel looks toward elections, some voters see a defining moment",
+          "article_id": 2476,
+          "is_opinion": false,
+          "published_at": "2026-10-23T21:45:15+00:00",
+          "allsides_rating": "center"
+        },
+        {
+          "url": "https://www.cbsnews.com/video/netanyahus-party-lags-polls-ahead-first-election-since-oct-7-2023/",
+          "outlet": "CBS News",
+          "headline": "Netanyahu's party lags in polls ahead of first election since Oct. 7, 2023",
+          "article_id": 881,
+          "is_opinion": false,
+          "published_at": "2026-10-25T23:44:00+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://justthenews.com/government/federal-agencies/netanyahu-faces-election-test-israelis-weigh-years-war?utm_source=justthenews.com&utm_medium=feed&utm_campaign=external-news-aggregators",
+          "outlet": "Just The News",
+          "headline": "Netanyahu in close race to remain prime minister, as Israel holds 1st national election since Oct 7",
+          "article_id": 3752,
+          "is_opinion": false,
+          "published_at": "2026-10-25T00:00:00+00:00",
+          "allsides_rating": "lean_right"
+        },
+        {
+          "url": "https://www.huffpost.com/entry/israel-election-topple-netanyahu-no-plan-palestine_n_6ac66c72e4b01d1704f501e5",
+          "outlet": "HuffPost",
+          "headline": "Israel's Center-Left Could Topple Netanyahu – Without Any Plan For Palestinians",
+          "article_id": 69,
+          "is_opinion": false,
+          "published_at": "2026-10-24T11:00:17+00:00",
+          "allsides_rating": "left"
+        },
+        {
+          "url": "https://www.aljazeera.com/video/newsfeed/2026/10/26/netanyahu-rival-eisenkot-holds-final-rally-before-israeli-election?traffic_source=rss",
+          "outlet": "Al Jazeera English",
+          "headline": "Netanyahu rival Eisenkot holds final rally before Israeli election",
+          "article_id": 9113,
+          "is_opinion": false,
+          "published_at": "2026-10-26T01:02:57+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.npr.org/2026/10/25/nx-s1-6011185/this-center-right-former-general-could-unseat-netanyahu-as-prime-minister-in-israel",
+          "outlet": "NPR",
+          "headline": "This center-right former general could unseat Netanyahu as Prime Minister in Israel",
+          "article_id": 340,
+          "is_opinion": false,
+          "published_at": "2026-10-25T21:22:40+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.theguardian.com/world/2026/oct/25/gaza-suffering-campaign-fodder-palestinians-fear-worst-israel-election",
+          "outlet": "The Guardian",
+          "headline": "‘Gaza’s suffering has become campaign fodder’: Palestinians fear the worst from Israel election",
+          "article_id": 8566,
+          "is_opinion": false,
+          "published_at": "2026-10-25T06:00:54+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.nytimes.com/2026/10/24/world/middleeast/netanyahu-has-reinvented-himself-will-voters-think-its-enough.html",
+          "outlet": "The New York Times",
+          "headline": "Netanyahu Is Up for Re-election After Years of War. How Will Voters See Him?",
+          "article_id": 504,
+          "is_opinion": false,
+          "published_at": "2026-10-24T17:45:17+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.bbc.co.uk/news/articles/cmvg7w0x742do?at_medium=RSS&at_campaign=rss",
+          "outlet": "BBC News",
+          "headline": "The bitter row over military service that could shape Israel's future",
+          "article_id": 7904,
+          "is_opinion": false,
+          "published_at": "2026-10-24T23:03:21+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.cbsnews.com/news/israeli-election-to-test-benjamin-netanyahus-ability-to-hold-power/",
+          "outlet": "CBS News",
+          "headline": "Israeli election to test Netanyahu's ability to hold power",
+          "article_id": 921,
+          "is_opinion": false,
+          "published_at": "2026-10-25T13:27:00+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.npr.org/2026/10/24/nx-s1-6010464/why-a-far-right-cabinet-minister-in-israel-has-netanyahus-ear",
+          "outlet": "NPR",
+          "headline": "Why a far-right cabinet minister in Israel has Netanyahu's ear",
+          "article_id": 346,
+          "is_opinion": false,
+          "published_at": "2026-10-24T21:20:52+00:00",
+          "allsides_rating": "lean_left"
+        }
+      ],
+      "ai_label": "AI-generated from 11 sources",
+      "category": "world",
+      "one_liner": {
+        "text": "Israel holds its first national election since the Oct. 7, 2023 attacks on Tuesday, with Netanyahu's rule at stake.",
+        "source_ids": [
+          881,
+          3752,
+          921
+        ]
+      },
+      "cluster_id": 773,
+      "confidence": {
+        "spectrum": {
+          "left": 1,
+          "center": 1,
+          "lean_left": 3,
+          "not_rated": 3,
+          "lean_right": 1
+        },
+        "developing": true,
+        "outlet_count": 9,
+        "article_count": 12
+      },
+      "schema_version": 1,
+      "rank": 8,
+      "status": "draft"
+    },
+    {
+      "tier": "one_liner",
+      "sources": [
+        {
+          "url": "https://www.cnbc.com/2026/10/25/france-protests-paris-cost-of-living-inequality.html",
+          "outlet": "CNBC",
+          "headline": "In pictures: Protests over inequality, rising living costs turn violent across France",
+          "article_id": 2133,
+          "is_opinion": false,
+          "published_at": "2026-10-25T23:55:22+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://timesofindia.indiatimes.com/world/europe/protesters-dragged-knocked-down-france-police-charges-right-into-crowd-watch/articleshow/135201037.cms",
+          "outlet": "The Times of India",
+          "headline": "Protesters dragged, knocked down: French police charges right into crowd; watch",
+          "article_id": 9217,
+          "is_opinion": false,
+          "published_at": "2026-10-26T02:54:00+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.dailysignal.com/2026/10/25/french-protest-demand-rallies-macron/",
+          "outlet": "The Daily Signal",
+          "headline": "French Protest Groups Demand More Rallies as Macron Faces Tough Choices",
+          "article_id": 3495,
+          "is_opinion": false,
+          "published_at": "2026-10-25T16:50:45+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://www.npr.org/2026/10/24/nx-s1-6014520/protests-roil-france-once-again-as-police-seek-to-quell-violence",
+          "outlet": "NPR",
+          "headline": "Protests roil France once again as police seek to quell violence",
+          "article_id": 345,
+          "is_opinion": false,
+          "published_at": "2026-10-24T21:21:00+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.japantimes.co.jp/news/2026/10/26/world/france-riot-protest-security/",
+          "outlet": "The Japan Times",
+          "headline": "France dodges rerun of looting and riots at protests",
+          "article_id": 9264,
+          "is_opinion": false,
+          "published_at": "2026-10-26T02:33:00+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.foxnews.com/world/arrests-crackdowns-how-europes-leaders-responding-protests-rock-continent",
+          "outlet": "Fox News",
+          "headline": "From arrests to crackdowns, how Europe’s leaders are responding as protests rock the continent",
+          "article_id": 3013,
+          "is_opinion": false,
+          "published_at": "2026-10-25T15:24:14+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://www.theguardian.com/world/2026/oct/25/macrons-vandals-pay-bill-puts-right-to-protest-at-risk",
+          "outlet": "The Guardian",
+          "headline": "Macron accused of putting France’s right to protest at risk with ‘vandal’s law’",
+          "article_id": 8560,
+          "is_opinion": false,
+          "published_at": "2026-10-25T19:57:40+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.westernjournal.com/french-riots-boosted-leftist-islamist-network-behind-violent-anti-israel-protests-us/",
+          "outlet": "The Western Journal",
+          "headline": "French Riots Being Boosted by Same Leftist-Islamist Network Behind Violent Anti-Israel Protests in US",
+          "article_id": 3580,
+          "is_opinion": false,
+          "published_at": "2026-10-25T10:15:00+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://www.aljazeera.com/video/the-listening-post/2026/10/25/the-narrative-battle-over-frances-unrest?traffic_source=rss",
+          "outlet": "Al Jazeera English",
+          "headline": "The narrative battle over France’s unrest",
+          "article_id": 9130,
+          "is_opinion": false,
+          "published_at": "2026-10-25T19:36:14+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://nypost.com/2026/10/24/world-news/peaceful-paris-protest-turned-into-tear-gas-filled-riot-by-nightfall-after-violent-far-left-mob-arrived/",
+          "outlet": "New York Post",
+          "headline": "I was at a peaceful Paris protest. Then the violent far-left mob arrived.",
+          "article_id": 2632,
+          "is_opinion": false,
+          "published_at": "2026-10-25T02:24:13+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://www.bbc.co.uk/news/videos/cm89zqw9lx1do?at_medium=RSS&at_campaign=rss",
+          "outlet": "BBC News",
+          "headline": "Fireworks and tear gas as protesters and riot police clash in Paris",
+          "article_id": 7899,
+          "is_opinion": false,
+          "published_at": "2026-10-24T19:37:35+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://timesofindia.indiatimes.com/world/europe/a-defeat-for-the-republic-how-october-17-protest-fiasco-shaped-frances-security-strategy/articleshow/135190439.cms",
+          "outlet": "The Times of India",
+          "headline": "Once bitten, twice shy? How France prevented a repeat of October 17 protest chaos",
+          "article_id": 9249,
+          "is_opinion": false,
+          "published_at": "2026-10-25T12:12:10+00:00",
+          "allsides_rating": "not_rated"
+        }
+      ],
+      "ai_label": "AI-generated from 12 sources",
+      "category": "world",
+      "one_liner": {
+        "text": "Nationwide protests over inequality and living costs drew an estimated 410,000 people across France, with clashes in several cities.",
+        "source_ids": [
+          2133,
+          3495
+        ]
+      },
+      "cluster_id": 519,
+      "confidence": {
+        "spectrum": {
+          "right": 4,
+          "lean_left": 2,
+          "not_rated": 5
+        },
+        "developing": true,
+        "outlet_count": 11,
+        "article_count": 15
+      },
+      "schema_version": 1,
+      "rank": 9,
+      "status": "draft"
+    },
+    {
+      "tier": "one_liner",
+      "sources": [
+        {
+          "url": "https://fortune.com/2026/10/25/audi-ceo-gernot-dollner-trump-republican-campaign-rally-car-factory-georgia/",
+          "outlet": "Fortune",
+          "headline": "Audi CEO Gernot Döllner appears on stage with Trump at a Republican campaign rally to announce a new car factory in Georgia",
+          "article_id": 5111,
+          "is_opinion": false,
+          "published_at": "2026-10-25T21:08:11+00:00",
+          "allsides_rating": "center"
+        },
+        {
+          "url": "https://www.cnbc.com/2026/10/25/audi-georgia-us-plant-tariffs-volkswagen.html",
+          "outlet": "CNBC",
+          "headline": "Audi defends plans for a $4 billion Georgia plant amid VW restructuring, tariffs",
+          "article_id": 2128,
+          "is_opinion": false,
+          "published_at": "2026-10-25T16:42:42+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.foxbusiness.com/politics/trump-audi-georgia-manufacturing-plant-investment-jobs",
+          "outlet": "Fox Business",
+          "headline": "Trump reveals Audi's ambitious plans for a major expansion in the US",
+          "article_id": 3660,
+          "is_opinion": false,
+          "published_at": "2026-10-25T04:02:09+00:00",
+          "allsides_rating": "lean_right"
+        },
+        {
+          "url": "https://www.theguardian.com/business/2026/oct/25/volkswagen-to-build-4bn-audi-suv-factory-in-us-despite-job-cuts-at-home",
+          "outlet": "The Guardian",
+          "headline": "Volkswagen to build $4bn Audi SUV factory in US despite job cuts at home",
+          "article_id": 8562,
+          "is_opinion": false,
+          "published_at": "2026-10-25T13:43:19+00:00",
+          "allsides_rating": "not_rated"
+        },
+        {
+          "url": "https://www.oann.com/newsroom/audi-announces-first-production-site-in-u-s-during-trumps-ga-rally-supporting-gop-candidates-mike-collins-rick-jackson/",
+          "outlet": "One America News Network (OAN)",
+          "headline": "Audi announces first production site in U.S. during Trump’s Ga. rally supporting GOP candidates Mike Collins, Rick Jackson",
+          "article_id": 3875,
+          "is_opinion": false,
+          "published_at": "2026-10-25T17:06:18+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://thehill.com/homenews/state-watch/6170630-trump-announces-audi-factory-georgia/",
+          "outlet": "The Hill",
+          "headline": "Trump announces new Audi factory at Georgia campaign rally",
+          "article_id": 2355,
+          "is_opinion": false,
+          "published_at": "2026-10-25T12:20:06+00:00",
+          "allsides_rating": "center"
+        },
+        {
+          "url": "https://www.nytimes.com/2026/10/24/business/audi-factory-georgia-trump.html",
+          "outlet": "The New York Times",
+          "headline": "Audi to Build Factory in Georgia, Trump Says",
+          "article_id": 530,
+          "is_opinion": false,
+          "published_at": "2026-10-25T15:30:20+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.dailywire.com/news/another-win-for-american-workers-as-trumps-tariffs-pay-off-big",
+          "outlet": "The Daily Wire",
+          "headline": "Another Win For American Workers As Trump’s Tariffs Pay Off Big",
+          "article_id": 3508,
+          "is_opinion": false,
+          "published_at": "2026-10-25T11:46:25+00:00",
+          "allsides_rating": "right"
+        },
+        {
+          "url": "https://abcnews.com/US/wireStory/trump-announces-georgia-campaign-rally-audi-build-new-137546022",
+          "outlet": "ABC News",
+          "headline": "Trump announces at a Georgia campaign rally that Audi will build a new auto factory in the state",
+          "article_id": 1119,
+          "is_opinion": false,
+          "published_at": "2026-10-25T03:43:39+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://ijr.com/discover/auto-2026-10-24-audi-plans-42b-georgia-plant-4500-jobs-3153a4ec?utm_source=rss&utm_medium=syndication&utm_content=story_3153a4ec-4e07-4d98-b0b3-cc54798de1a1",
+          "outlet": "Independent Journal Review",
+          "headline": "Audi Plans $4.2B Georgia Plant, 4,500 Jobs",
+          "article_id": 3831,
+          "is_opinion": false,
+          "published_at": "2026-10-24T22:57:51+00:00",
+          "allsides_rating": "right"
+        }
+      ],
+      "ai_label": "AI-generated from 10 sources",
+      "category": "us",
+      "one_liner": {
+        "text": "Audi plans a roughly $4 billion U.S. factory in Macon, Georgia, announced by Trump at a campaign rally.",
+        "source_ids": [
+          2128,
+          3660,
+          8562,
+          2355,
+          3831
+        ]
+      },
+      "cluster_id": 1296,
+      "confidence": {
+        "spectrum": {
+          "right": 3,
+          "center": 2,
+          "lean_left": 3,
+          "not_rated": 1,
+          "lean_right": 1
+        },
+        "developing": false,
+        "outlet_count": 10,
+        "article_count": 10
+      },
+      "schema_version": 1,
+      "rank": 10,
+      "status": "draft"
+    }
+  ]
+}

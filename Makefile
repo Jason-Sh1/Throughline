@@ -4,7 +4,8 @@ WORKER := cd worker && uv run
 PG_TEST_URL ?= postgresql://postgres:postgres@localhost:54322/throughline_test
 
 .PHONY: help env-check setup embed-deps dev test test-web test-worker lint ingest fetch cluster \
-        recluster purge clusters eval-quick validate-feeds sync-sources allsides db-test
+        recluster purge clusters edition edition-collect edition-json eval-quick validate-feeds \
+        sync-sources allsides db-test
 
 help:
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-16s %s\n", $$1, $$2}'
@@ -64,6 +65,16 @@ purge: ## Clear raw article text older than 14 days
 
 clusters: ## Print recent clusters with headlines (ARGS="--hours 48 --min-outlets 3")
 	$(WORKER) python -m cluster.inspect $(ARGS)
+
+SLOT ?= morning
+edition: ## Build an edition: extract, synthesize (Batch API), assemble (SLOT=morning|midday|evening)
+	$(WORKER) python -m llm.edition --slot $(SLOT) $(ARGS)
+
+edition-collect: ## Ingest synthesis batches a previous run left open
+	$(WORKER) python -m llm.edition --collect
+
+edition-json: ## Export the latest edition as static JSON (OUT=path, default worker/out/edition.json)
+	$(WORKER) python -m llm.edition --export $(abspath $(or $(OUT),worker/out/edition.json))
 
 eval-quick: ## 30-story eval gate (arrives in M4)
 	@echo "No eval suite yet (ROADMAP M4); passing."

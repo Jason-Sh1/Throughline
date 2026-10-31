@@ -30,14 +30,14 @@ Claude: check items off as they're completed and add a one-line note (date, anyt
 - [x] ~~**Human:**~~ inspect 50 clusters, tune threshold, note results in `/docs/decisions.md` — 2026-10-25; delegated to Claude: threshold 0.62→0.66, gray margin 0.10→0.05 from a 12-config sweep (`cluster/sweep.py`) over a live 72h window
 
 ### M3 — LLM extraction & synthesis (Week 3)
-- [ ] Pydantic/JSON schemas for extraction output and story card
-- [ ] Extraction prompt v1 (entities, atomic claims w/ source_ids, dates, numbers, locations, viz_hint)
-- [ ] Synthesis prompt v1 (full card schema, per-sentence source_ids)
-- [ ] Batch API submission + polling + result ingestion
-- [ ] Prompt caching for system prompt
-- [ ] Citation filter: drop any sentence without valid source_ids
-- [ ] Edition builder: rank clusters, select top 40–60, long tail gets one-liners
-- [ ] Render first cards as static JSON
+- [x] Pydantic/JSON schemas for extraction output and story card — 2026-10-25; `worker/llm/schemas.py`
+- [x] Extraction prompt v1 (entities, atomic claims w/ source_ids, dates, numbers, locations, viz_hint) — 2026-10-25; Claude Haiku 5.5 (Gemini free tier too small, see decisions.md)
+- [x] Synthesis prompt v1 (full card schema, per-sentence source_ids) — 2026-10-25; Claude Haiku 5.5, effort low, structured outputs
+- [x] Batch API submission + polling + result ingestion — 2026-10-25; `llm_batches` table, `make edition-collect` for late batches
+- [x] Prompt caching for system prompt — 2026-10-25
+- [x] Citation filter: drop any sentence without valid source_ids — 2026-10-25; also strips invented ids
+- [x] Edition builder: rank clusters, select top 40–60, long tail gets one-liners — 2026-10-25; top 50 + 30 one-liners, spend guard
+- [x] Render first cards as static JSON — 2026-10-26; `make edition-json`, samples + cost in docs/samples/
 
 ### M4 — Verification & evals (Week 4)
 - [ ] Verification pass (sentence vs. cited excerpt → supported / unsupported / contradicted)
@@ -106,3 +106,4 @@ Claude: check items off as they're completed and add a one-line note (date, anyt
 - 2026-10-25 (M1): Starter feed URLs could not be fetched from the dev sandbox (news sites blocked), so treat them as unverified until the M2 fetcher runs. Ratings in feeds.yaml are placeholders until the AllSides import. 29 worker tests + RLS smoke test passing.
 - 2026-10-25 (M2): 90 worker tests passing locally against Postgres + pgvector. Fetchers are tested with mocked HTTP only, because the dev sandbox can't reach news sites, GDELT, the Guardian or Hugging Face. `ingest-smoke.yml` runs the real pipeline on GitHub Actions. Clustering explained in docs/clustering.md.
 - 2026-10-25 (M2 live run on Actions): 577 articles from 27/28 feeds. Plain HDBSCAN over-merged related stories (137 moves, 125 merges); with the coherence guards, 25 moves and 15 merges, and the top clusters are single events. Open issues: WaPo business feed returns 502; GDELT answered 429 from GitHub's shared runners, so GDELT is unproven until it runs from our own scheduler.
+- 2026-10-26 (M3): First live edition on Actions: 10 stories, 5 full cards, $0.008 total (~$0.0011 per full card with Claude Haiku 5.5 batch for both steps). Gemini's free tier (20 requests/day) was too small for extraction. Cards stay `draft` until M4 verification. 123 worker tests passing (also run locally against Postgres + pgvector on 2026-10-31).

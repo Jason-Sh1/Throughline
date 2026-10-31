@@ -1,0 +1,83 @@
+# Live edition smoke test: ingest real feeds into a throwaway database, then run
+# the M3 pipeline (Claude batch extraction + synthesis) on a few top stories
+# and print the cards. Costs about a cent per run. Runs on PRs that touch the
+# LLM pipeline, or by hand from the Actions tab. Needs the ANTHROPIC_API_KEY
+# repo secret.
+name: Edition smoke test
+
+on:
+  workflow_dispatch:
+    inputs:
+      full:
+        description: "Stories that get a full card"
+        default: "5"
+  pull_request:
+    paths:
+      - "worker/llm/**"
+      - ".github/workflows/edition-smoke.yml"
+
+jobs:
+  edition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: throughline_smoke
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/throughline_smoke
+      CRAWLER_CONTACT: https://github.com/${{ github.repository }}
+      GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+      - name: Check secrets
+        run: |
+          for v in ANTHROPIC_API_KEY; do
+            [ -n "${!v}" ] || { echo "::error title=Missing secret::$v is not set as a repo secret"; exit 1; }
+          done
+      - name: Install worker deps (CPU-only torch)
+        run: |
+          cd worker && uv sync --python 3.12
+          cd .. && make embed-deps
+      - name: Apply migrations
+        run: |
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -q -f supabase/tests/local_auth_shim.sql
+          for f in supabase/migrations/*.sql; do psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -q -f "$f"; done
+      - name: Ingest and cluster
+        run: make sync-sources fetch cluster recluster
+      - name: Build edition
+        run: make edition SLOT=morning ARGS="--full ${{ inputs.full || '5' }} --tail 5 --wait 2400"
+      - name: Export
+        run: make edition-json OUT=worker/out/edition.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: edition
+          path: worker/out/edition.json
+          if-no-files-found: ignore
+      - name: Print edition JSON
+        if: always()
+        run: cat worker/out/edition.json 2>/dev/null || true
+      # Annotations show on the PR's Checks tab without opening logs (cut at ~4 KB).
+      - name: Report as annotations
+        if: always()
+        run: |
+          psql "$DATABASE_URL" -At -c "select stats::text from pipeline_runs
+            where kind = 'edition' order by id desc limit 1" \
+            | sed 's/%/%25/g; s/^/::notice title=Edition stats::/'
+          [ -f worker/out/edition.json ] || exit 0
+          python3 - <<'PY'
+          import json
+          doc = json.load(open("worker/out/edition.json"))
+          lines = [f"{c['rank']}. [{c['tier']}] "
+                   + (c.get("headline") or c.get("one_liner"))["text"] for c in doc["cards"]]
+          body = "\n".join(lines)[:3900].replace("%", "%25").replace("\n", "%0A")
+          print(f"::notice title=Edition cards::{body}")
+          PY

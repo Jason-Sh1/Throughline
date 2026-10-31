@@ -1,0 +1,369 @@
+{
+  "brief": [
+    {
+      "text": "Luiz Inácio Lula da Silva won Brazil's presidential runoff for a fourth term, according to the electoral court.",
+      "source_ids": [
+        465,
+        905,
+        8543
+      ]
+    },
+    {
+      "text": "His opponent, Flávio Bolsonaro, called for the election to be annulled and said it is impossible to concede.",
+      "source_ids": [
+        465,
+        8543
+      ]
+    },
+    {
+      "text": "The electoral court said Lula held an unassailable lead with 100% of the vote counted.",
+      "source_ids": [
+        905
+      ]
+    }
+  ],
+  "framing": {
+    "representative": {
+      "widely_reported": [
+        {
+          "url": "https://www.nytimes.com/live/2026/10/25/world/brazil-election",
+          "outlet": "The New York Times",
+          "headline": "Brazil Live Updates: Lula Wins Re-Election as Bolsonaro Rejects Result",
+          "article_id": 465,
+          "is_opinion": false,
+          "published_at": "2026-10-26T03:06:40+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.cbsnews.com/news/brazil-presidential-runoff-lula-flavio-bolsonaro/",
+          "outlet": "CBS News",
+          "headline": "Lula wins fourth term as Brazil's president",
+          "article_id": 905,
+          "is_opinion": false,
+          "published_at": "2026-10-26T02:11:02+00:00",
+          "allsides_rating": "lean_left"
+        }
+      ],
+      "analysis_opinion": [
+        {
+          "url": "https://hotair.com/tree-hugging-sister/2026/10/25/the-fix-is-in-judge-who-was-lulas-personal-lawyer-extends-brazils-voting-for-two-more-hours-n3820312",
+          "outlet": "Hot Air",
+          "headline": "The Fix Is In: Judge Who Was Lula's Personal Lawyer Extends Brazil's Voting for Two More Hours WELP",
+          "article_id": 3589,
+          "is_opinion": false,
+          "published_at": "2026-10-25T22:40:00+00:00",
+          "allsides_rating": "lean_right"
+        }
+      ],
+      "reported_by_some": [
+        {
+          "url": "https://www.cnbc.com/2026/10/26/brazil-lula-win-presidential-election-runoff-vote.html",
+          "outlet": "CNBC",
+          "headline": "Brazil's Lula wins historic presidential election; Bolsonaro reportedly refuses to concede",
+          "article_id": 2123,
+          "is_opinion": false,
+          "published_at": "2026-10-26T02:18:09+00:00",
+          "allsides_rating": "lean_left"
+        },
+        {
+          "url": "https://www.breitbart.com/latin-america/2026/10/25/marxist-lula-beats-bolsonaro-brazil-presidential-election-unprecedented-voting-time-extension/",
+          "outlet": "Breitbart News",
+          "headline": "Marxist Lula Beats Bolsonaro in Brazil Presidential Election After Unprecedented Voting Time Extension",
+          "article_id": 3313,
+          "is_opinion": false,
+          "published_at": "2026-10-26T00:40:11+00:00",
+          "allsides_rating": "right"
+        }
+      ]
+    },
+    "widely_reported": [
+      {
+        "text": "Lula won the presidential runoff and was elected to a fourth term.",
+        "source_ids": [
+          465,
+          9110,
+          3313,
+          2123,
+          3767,
+          9262,
+          3009,
+          905,
+          8543
+        ]
+      }
+    ],
+    "analysis_opinion": [
+      {
+        "text": "A Hot Air post called the voting extension fixed, pointing to a judge who was once Lula's personal lawyer.",
+        "source_ids": [
+          3589
+        ]
+      }
+    ],
+    "reported_by_some": [
+      {
+        "text": "Some outlets reported that a judge extended voting in Brazil by two more hours.",
+        "source_ids": [
+          3589,
+          3313,
+          3767
+        ]
+      },
+      {
+        "text": "Some outlets reported that Bolsonaro refuses to concede the election.",
+        "source_ids": [
+          2123
+        ]
+      },
+      {
+        "text": "Breitbart reported that both sides alleged irregularities in the race.",
+        "source_ids": [
+          3313
+        ]
+      },
+      {
+        "text": "Al Jazeera described the result as tied to voting confusion and allegations of interference.",
+        "source_ids": [
+          9110
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "url": "https://www.nytimes.com/live/2026/10/25/world/brazil-election",
+      "outlet": "The New York Times",
+      "headline": "Brazil Live Updates: Lula Wins Re-Election as Bolsonaro Rejects Result",
+      "article_id": 465,
+      "is_opinion": false,
+      "published_at": "2026-10-26T03:06:40+00:00",
+      "allsides_rating": "lean_left"
+    },
+    {
+      "url": "https://hotair.com/tree-hugging-sister/2026/10/25/the-fix-is-in-judge-who-was-lulas-personal-lawyer-extends-brazils-voting-for-two-more-hours-n3820312",
+      "outlet": "Hot Air",
+      "headline": "The Fix Is In: Judge Who Was Lula's Personal Lawyer Extends Brazil's Voting for Two More Hours WELP",
+      "article_id": 3589,
+      "is_opinion": false,
+      "published_at": "2026-10-25T22:40:00+00:00",
+      "allsides_rating": "lean_right"
+    },
+    {
+      "url": "https://www.huffpost.com/entry/ap-lt-brazil-election-lula-bolsonaro_n_6adde30ae4b06b41b48d345f",
+      "outlet": "HuffPost",
+      "headline": "Brazil Votes In A Tense Lula vs. Bolsonaro Runoff With U.S. Influence Over Latin America At Stake",
+      "article_id": 63,
+      "is_opinion": false,
+      "published_at": "2026-10-25T11:17:17+00:00",
+      "allsides_rating": "left"
+    },
+    {
+      "url": "https://www.aljazeera.com/news/2026/10/26/brazil-election-2026-key-takeaways-from-lulas-historic-win?traffic_source=rss",
+      "outlet": "Al Jazeera English",
+      "headline": "Brazil election 2026: Key takeaways from Lula’s historic win",
+      "article_id": 9110,
+      "is_opinion": false,
+      "published_at": "2026-10-26T02:59:50+00:00",
+      "allsides_rating": "not_rated"
+    },
+    {
+      "url": "https://www.breitbart.com/latin-america/2026/10/25/marxist-lula-beats-bolsonaro-brazil-presidential-election-unprecedented-voting-time-extension/",
+      "outlet": "Breitbart News",
+      "headline": "Marxist Lula Beats Bolsonaro in Brazil Presidential Election After Unprecedented Voting Time Extension",
+      "article_id": 3313,
+      "is_opinion": false,
+      "published_at": "2026-10-26T00:40:11+00:00",
+      "allsides_rating": "right"
+    },
+    {
+      "url": "https://www.cnbc.com/2026/10/26/brazil-lula-win-presidential-election-runoff-vote.html",
+      "outlet": "CNBC",
+      "headline": "Brazil's Lula wins historic presidential election; Bolsonaro reportedly refuses to concede",
+      "article_id": 2123,
+      "is_opinion": false,
+      "published_at": "2026-10-26T02:18:09+00:00",
+      "allsides_rating": "lean_left"
+    },
+    {
+      "url": "https://justthenews.com/politics-policy/elections/brazil-votes-high-stakes-presidential-runoff-between-lula-and-bolsonaro?utm_source=justthenews.com&utm_medium=feed&utm_campaign=external-news-aggregators",
+      "outlet": "Just The News",
+      "headline": "Lula beats Bolsonaro in Brazil presidential election after judge extends voting by two hours",
+      "article_id": 3767,
+      "is_opinion": false,
+      "published_at": "2026-10-25T00:00:00+00:00",
+      "allsides_rating": "lean_right"
+    },
+    {
+      "url": "https://www.japantimes.co.jp/news/2026/10/26/world/politics/brazil-lula-election-victory/",
+      "outlet": "The Japan Times",
+      "headline": "Brazil’s Lula wins record fourth term in a shock comeback",
+      "article_id": 9262,
+      "is_opinion": false,
+      "published_at": "2026-10-26T02:54:00+00:00",
+      "allsides_rating": "not_rated"
+    },
+    {
+      "url": "https://www.foxnews.com/world/conservative-wave-hits-roadblock-brazil-lula-holds-off-bolsonaro-challenge",
+      "outlet": "Fox News",
+      "headline": "Conservative wave hits roadblock in Brazil as Lula holds off Bolsonaro challenge",
+      "article_id": 3009,
+      "is_opinion": false,
+      "published_at": "2026-10-26T00:27:54+00:00",
+      "allsides_rating": "right"
+    },
+    {
+      "url": "https://www.cbsnews.com/news/brazil-presidential-runoff-lula-flavio-bolsonaro/",
+      "outlet": "CBS News",
+      "headline": "Lula wins fourth term as Brazil's president",
+      "article_id": 905,
+      "is_opinion": false,
+      "published_at": "2026-10-26T02:11:02+00:00",
+      "allsides_rating": "lean_left"
+    },
+    {
+      "url": "https://www.theguardian.com/world/live/2026/oct/25/brazil-election-runoff-live-updates-flavio-bolsonaro-lula",
+      "outlet": "The Guardian",
+      "headline": "Brazil runoff live updates: Bolsonaro says it is ‘impossible to concede’ election result after historic Lula win",
+      "article_id": 8543,
+      "is_opinion": false,
+      "published_at": "2026-10-26T02:51:14+00:00",
+      "allsides_rating": "not_rated"
+    },
+    {
+      "url": "https://www.newsmax.com/politics/brazil-election-flavio-bolsonaro-lula/2026/10/25/id/1273946",
+      "outlet": "Newsmax",
+      "headline": "Bolsonaro to Newsmax: 'Brazil Will Win' in Runoff Election",
+      "article_id": 3393,
+      "is_opinion": false,
+      "published_at": "2026-10-25T13:54:19+00:00",
+      "allsides_rating": "right"
+    }
+  ],
+  "ai_label": "AI-generated from 12 sources",
+  "category": "world",
+  "glossary": [
+    {
+      "term": "Runoff",
+      "definition": "A final election between the two leading candidates when no one wins outright in the first round.",
+      "source_ids": [
+        2123,
+        63
+      ]
+    }
+  ],
+  "headline": {
+    "text": "Lula wins Brazil's presidential runoff; Bolsonaro rejects the result",
+    "source_ids": [
+      465,
+      2123,
+      905,
+      8543
+    ]
+  },
+  "timeline": [
+    {
+      "date": "1989",
+      "event": "Brazil returned to direct presidential elections.",
+      "source_ids": [
+        2123
+      ]
+    },
+    {
+      "date": "2026-10-04",
+      "event": "First round of Brazil's presidential election was held; Flávio Bolsonaro finished ahead of Lula.",
+      "source_ids": [
+        3767
+      ]
+    },
+    {
+      "date": "2026-10-25",
+      "event": "Brazilians voted in the presidential runoff on Sunday.",
+      "source_ids": [
+        63,
+        3393,
+        3313
+      ]
+    }
+  ],
+  "verified": false,
+  "viz_data": {
+    "chart": null,
+    "places": []
+  },
+  "viz_hint": "timeline",
+  "key_facts": [
+    {
+      "text": "Lula won the runoff against Flávio Bolsonaro on Sunday, October 25, 2026.",
+      "source_ids": [
+        3313,
+        63
+      ]
+    },
+    {
+      "text": "In the first round on Oct. 4, Flávio Bolsonaro received 47.03% of valid votes and Lula received 45.16%.",
+      "source_ids": [
+        3767
+      ]
+    },
+    {
+      "text": "CBS News reported that Lula is soon to be 81 years old.",
+      "source_ids": [
+        905
+      ]
+    },
+    {
+      "text": "CNBC reported that this is the first time since 1989 that a candidate won the final runoff after losing the first round.",
+      "source_ids": [
+        2123
+      ]
+    }
+  ],
+  "background": [
+    {
+      "text": "Brazil returned to direct presidential elections in 1989.",
+      "source_ids": [
+        2123
+      ]
+    },
+    {
+      "text": "Flávio Bolsonaro, a senator and son of former President Jair Bolsonaro, finished ahead of Lula in the first round.",
+      "source_ids": [
+        3767
+      ]
+    }
+  ],
+  "cluster_id": 562,
+  "confidence": {
+    "spectrum": {
+      "left": 1,
+      "right": 4,
+      "lean_left": 5,
+      "not_rated": 10,
+      "lean_right": 2
+    },
+    "developing": true,
+    "outlet_count": 22,
+    "article_count": 51
+  },
+  "whats_next": [
+    {
+      "text": "Pablo Souza, the municipal transport secretary, is not expected to return to Brazil until Monday, and the arrest warrant against him could not be carried out, according to the city government.",
+      "source_ids": [
+        8543
+      ]
+    }
+  ],
+  "headline_label": "Throughline headline",
+  "schema_version": 1,
+  "why_it_matters": [
+    {
+      "text": "The result ends a string of conservative election wins in Latin America, according to The New York Times.",
+      "source_ids": [
+        465
+      ]
+    }
+  ],
+  "rank": 5,
+  "tier": "full",
+  "status": "draft"
+}

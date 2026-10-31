@@ -35,6 +35,14 @@ Token counts and cost are recorded per card. An `edition` is one published
 issue (up to 3 a day: morning, midday, evening), and `edition_cards` lists which
 cards are in it, in what order, and whether each is a full card or a one-liner.
 
+**LLM pipeline (M3, `20261026000000_llm_pipeline.sql`).** `extractions` stores
+the facts the extraction model pulled out of a cluster (entities and claims, each
+citing the articles it came from), keyed by a content hash like `cards`, plus
+`source_map`, which translates the short ids the model cited ("S3") back into
+article ids. `llm_batches` remembers each batch of card requests sent to the
+Anthropic Batch API, so results that arrive after the run ended can still be
+collected. Both are internal: RLS on, no policies.
+
 **Operations.** `pipeline_runs` logs each pipeline run (when, how long, what
 it did, tokens and cost, errors) for the admin dashboard. `jobs` is a simple
 work queue stored in Postgres: workers grab the next queued job with

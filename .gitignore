@@ -9,3 +9,4 @@ __pycache__/
 .ruff_cache/
 node_modules/
 .next/
+worker/out/

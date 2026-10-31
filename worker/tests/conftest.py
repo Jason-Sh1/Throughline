@@ -6,8 +6,8 @@ DB_URL = os.environ.get("TEST_DATABASE_URL")
 
 # Tables the pipeline writes to; truncated before each DB test.
 PIPELINE_TABLES = (
-    "edition_cards, editions, cards, cluster_articles, clusters, article_entities, entities, "
-    "articles, feeds, sources, pipeline_runs, jobs"
+    "llm_batches, extractions, edition_cards, editions, cards, cluster_articles, clusters, "
+    "article_entities, entities, articles, feeds, sources, pipeline_runs, jobs"
 )
 
 

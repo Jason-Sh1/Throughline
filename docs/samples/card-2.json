@@ -1,0 +1,334 @@
+{
+  "brief": [
+    {
+      "text": "Exiled Nobel laureate María Corina Machado returned to Venezuela on Sunday after about 10 months abroad.",
+      "source_ids": [
+        2358,
+        466
+      ]
+    },
+    {
+      "text": "She wrote on social media, \"I am here. With you.\"",
+      "source_ids": [
+        3635,
+        2358,
+        2624,
+        331
+      ]
+    },
+    {
+      "text": "Her arrival poses a challenge to the Trump-backed interim government, the Financial Times reported.",
+      "source_ids": [
+        9548
+      ]
+    }
+  ],
+  "framing": {
+    "representative": {
+      "widely_reported": [
+        {
+          "url": "https://thehill.com/policy/international/6170833-machado-returns-venezuela/",
+          "outlet": "The Hill",
+          "headline": "Machado returns to Venezuela after 10 months of exile",
+          "article_id": 2358,
+          "is_opinion": false,
+          "published_at": "2026-10-25T17:41:29+00:00",
+          "allsides_rating": "center"
+        },
+        {
+          "url": "https://www.nytimes.com/2026/10/25/world/americas/machado-venezuela-return.html",
+          "outlet": "The New York Times",
+          "headline": "María Corina Machado Returns to Venezuela",
+          "article_id": 466,
+          "is_opinion": false,
+          "published_at": "2026-10-26T00:32:49+00:00",
+          "allsides_rating": "lean_left"
+        }
+      ],
+      "analysis_opinion": [],
+      "reported_by_some": [
+        {
+          "url": "https://www.cbsnews.com/news/venezuela-opposition-maria-corina-machado-return/",
+          "outlet": "CBS News",
+          "headline": "Venezuela opposition leader María Corina Machado returns to country",
+          "article_id": 904,
+          "is_opinion": false,
+          "published_at": "2026-10-26T02:27:34+00:00",
+          "allsides_rating": "lean_left"
+        }
+      ]
+    },
+    "widely_reported": [
+      {
+        "text": "Machado returned to Venezuela after about 10 months in exile.",
+        "source_ids": [
+          2358,
+          466,
+          3011
+        ]
+      },
+      {
+        "text": "Machado wrote \"I am here. With you.\" on social media.",
+        "source_ids": [
+          3635,
+          2358,
+          2624,
+          331
+        ]
+      }
+    ],
+    "analysis_opinion": [],
+    "reported_by_some": [
+      {
+        "text": "Some outlets reported that Machado left Venezuela in December with a private U.S. rescue team.",
+        "source_ids": [
+          904,
+          2358
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "url": "https://www.csmonitor.com/World/Americas/2026/1025/venezuela-machado-exile-maduro-rodriguez?icid=rss",
+      "outlet": "The Christian Science Monitor",
+      "headline": "Venezuela’s Machado returns from exile, as doubts over democracy deepen",
+      "article_id": 2473,
+      "is_opinion": false,
+      "published_at": "2026-10-25T21:05:22+00:00",
+      "allsides_rating": "center"
+    },
+    {
+      "url": "https://www.cbsnews.com/news/venezuela-opposition-maria-corina-machado-return/",
+      "outlet": "CBS News",
+      "headline": "Venezuela opposition leader María Corina Machado returns to country",
+      "article_id": 904,
+      "is_opinion": false,
+      "published_at": "2026-10-26T02:27:34+00:00",
+      "allsides_rating": "lean_left"
+    },
+    {
+      "url": "https://www.bbc.co.uk/news/articles/cq8ez592pp0eo?at_medium=RSS&at_campaign=rss",
+      "outlet": "BBC News",
+      "headline": "Venezuelan opposition leader María Machado returns after months in exile",
+      "article_id": 7878,
+      "is_opinion": false,
+      "published_at": "2026-10-26T03:05:22+00:00",
+      "allsides_rating": "not_rated"
+    },
+    {
+      "url": "https://redstate.com/wardclark/2026/10/25/machado-back-in-venezuela-i-am-here-with-you-n2208605",
+      "outlet": "RedState",
+      "headline": "Machado Back in Venezuela: ‘I Am Here. With You.’",
+      "article_id": 3635,
+      "is_opinion": false,
+      "published_at": "2026-10-25T19:57:51+00:00",
+      "allsides_rating": "right"
+    },
+    {
+      "url": "https://thehill.com/policy/international/6170833-machado-returns-venezuela/",
+      "outlet": "The Hill",
+      "headline": "Machado returns to Venezuela after 10 months of exile",
+      "article_id": 2358,
+      "is_opinion": false,
+      "published_at": "2026-10-25T17:41:29+00:00",
+      "allsides_rating": "center"
+    },
+    {
+      "url": "https://www.nytimes.com/2026/10/25/world/americas/machado-venezuela-return.html",
+      "outlet": "The New York Times",
+      "headline": "María Corina Machado Returns to Venezuela",
+      "article_id": 466,
+      "is_opinion": false,
+      "published_at": "2026-10-26T00:32:49+00:00",
+      "allsides_rating": "lean_left"
+    },
+    {
+      "url": "https://www.japantimes.co.jp/news/2026/10/26/world/machado-venezuela-return/",
+      "outlet": "The Japan Times",
+      "headline": "Machado returns to Venezuela to urge democratic transition",
+      "article_id": 9275,
+      "is_opinion": false,
+      "published_at": "2026-10-26T00:22:00+00:00",
+      "allsides_rating": "not_rated"
+    },
+    {
+      "url": "https://nypost.com/2026/10/25/world-news/venezuelan-opposition-leader-maria-corina-machado-returns/",
+      "outlet": "New York Post",
+      "headline": "Venezuelan opposition leader María Corina Machado returns to Venezuela from exile for first time since Maduro’s ouster",
+      "article_id": 2624,
+      "is_opinion": false,
+      "published_at": "2026-10-25T19:38:58+00:00",
+      "allsides_rating": "right"
+    },
+    {
+      "url": "https://abcnews.com/International/wireStory/venezuelas-opposition-leader-machado-returns-after-months-exile-137555261",
+      "outlet": "ABC News",
+      "headline": "Venezuela opposition leader Machado returns after months in exile",
+      "article_id": 1144,
+      "is_opinion": false,
+      "published_at": "2026-10-25T18:26:22+00:00",
+      "allsides_rating": "lean_left"
+    },
+    {
+      "url": "https://www.ft.com/content/f691e41e-dd01-4ac0-ade7-5f7ca23d6135?syn-25a6b1a6=1",
+      "outlet": "Financial Times",
+      "headline": "Venezuelan opposition leader Machado returns from exile",
+      "article_id": 9548,
+      "is_opinion": false,
+      "published_at": "2026-10-25T21:55:32+00:00",
+      "allsides_rating": "not_rated"
+    },
+    {
+      "url": "https://www.foxnews.com/world/venezuelan-opposition-leader-maria-corina-machado-surprise-return-home-after-nearly-year-abroad",
+      "outlet": "Fox News",
+      "headline": "Venezuelan opposition leader María Corina Machado makes surprise return home after nearly a year abroad",
+      "article_id": 3011,
+      "is_opinion": false,
+      "published_at": "2026-10-25T17:47:02+00:00",
+      "allsides_rating": "right"
+    },
+    {
+      "url": "https://www.npr.org/2026/10/25/nx-s1-6016222/venezuela-maria-corina-machado-leader-returns-exile",
+      "outlet": "NPR",
+      "headline": "Venezuela's opposition leader María Corina Machado returns after months in exile",
+      "article_id": 331,
+      "is_opinion": false,
+      "published_at": "2026-10-25T16:18:41+00:00",
+      "allsides_rating": "lean_left"
+    }
+  ],
+  "ai_label": "AI-generated from 12 sources",
+  "category": "world",
+  "glossary": [],
+  "headline": {
+    "text": "Machado returns to Venezuela after nearly 10 months in exile",
+    "source_ids": [
+      2358,
+      466,
+      3011
+    ]
+  },
+  "timeline": [
+    {
+      "date": "2025",
+      "event": "Machado was awarded the 2025 Nobel Peace Prize.",
+      "source_ids": [
+        904,
+        2358
+      ]
+    },
+    {
+      "date": "2025-12",
+      "event": "Machado left Venezuela to accept the 2025 Nobel Peace Prize in Norway.",
+      "source_ids": [
+        904,
+        7878,
+        2358
+      ]
+    },
+    {
+      "date": "2026-10-25",
+      "event": "Machado returned to Venezuela.",
+      "source_ids": [
+        2473,
+        2358,
+        1144,
+        331
+      ]
+    }
+  ],
+  "verified": false,
+  "viz_data": {
+    "chart": null,
+    "places": []
+  },
+  "viz_hint": "timeline",
+  "key_facts": [
+    {
+      "text": "Machado is a 2025 Nobel Peace Prize recipient.",
+      "source_ids": [
+        2358
+      ]
+    },
+    {
+      "text": "She left Venezuela in December with a private U.S. rescue team.",
+      "source_ids": [
+        904,
+        2358
+      ]
+    },
+    {
+      "text": "She had been in exile for 10 months.",
+      "source_ids": [
+        2358
+      ]
+    },
+    {
+      "text": "Machado had left just a month before the U.S. government seized Venezuelan President Nicolás Maduro.",
+      "source_ids": [
+        7878
+      ]
+    },
+    {
+      "text": "Edmundo González vows to join her and push for democratic elections.",
+      "source_ids": [
+        3011
+      ]
+    }
+  ],
+  "background": [
+    {
+      "text": "Machado left Venezuela in December to accept the 2025 Nobel Peace Prize in Norway.",
+      "source_ids": [
+        904,
+        2358
+      ]
+    },
+    {
+      "text": "Machado had left just a month before the U.S. government seized Venezuelan President Nicolás Maduro.",
+      "source_ids": [
+        7878
+      ]
+    }
+  ],
+  "cluster_id": 1765,
+  "confidence": {
+    "spectrum": {
+      "right": 4,
+      "center": 2,
+      "lean_left": 4,
+      "not_rated": 9
+    },
+    "developing": true,
+    "outlet_count": 19,
+    "article_count": 23
+  },
+  "whats_next": [
+    {
+      "text": "Edmundo González vows to join Machado and push for democratic elections, Fox News reported.",
+      "source_ids": [
+        3011
+      ]
+    }
+  ],
+  "headline_label": "Throughline headline",
+  "schema_version": 1,
+  "why_it_matters": [
+    {
+      "text": "Her return could complicate the Trump administration's strategy for Venezuela, according to The Japan Times.",
+      "source_ids": [
+        9275
+      ]
+    },
+    {
+      "text": "The New York Times reported that she came back to challenge leaders who have sidelined her and to press for new elections.",
+      "source_ids": [
+        466
+      ]
+    }
+  ],
+  "rank": 2,
+  "tier": "full",
+  "status": "draft"
+}

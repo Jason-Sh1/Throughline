@@ -32,9 +32,13 @@ def pipeline_run(conn: psycopg.Connection, kind: str) -> Iterator[dict]:
         conn.commit()
         raise
     with conn.cursor() as cur:
+        # LLM steps put their spend in the stats; it also gets its own columns so
+        # the admin dashboard can sum it.
         cur.execute(
-            """update pipeline_runs set status = 'succeeded', finished_at = now(), stats = %s
+            """update pipeline_runs set status = 'succeeded', finished_at = now(), stats = %s,
+                   input_tokens = %s, output_tokens = %s, cost_usd = %s
                where id = %s""",
-            (json.dumps(stats, default=str), run_id),
-        )
+            (json.dumps(stats, default=str), stats.get("input_tokens", 0),
+             stats.get("output_tokens", 0), stats.get("cost_usd", 0), run_id),
+        )  # fmt: skip
     conn.commit()

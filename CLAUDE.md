@@ -23,7 +23,7 @@ This is a non-commercial portfolio project built by one student. Favor simple, e
 - **DB/Auth:** Supabase Postgres + pgvector, Supabase Auth (magic link + Google), row-level security.
 - **Worker:** Python 3.12 — feedparser, trafilatura (only where permitted), sentence-transformers (local embedding model), hdbscan, anthropic SDK, google-genai SDK.
 - **Scheduling:** GitHub Actions cron (MVP) → Railway/Fly container later. Postgres `jobs` table for job state.
-- **LLMs:** Claude Haiku 4.5 via Batch API for story synthesis/verification; a Gemini Flash-Lite-class model for extraction. Verify current model names/prices before coding against them.
+- **LLMs:** Claude Haiku 5.5 (`claude-haiku-5-5`, effort `low`) via Batch API for extraction, story synthesis and verification. Chosen 2026-10-25 as the cheapest current option; prices live in `worker/llm/cost.py`. A Gemini Flash-Lite backend for extraction remains (`EXTRACT_MODEL=gemini-2.5-flash-lite`), but its free tier allows only 20 requests/day. Verify current model names/prices before changing them.
 - **Viz:** custom React timeline, Recharts, MapLibre GL.
 - **Monitoring:** Sentry, `pipeline_runs` table, LLM tracing (Langfuse or similar).
 
@@ -68,7 +68,7 @@ Every text field is a list of `{ text, source_ids: [] }` sentences.
 ## Prompting conventions
 
 - Prompts live in `/worker/llm/prompts/` as versioned files (`synthesize_v3.md`). Never inline long prompts in code.
-- Temperature 0–0.3. Strict JSON schema validation; retry once on invalid JSON, then fail the card.
+- Gemini: temperature 0–0.3. Claude: current models reject `temperature`/`top_p`/`top_k`, so control output with the prompt, `effort` and structured outputs instead. Strict JSON schema validation; retry once on invalid JSON, then fail the card.
 - Rules in every synthesis prompt: attribute contested claims ("X said"), distinguish reported/alleged/confirmed, no speculation beyond sources, ~8th-grade reading level, no judgment adjectives.
 - Use prompt caching for the fixed system prompt. Use the Batch API for all scheduled editions.
 - Cache every generated card and personalization keyed by content hash; personalization is cached per (story, profile segment).
