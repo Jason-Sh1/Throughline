@@ -12,6 +12,7 @@ import json
 import time
 from collections.abc import Callable
 
+import anthropic
 import psycopg
 
 from llm.cost import cost_usd
@@ -114,7 +115,14 @@ def collect[T](
                 stats["invalid"] += 1
                 print(f"  {res.custom_id}: {e}")
                 if attempt == 0 and "refused" not in str(e):
-                    msg, mode = client.messages.create(**meta["params"]), "standard"
+                    try:
+                        msg, mode = client.messages.create(**meta["params"]), "standard"
+                    except anthropic.APIError as api_err:
+                        # A failed retry fails this card only; the rest of the
+                        # batch must still be stored and marked ingested.
+                        print(f"  {res.custom_id}: retry failed: {api_err}")
+                        stats["failed"] += 1
+                        break
                 else:
                     stats["failed"] += 1
                     break
@@ -138,6 +146,4 @@ def open_batches(conn: psycopg.Connection) -> list[tuple[int, str, str]]:
 
 
 def anthropic_client():
-    import anthropic
-
     return anthropic.Anthropic()  # reads ANTHROPIC_API_KEY

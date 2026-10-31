@@ -194,6 +194,38 @@ def test_invalid_card_is_retried_once_then_falls_back(db, monkeypatch):
         assert [r[0] for r in cur.fetchall()] == ["one_liner"]
 
 
+def test_retry_api_error_fails_only_that_card(db, monkeypatch):
+    import anthropic
+    import httpx
+
+    with db.cursor() as cur:
+        seed(cur)
+    db.commit()
+    fake = FakeAnthropic("{not json")
+
+    def boom(**params):
+        req = httpx.Request("POST", "https://api.anthropic.com/v1/messages")
+        raise anthropic.APIConnectionError(request=req)
+
+    fake.messages.create = boom
+    monkeypatch.setattr(edition, "anthropic_client", lambda: fake)
+    stats = {}
+    eid = edition.build(db, "evening", n_full=1, n_tail=0, wait_s=0, stats=stats)
+    assert stats["synthesis"]["failed"] == 1
+    with db.cursor() as cur:
+        cur.execute("select count(*) from llm_batches where status <> 'ingested'")
+        assert cur.fetchone()[0] == 0  # batch still marked ingested
+        cur.execute("select tier from edition_cards where edition_id = %s", (eid,))
+        assert [r[0] for r in cur.fetchall()] == ["one_liner"]
+
+
+def test_export_without_edition_exits_cleanly(db, tmp_path):
+    import pytest
+
+    with pytest.raises(SystemExit):
+        edition.export(db, tmp_path / "e.json")
+
+
 def test_gemini_extraction_backend(db, monkeypatch):
     with db.cursor() as cur:
         seed(cur)

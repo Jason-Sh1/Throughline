@@ -267,7 +267,10 @@ def export(conn, out: Path, edition_id: int | None = None) -> dict:
     with conn.cursor() as cur:
         if edition_id is None:
             cur.execute("select id from editions order by created_at desc limit 1")
-            edition_id = cur.fetchone()[0]
+            row = cur.fetchone()
+            if row is None:
+                raise SystemExit("no edition to export yet; run `make edition` first")
+            edition_id = row[0]
         cur.execute("select edition_date, slot, status from editions where id = %s", (edition_id,))
         day, slot, status = cur.fetchone()
         cur.execute(
