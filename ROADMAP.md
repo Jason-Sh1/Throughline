@@ -40,10 +40,10 @@ Claude: check items off as they're completed and add a one-line note (date, anyt
 - [x] Render first cards as static JSON — 2026-10-26; `make edition-json`, samples + cost in docs/samples/
 
 ### M4 — Verification & evals (Week 4)
-- [ ] Verification pass (sentence vs. cited excerpt → supported / unsupported / contradicted)
-- [ ] Confidence computation (outlet count, spectrum spread, single-source flag)
-- [ ] Eval runner + metrics (faithfulness, citation precision/recall, key-fact coverage, clustering F1)
-- [ ] `make eval-quick` (30-story subset) wired into CI as a gate
+- [x] Verification pass (sentence vs. cited excerpt → supported / unsupported / contradicted) — 2026-10-31; drops (never rewrites), only verified cards publish, `cards.verification` keeps the drop report
+- [x] Confidence computation (outlet count, spectrum spread, single-source flag) — 2026-10-31; news outlets only, agencies/research sites tagged via `kind` in feeds.yaml
+- [x] Eval runner + metrics (faithfulness, citation precision/recall, key-fact coverage, clustering F1) — 2026-10-31; Sonnet 5.5 judge, content-addressed cache, blind labeling helper (`make label`)
+- [x] `make eval-quick` (30-story subset) wired into CI as a gate — 2026-10-31; fails if faithfulness drops >0.02 vs `worker/evals/baseline.json`
 - [ ] **Human:** hand-label 50-story gold set in `/worker/evals/gold/`
 - [ ] Record baseline numbers in `/docs/evals.md`
 

@@ -43,6 +43,11 @@ article ids. `llm_batches` remembers each batch of card requests sent to the
 Anthropic Batch API, so results that arrive after the run ended can still be
 collected. Both are internal: RLS on, no policies.
 
+**Verification (M4, `20261031000000_verification.sql`).** `cards.verification`
+records what the verification pass removed from a card and why; `verified_at` says
+when it ran. `sources.kind` marks agencies and research sites, which don't count
+toward a story's outlet count.
+
 **Operations.** `pipeline_runs` logs each pipeline run (when, how long, what
 it did, tokens and cost, errors) for the admin dashboard. `jobs` is a simple
 work queue stored in Postgres: workers grab the next queued job with

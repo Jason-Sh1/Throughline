@@ -4,7 +4,7 @@ WORKER := cd worker && uv run
 PG_TEST_URL ?= postgresql://postgres:postgres@localhost:54322/throughline_test
 
 .PHONY: help env-check setup embed-deps dev test test-web test-worker lint ingest fetch cluster \
-        recluster purge clusters edition edition-collect edition-json eval-quick validate-feeds \
+        recluster purge clusters edition edition-collect edition-json eval-quick eval eval-snapshot label validate-feeds \
         sync-sources allsides db-test
 
 help:
@@ -67,17 +67,26 @@ clusters: ## Print recent clusters with headlines (ARGS="--hours 48 --min-outlet
 	$(WORKER) python -m cluster.inspect $(ARGS)
 
 SLOT ?= morning
-edition: ## Build an edition: extract, synthesize (Batch API), assemble (SLOT=morning|midday|evening)
+edition: ## Build an edition: extract, synthesize, verify (Batch API), publish (SLOT=morning|midday|evening)
 	$(WORKER) python -m llm.edition --slot $(SLOT) $(ARGS)
 
-edition-collect: ## Ingest synthesis batches a previous run left open
+edition-collect: ## Ingest batches a previous run left open
 	$(WORKER) python -m llm.edition --collect
 
 edition-json: ## Export the latest edition as static JSON (OUT=path, default worker/out/edition.json)
 	$(WORKER) python -m llm.edition --export $(abspath $(or $(OUT),worker/out/edition.json))
 
-eval-quick: ## 30-story eval gate (arrives in M4)
-	@echo "No eval suite yet (ROADMAP M4); passing."
+eval-quick: ## 30-story eval gate: fails if faithfulness drops vs evals/baseline.json
+	$(WORKER) python -m evals.run --suite quick --check $(ARGS)
+
+eval: ## Full eval over every story (ARGS="--update-baseline --record")
+	$(WORKER) python -m evals.run --suite full $(ARGS)
+
+eval-snapshot: ## Freeze recent clusters into eval stories (N=60)
+	$(WORKER) python -m evals.snapshot --n $(or $(N),60) $(ARGS)
+
+label: ## Gold-set labeling helper at http://localhost:8765
+	$(WORKER) python -m evals.label
 
 db-test: ## Apply migrations to a THROWAWAY PG_TEST_URL, run RLS tests and all worker tests
 	psql "$(PG_TEST_URL)" -v ON_ERROR_STOP=1 -q -f supabase/tests/local_auth_shim.sql

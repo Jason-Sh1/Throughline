@@ -32,16 +32,26 @@ def _ref(doc: dict) -> SourceRef:
     )
 
 
+# AllSides buckets folded into three sides, for spectrum spread and ranking.
+SIDES = {"left": "left", "lean_left": "left", "center": "center",
+         "lean_right": "right", "right": "right"}  # fmt: skip
+
+
 def confidence(rows: list[dict], now: datetime | None = None) -> Confidence:
     """Coverage numbers over *all* the cluster's articles, wire copies included:
-    a wire story run by six outlets is six outlets' coverage."""
+    a wire story run by six outlets is six outlets' coverage. Agencies and
+    research sites are counted separately (see Confidence)."""
     now = now or datetime.now(UTC)
-    outlets = {r["source_id"]: r["allsides_rating"] for r in rows}
+    news = {r["source_id"]: r["allsides_rating"] for r in rows if r.get("kind", "news") == "news"}
+    other = {r["source_id"] for r in rows if r.get("kind", "news") != "news"}
     newest = max((r["published_at"] for r in rows if r["published_at"]), default=None)
     return Confidence(
-        outlet_count=len(outlets),
+        outlet_count=len(news),
         article_count=len(rows),
-        spectrum=dict(Counter(outlets.values())),
+        spectrum=dict(Counter(news.values())),
+        spectrum_spread=len({SIDES[r] for r in news.values() if r in SIDES}),
+        single_source=len(news) <= 1,
+        other_sources=len(other),
         developing=bool(newest and now - newest < timedelta(hours=DEVELOPING_HOURS)),
     )
 

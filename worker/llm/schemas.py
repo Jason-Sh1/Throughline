@@ -189,9 +189,16 @@ class SourceRef(BaseModel):
 
 
 class Confidence(BaseModel):
-    outlet_count: int
+    """Coverage facts shown with the card. Only news outlets count: agencies and
+    research sites (sources.kind) are listed as sources but say nothing about how
+    widely the press covered a story."""
+
+    outlet_count: int  # news outlets
     article_count: int
-    spectrum: dict[str, int]  # allsides rating -> outlets
+    spectrum: dict[str, int]  # allsides rating -> news outlets
+    spectrum_spread: int = 0  # how many of left / center / right covered it (0-3)
+    single_source: bool = False  # at most one news outlet
+    other_sources: int = 0  # agencies + research sites
     developing: bool
 
 

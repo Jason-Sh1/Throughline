@@ -25,6 +25,8 @@ PRICES = {
     # one retry for an invalid response is a standard request.
     ("claude-haiku-5-5", "batch"): Price(0.05, 0.25, cache_read=0.005, cache_write=0.0625),
     ("claude-haiku-5-5", "standard"): Price(0.10, 0.50, cache_read=0.01, cache_write=0.125),
+    # Eval judge only (worker/evals): a stronger model than the one being graded.
+    ("claude-sonnet-5-5", "standard"): Price(2.00, 10.00, cache_read=0.20, cache_write=2.50),
     # Optional extraction backend. Paid-tier price; the free tier is free but
     # capped at 20 requests/day.
     ("gemini-2.5-flash-lite", "standard"): Price(0.10, 0.40),
