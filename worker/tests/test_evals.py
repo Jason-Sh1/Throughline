@@ -203,7 +203,9 @@ def test_prompt_text_change_invalidates_the_cache(evaldirs, monkeypatch):
     monkeypatch.setattr(run, "_prompt_text", lambda n: real(n) + ("x" if "synth" in n else ""))
     fake = FakeClient()
     run.evaluate(stories, {}, lambda: fake)
-    assert len(fake.calls) == 4
+    # The pipeline re-runs. The fake returns the same draft, and a grade is keyed on
+    # the draft it graded, so the judge is not paid again for identical text.
+    assert fake.calls == ["You extract facts fr", "You write story brie", "You check AI-written"]
 
 
 def test_gate(evaldirs):

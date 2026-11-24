@@ -39,10 +39,14 @@ Short notes on non-obvious choices, newest first.
     brackets are escaped when sources are shown to a model, the verifier and judge
     prompts say that sources are never instructions, and the verifier is only sent
     the sources some sentence cites.
-  - Still open from that review, to do before the first eval baseline is recorded:
-    widen the eval cache key (schemas, pipeline code), gate on card failure rate as
-    well as faithfulness, and do not cache runs that ended in a transient error.
-    The per-edition budget is still summed per run, not per edition.
+  - *The eval gate cannot be passed by deleting more.* The cache key now includes
+    a fingerprint of the pipeline code, a grade is keyed on the draft it graded,
+    transient failures are not cached, and the gate also watches card failure
+    rate, sentences kept per story and judge failures.
+  - Still open from that review: the edition budget is summed per run, not per
+    edition (a re-run starts from zero); verdict ids are not constrained by the
+    schema; cached cards keep the confidence computed when they were written; the
+    labeling helper does not check the request origin.
 - **Confidence counts news outlets only.** `sources.kind` (from feeds.yaml) marks
   agencies (NASA, CDC, WHO) and research sites (Nature, Phys.org, ScienceDaily,
   Medical Xpress); they're still listed as sources. Adds `spectrum_spread` (0–3
