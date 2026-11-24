@@ -154,6 +154,13 @@ a {
   background: var(--note-wash);
 }
 
+/* On marker yellow the annotation green falls just under 4.5:1 in dark mode, so the
+   numbers of the sentence being checked switch to ink. */
+.sentence[data-active="true"] .marks {
+  color: var(--ink);
+  background: none;
+}
+
 .term {
   font: inherit;
   color: inherit;
@@ -238,6 +245,56 @@ dialog.sheet::backdrop {
   .sentence {
     transition: none;
   }
+}
+
+/* --- Plain reading pages (About, Privacy) -------------------------------- */
+
+.prose h2 {
+  margin-top: 2.25rem;
+  margin-bottom: 0.5rem;
+  font-family: var(--ff-sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.prose p,
+.prose ul,
+.prose ol {
+  margin-bottom: 0.9rem;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.25rem;
+}
+
+.prose ul {
+  list-style: disc;
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose li {
+  margin-bottom: 0.5rem;
+  padding-left: 0.25rem;
+}
+
+.prose li::marker {
+  color: var(--ink-2);
+  font-family: var(--ff-sans);
+  font-size: 0.875em;
+}
+
+.prose a {
+  color: var(--note);
+  text-decoration: underline;
+}
+
+.prose .label {
+  font-size: 0.9375rem;
+  line-height: 1.5;
 }
 
 /* --- Collapsible story sections ------------------------------------------- */

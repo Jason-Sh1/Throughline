@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Throughline">
+  <!-- The spine: a line through the mark with three stitches; the middle one is the
+       sentence being checked (marker yellow). Colors: --ink, --paper, --marker. -->
+  <rect width="512" height="512" rx="96" fill="#111e19"/>
+  <path d="M88 256h336" stroke="#f2f7f5" stroke-width="14" stroke-linecap="round"/>
+  <rect x="139" y="190" width="42" height="132" rx="7" fill="#111e19" stroke="#f2f7f5" stroke-width="14"/>
+  <rect x="235" y="190" width="42" height="132" rx="7" fill="#f7ea7e" stroke="#f7ea7e" stroke-width="14"/>
+  <rect x="331" y="190" width="42" height="132" rx="7" fill="#111e19" stroke="#f2f7f5" stroke-width="14"/>
+</svg>

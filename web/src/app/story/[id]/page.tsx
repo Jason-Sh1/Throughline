@@ -9,6 +9,7 @@ import { StorySources } from "@/components/cited";
 import { ArrowLeftIcon, ChevronIcon } from "@/components/icons";
 import { Masthead } from "@/components/masthead";
 import { NotesProvider } from "@/components/notes";
+import { SiteFooter } from "@/components/site-footer";
 import { SourceRow } from "@/components/source-row";
 import { SpectrumPlot } from "@/components/spectrum-plot";
 import { MarkRead } from "@/components/spine";
@@ -264,6 +265,7 @@ export default async function StoryPage({ params }: Props) {
             </Link>
           </p>
         </nav>
+        <SiteFooter />
       </main>
     </NotesProvider>
   );

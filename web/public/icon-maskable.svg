@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Throughline">
+  <!-- Maskable variant: full-bleed ground, artwork inside the central 60% safe zone. -->
+  <rect width="512" height="512" fill="#111e19"/>
+  <path d="M132 256h248" stroke="#f2f7f5" stroke-width="11" stroke-linecap="round"/>
+  <rect x="170" y="206" width="32" height="100" rx="5" fill="#111e19" stroke="#f2f7f5" stroke-width="11"/>
+  <rect x="240" y="206" width="32" height="100" rx="5" fill="#f7ea7e" stroke="#f7ea7e" stroke-width="11"/>
+  <rect x="310" y="206" width="32" height="100" rx="5" fill="#111e19" stroke="#f2f7f5" stroke-width="11"/>
+</svg>

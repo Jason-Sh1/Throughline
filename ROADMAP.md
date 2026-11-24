@@ -67,11 +67,12 @@ Claude: check items off as they're completed and add a one-line note (date, anyt
 - [ ] Interests page with edit/delete; data export/delete
 
 ### M7 — Bias display, accessibility, PWA (Week 7)
-- [ ] Coverage spectrum bar with "Not rated" bucket + AllSides attribution
-- [ ] Accessibility pass (WCAG 2.2 AA checklist in `/docs/a11y.md`)
-- [ ] PWA: installable, offline latest edition
-- [ ] Privacy notice + "About our AI" page
+- [x] Coverage spectrum bar with "Not rated" bucket + AllSides attribution — 2026-11-24; built in M5 as a dot plot (position and text, never color)
+- [x] Accessibility pass (WCAG 2.2 AA checklist in `/docs/a11y.md`) — 2026-11-24; markup, keyboard, motion and measured contrast are checked; screen-reader, real-phone and zoom passes are listed there as not checked yet
+- [x] PWA: installable, offline latest edition — 2026-11-24; manifest, icons, hand-written service worker (`web/public/sw.js`); tested in Chromium with the server stopped
+- [x] Privacy notice + "About our AI" page — 2026-11-24; `/privacy`, `/about`
 - [ ] "Report a problem" button on every card → feeds review queue
+- [ ] **Human:** screen-reader pass (VoiceOver, NVDA) and a look on a real phone (see `docs/a11y.md`)
 
 ### M8 — Deploy & launch (Week 8)
 - [ ] Deploy web to Vercel, custom domain
@@ -104,6 +105,7 @@ Claude: check items off as they're completed and add a one-line note (date, anyt
 
 ## Notes
 <!-- Claude appends dated notes here -->
+- 2026-11-24 (M5, part of M7): built before M6 because they need no accounts. M6 (sign-in, onboarding, personalization) is next and needs the Supabase Auth settings (magic link, site URL) set in the dashboard. The privacy page says article text is deleted after 14 days: `make purge` must be scheduled in M8 before launch for that to be true. When accounts arrive, update `/privacy` in the same pull request.
 - 2026-10-25 (M1): Starter feed URLs could not be fetched from the dev sandbox (news sites blocked), so treat them as unverified until the M2 fetcher runs. Ratings in feeds.yaml are placeholders until the AllSides import. 29 worker tests + RLS smoke test passing.
 - 2026-10-25 (M2): 90 worker tests passing locally against Postgres + pgvector. Fetchers are tested with mocked HTTP only, because the dev sandbox can't reach news sites, GDELT, the Guardian or Hugging Face. `ingest-smoke.yml` runs the real pipeline on GitHub Actions. Clustering explained in docs/clustering.md.
 - 2026-10-25 (M2 live run on Actions): 577 articles from 27/28 feeds. Plain HDBSCAN over-merged related stories (137 moves, 125 merges); with the coherence guards, 25 moves and 15 merges, and the top clusters are single events. Open issues: WaPo business feed returns 502; GDELT answered 429 from GitHub's shared runners, so GDELT is unproven until it runs from our own scheduler.

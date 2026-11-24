@@ -8,6 +8,8 @@ import { Masthead } from "@/components/masthead";
 import { NotesProvider } from "@/components/notes";
 import { SpectrumPlot } from "@/components/spectrum-plot";
 import { EditionEnd } from "@/components/spine";
+import { OfflineEdition } from "@/components/offline";
+import { SiteFooter } from "@/components/site-footer";
 import { SentenceList, StoryMeta } from "@/components/story-bits";
 import { getLatestEdition } from "@/lib/edition";
 import { capitalize, categoryLabel, formatEditionDate, plural } from "@/lib/text";
@@ -41,6 +43,7 @@ export default async function Today() {
 
   return (
     <NotesProvider>
+      <OfflineEdition urls={stories.map((s) => `/story/${s.cluster_id}`)} />
       <Masthead editionId={edition.id} stories={spine} />
       <main id="main" className="page pb-24">
         <div className="pt-8">
@@ -168,25 +171,7 @@ export default async function Today() {
           slot={edition.slot}
         />
 
-        <footer className="label mt-12 max-w-[36rem] space-y-2 text-[0.8125rem] leading-normal text-ink-2">
-          <p>
-            Throughline groups coverage of the same event across outlets and writes a short
-            briefing with AI. Every sentence cites the articles it came from: tap a sentence, or
-            the small numbers after it, to see them.
-          </p>
-          <p>
-            Outlet ratings are from{" "}
-            <a
-              href="https://www.allsides.com/media-bias/ratings"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-ink"
-            >
-              AllSides Media Bias Ratings
-            </a>{" "}
-            (CC BY-NC 4.0). A non-commercial student project: no ads, no paid tier.
-          </p>
-        </footer>
+        <SiteFooter />
       </main>
     </NotesProvider>
   );

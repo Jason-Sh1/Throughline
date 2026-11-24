@@ -2,6 +2,27 @@
 
 Short notes on non-obvious choices, newest first.
 
+## 2026-11-24 — M7 (the parts that need no accounts)
+
+- **Offline reading with a hand-written service worker** (`web/public/sw.js`, about
+  120 lines, no library). Pages are network-first with a stored copy as fallback, so
+  a reader online always gets the newest edition. The Today screen tells the worker
+  which story pages belong to the edition; it stores them, with the scripts, styles
+  and fonts their HTML refers to, and drops stories from older editions. A page that
+  is not stored falls back to `/offline`. A library (Workbox, next-pwa) would do more
+  than this app needs and hide how it works.
+- **The worker stores pages, nothing about the reader.** Registered only in
+  production builds.
+- **Icons are one drawing.** `public/icon.svg` plus PNG sizes drawn from the same
+  shapes at build time (`app/icons/[size]`), so no binary files to keep in sync.
+- **About and Privacy describe the code as it is.** The About page lists where a
+  briefing can be wrong and says accuracy numbers are not published yet. The Privacy
+  page lists the two things kept on the device (read state, offline copy) and says
+  what the host sees. Both must change in the same pull request as the behavior.
+- **Contrast is measured, not eyeballed.** `docs/a11y.md` has the ratios computed
+  from the color tokens. One pair failed (green source numbers on marker yellow in
+  dark mode, 4.47:1) and was changed.
+
 ## 2026-11-24 — M5
 
 - **The citations are the interface.** The reader is set like an annotated scholarly
