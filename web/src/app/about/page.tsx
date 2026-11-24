@@ -23,10 +23,11 @@ export default function AboutPage() {
         it, and what&rsquo;s next. Each story carries the label &ldquo;AI-generated from N
         sources&rdquo;.
       </p>
-      <p className="label">
-        Text set like this is not ours: outlet names and the outlets&rsquo; own headlines. We
-        never put our words under a publisher&rsquo;s name, and we never show an article&rsquo;s
-        text. To read it, follow the link to the publisher.
+      <p>
+        Outlet names and the outlets&rsquo; own headlines are always set in a plainer
+        typeface, <span className="label">like this</span>, the one the buttons and labels
+        use. We never put our words under a publisher&rsquo;s name, and we never show an
+        article&rsquo;s text. To read it, follow the link to the publisher.
       </p>
 
       <h2>How a briefing is made</h2>
@@ -46,8 +47,9 @@ export default function AboutPage() {
           cite the articles it came from. A sentence with no valid citation is deleted.
         </li>
         <li>
-          <strong>Check.</strong> A second pass reads each sentence next to the articles it
-          cites and marks it supported, unsupported or contradicted. Anything not marked
+          <strong>Check.</strong> A second pass reads each sentence next to the headline and
+          excerpt of each article it cites and marks it supported, unsupported or
+          contradicted. Anything not marked
           supported is deleted, not rewritten. If a headline fails, the whole briefing is
           dropped.
         </li>
@@ -90,8 +92,9 @@ export default function AboutPage() {
         <a href="https://www.allsides.com/media-bias/ratings" target="_blank" rel="noopener noreferrer">
           AllSides Media Bias Ratings
         </a>{" "}
-        (CC BY-NC 4.0), which rates U.S. outlets. Outlets AllSides has not rated, including
-        most outlets outside the U.S., are shown as &ldquo;Not rated&rdquo;. The ratings show who
+        (CC BY-NC 4.0). Throughline applies them to U.S. outlets only. Outlets AllSides has
+        not rated, and every outlet outside the U.S. whether or not AllSides rates it, are
+        shown as &ldquo;Not rated&rdquo;. The ratings show who
         covered a story. They are not a judgment of any article, and Throughline does not
         guess your politics or change what you see based on them.
       </p>

@@ -8,9 +8,12 @@ import type { SpineStory } from "./spine";
 export function Masthead({
   editionId,
   stories,
+  currentId,
 }: {
   editionId?: number;
   stories?: SpineStory[];
+  /** The story on screen, marked on the spine. */
+  currentId?: number;
 }) {
   return (
     <header className="sticky top-0 z-10 border-b border-rule bg-paper">
@@ -22,7 +25,7 @@ export function Masthead({
           Throughline
         </Link>
         {editionId !== undefined && stories && stories.length > 0 ? (
-          <Spine editionId={editionId} stories={stories} />
+          <Spine editionId={editionId} stories={stories} currentId={currentId} />
         ) : (
           <span aria-hidden="true" className="h-px flex-1 bg-ink" />
         )}

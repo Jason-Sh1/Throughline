@@ -15,16 +15,17 @@ because the product is not one.
 
 | Voice | Typeface | Used for |
 |---|---|---|
-| Throughline's own words | **STIX Two Text** (serif) | headlines we write, every briefing sentence, glossary definitions, end-of-edition text |
-| Publishers' words and the interface | **Schibsted Grotesk** (sans, `.label`) | outlet names, outlets' real headlines, ratings, timestamps, section titles, buttons, captions |
+| Throughline's own words | **STIX Two Text** (serif) | headlines we write, every briefing sentence, glossary definitions, and our own explanations (footer, hints, notices, captions) |
+| Publishers' words and controls | **Schibsted Grotesk** (sans, `.label`) | outlet names, outlets' real headlines, ratings, timestamps, section titles, buttons, the meta line under a headline |
 
 A reader can tell who is speaking from the letterforms alone. This is how "never show
 AI text under a publisher's name" is made visible. Both faces are self-hosted by
 `next/font`.
 
 - Body 17px / 1.55, old-style figures in running text. Story lede 18px.
-- Headlines: 32px (edition title), 30px (story), 28px (lead story on Today), 21px
-  (other stories). Weight 600, tracking -0.01 to -0.015em, `text-wrap: balance`.
+- Headlines: 30px (story page), 28px (lead story on Today), 21px (other stories).
+  Weight 600, tracking -0.01 to -0.015em, `text-wrap: balance`. The edition's name
+  and date are one quiet label line: the lead story is the largest thing on Today.
 - Labels 12 to 15px, lining figures. Not tabular: this sans widens commas and periods
   under `tnum`.
 - Reading measure is capped at 38rem inside a 44rem column.
@@ -52,27 +53,37 @@ Restrained: tinted neutrals plus two colors that each mean one thing.
 ## Components
 
 - **Masthead and spine.** Wordmark, then a line running to the right with one stitch
-  per briefing. A stitch fills when that story has been opened; "2 of 5 read" sits at
-  the end. It shows what is left. It is not a streak and it is not navigation.
+  per briefing at a fixed pitch. A stitch fills when that story has been opened; the
+  story on screen is a taller marker-yellow stitch; "2 of 5 read" sits at the end. It
+  shows what is left. It is not a streak and it is not navigation.
 - **Story entry (Today).** A ruled, numbered list, not cards. Rank numeral in the
   gutter, headline, meta line, brief (all three sentences for the lead, one for the
   rest), a "Full briefing" link. No kicker above headlines: topic and labels sit in
   the meta line below.
-- **Cited sentence.** Serif text followed by source numbers in annotation green. The
-  last word and the numbers never separate across lines. Active state: a marker-yellow
-  swipe across the sentence (200ms, none under reduced motion).
-- **Note sheet.** The only overlay. Native `<dialog>`: bottom sheet below 72rem, a
-  panel in the right margin from 72rem up, where the page column moves left so the
-  panel never covers the text. Holds either a sentence's sources or a glossary term.
+- **Cited sentence.** Serif text followed by source numbers in annotation green, set
+  apart so "1 10 11" cannot read as one number. The last word and the numbers never
+  separate across lines, and a glossary term keeps the punctuation after it. Hover
+  underlines the sentence; pressed and active states are a marker-yellow swipe
+  (200ms, none under reduced motion). The lead story on Today carries a one-line
+  hint that sentences can be tapped.
+- **Note sheet.** The only overlay. Native `<dialog>`. Below 72rem it is a modal
+  bottom sheet. From 72rem up it is a non-modal panel in the right margin, with no
+  scrim: the page column sits left of it, the text stays readable, and clicking
+  another sentence swaps the note. Holds either a sentence's sources or a glossary
+  term.
 - **Source row.** Number, outlet (bold sans), AllSides rating as text, time, "Opinion"
   tag when it applies, then the outlet's real headline as a link out with an arrow.
-- **Coverage plot.** One dot per news outlet under its AllSides rating. All dots are
-  ink; position and a printed label carry the rating; "Not rated" is set apart with
-  hollow dots. Always captioned with the AllSides attribution.
-- **Sections.** Native `<details>` with a chevron and a sans title; hairline above.
+- **Coverage plot.** One dot per news outlet, stacked upward under its AllSides
+  rating so a column's height is its count (capped at 10, then "+n"). All dots are
+  ink; position and a printed label carry the rating; unrated outlets are set apart
+  with hollow dots. Always captioned with the AllSides attribution.
+- **Sections.** Native `<details>`: sans title at the page's left edge, chevron at the
+  right, hairline above. Brief, Why it matters, Key facts and How outlets frame it
+  start open; the full source list starts closed, because every sentence already
+  opens its own sources.
 - **Timeline.** A vertical ink rule with dots; date in the sans, event in the serif.
-- **Developing tag.** Small outlined label in ink. Not colored: it is information,
-  not an alarm.
+- **Developing.** A plain word at the start of the meta line, in ink. No badge and
+  no color: it is information, not an alarm.
 - **Icons.** Four authored 16px SVGs, 1.5px stroke (`components/icons.tsx`).
 
 ## Layout and motion
