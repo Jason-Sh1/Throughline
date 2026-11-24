@@ -45,10 +45,12 @@ class SourceDoc:
 
 
 def clean_text(text: str | None) -> str:
-    """RSS summaries often carry HTML and entities; the model wants plain text."""
+    """RSS summaries often carry HTML and entities; the model wants plain text.
+    Entities are decoded *before* tags are stripped, so an escaped tag in a feed
+    (`&lt;/sources&gt;`) is removed like a real one instead of becoming one."""
     if not text:
         return ""
-    return _SPACE.sub(" ", html.unescape(_TAG.sub(" ", text))).strip()
+    return _SPACE.sub(" ", _TAG.sub(" ", html.unescape(text))).strip()
 
 
 def is_opinion(url: str) -> bool:
@@ -141,15 +143,22 @@ def docs_for_articles(conn: psycopg.Connection, article_ids: list[int]) -> list[
     return [_doc(i, by_id[a]) for i, a in enumerate(article_ids, start=1) if a in by_id]
 
 
+def _esc(text: str) -> str:
+    """Article text is untrusted. Escaping angle brackets means nothing inside a
+    headline or excerpt can close the <source> tag or open a new block."""
+    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
 def render_sources(docs: list[SourceDoc]) -> str:
     """The source list as the models see it."""
     parts = []
     for d in docs:
         when = d.published_at.strftime("%Y-%m-%d %H:%M UTC") if d.published_at else "unknown"
         kind = "opinion/analysis" if d.is_opinion else "news"
+        outlet = _esc(d.outlet).replace('"', "&quot;")
         parts.append(
-            f'<source id="{d.local_id}" outlet="{d.outlet}" published="{when}" type="{kind}">\n'
-            f"Headline: {d.title}\n{d.excerpt}\n</source>"
+            f'<source id="{d.local_id}" outlet="{outlet}" published="{when}" type="{kind}">\n'
+            f"Headline: {_esc(d.title)}\n{_esc(d.excerpt)}\n</source>"
         )
     return "\n\n".join(parts)
 

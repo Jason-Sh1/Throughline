@@ -142,11 +142,19 @@ def test_confidence_counts_news_outlets_only():
 def _edition_rows(db, eid):
     with db.cursor() as cur:
         cur.execute(
-            """select ec.tier, c.card, c.status, c.verification from edition_cards ec
-               join cards c on c.id = ec.card_id where edition_id = %s order by rank""",
+            """select ec.tier, c.card, c.status, v.report from edition_cards ec
+               join cards c on c.id = ec.card_id
+               left join card_verifications v on v.card_id = c.id
+               where edition_id = %s order by rank""",
             (eid,),
         )
         return cur.fetchall()
+
+
+def _edition_status(db, eid):
+    with db.cursor() as cur:
+        cur.execute("select status from editions where id = %s", (eid,))
+        return cur.fetchone()[0]
 
 
 def test_verification_drops_sentence_and_publishes(db, monkeypatch):
@@ -183,7 +191,10 @@ def test_failed_full_card_falls_back_to_verified_one_liner(db, monkeypatch):
     rows = _edition_rows(db, eid)
     assert [(t, s) for t, _, s, _ in rows] == [("one_liner", "published")]
     with db.cursor() as cur:
-        cur.execute("select verification->>'error' from cards where status = 'failed'")
+        cur.execute(
+            """select v.report->>'error' from cards c
+               join card_verifications v on v.card_id = c.id where c.status = 'failed'"""
+        )
         assert cur.fetchone()[0] == "headline not supported"
 
 
@@ -194,8 +205,12 @@ def test_unverified_story_is_left_out(db, monkeypatch):
     # Rejects the full card's headline and the one-liner ("The Fed held rates steady.").
     fake = FakeAnthropic(json.dumps(draft_dict()), reject=("Fed hold", "held rates steady"))
     monkeypatch.setattr(edition, "anthropic_client", lambda: fake)
-    eid = edition.build(db, "morning", n_full=1, n_tail=0, wait_s=0, stats={})
+    stats = {}
+    eid = edition.build(db, "morning", n_full=1, n_tail=0, wait_s=0, stats=stats)
     assert _edition_rows(db, eid) == []
+    # An edition with no verified card is never published empty.
+    assert stats["published"] is False and stats["empty"] is True
+    assert _edition_status(db, eid) == "failed"
 
 
 def test_pending_verification_keeps_edition_unpublished(db, monkeypatch):

@@ -13,6 +13,8 @@ insert into cards (cluster_id, content_hash, prompt_version, model, status, card
   select id, 'draft-hash', 'v1', 'm', 'draft', '{}', 1 from clusters;
 insert into cards (cluster_id, content_hash, prompt_version, model, status, card, source_count)
   select id, 'pub-hash', 'v1', 'm', 'published', '{}', 1 from clusters;
+insert into card_verifications (card_id, report)
+  select id, '{"dropped": [{"text": "a sentence readers must not see"}]}' from cards;
 insert into auth.users values ('00000000-0000-0000-0000-00000000000a'), ('00000000-0000-0000-0000-00000000000b');
 insert into profiles (user_id, topics) values ('00000000-0000-0000-0000-00000000000a', '{tech}'), ('00000000-0000-0000-0000-00000000000b', '{science}');
 
@@ -26,6 +28,8 @@ begin
   select count(*) into n from cards;     assert n = 1, 'anon sees only published cards';
   select count(*) into n from profiles;  assert n = 0, 'anon must not read profiles';
   select count(*) into n from jobs;      assert n = 0, 'anon must not read jobs';
+  select count(*) into n from card_verifications;
+                                         assert n = 0, 'anon must not read verification reports';
   reset role;
 
   perform set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000a', true);

@@ -34,7 +34,7 @@ jobs:
       # restoring the newest copy is always safe; an unchanged pipeline re-scores
       # for free and only a prompt/model change pays for new LLM calls (~$1).
       - name: Restore eval cache
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: worker/evals/.cache
           key: evals-${{ github.run_id }}
@@ -43,6 +43,14 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: make eval-quick
+      # Saved even when the gate fails: otherwise every push of a failing change
+      # would pay for the same model calls again.
+      - name: Save eval cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: worker/evals/.cache
+          key: evals-${{ github.run_id }}
       - name: Eval results
         if: always()
         uses: actions/upload-artifact@v4
