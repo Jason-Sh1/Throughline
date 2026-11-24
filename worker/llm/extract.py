@@ -96,12 +96,18 @@ def store_extraction(
             """insert into extractions (cluster_id, content_hash, prompt_version, model, data,
                    source_map, input_tokens, output_tokens, cost_usd)
                values (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-               on conflict (content_hash) do update set data = excluded.data
+               on conflict (content_hash) do nothing
                returning id""",
             (meta["cluster_id"], meta["content_hash"], version, model, ex.model_dump_json(),
              json.dumps(meta["source_map"]), tin, tout, cost),
         )  # fmt: skip
-        ex_id = cur.fetchone()[0]
+        row = cur.fetchone()
+        if row is None:  # already stored; cards may have been written from it, so keep it
+            cur.execute(
+                "select id from extractions where content_hash = %s", (meta["content_hash"],)
+            )
+            row = cur.fetchone()
+        ex_id = row[0]
     conn.commit()
     if stats["dropped"]:
         print(f"  cluster {meta['cluster_id']}: citation filter dropped {stats['dropped']} items")

@@ -17,6 +17,7 @@ cards (article ids, through the edition's batch) and eval cards (local ids).
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from collections import Counter
@@ -214,6 +215,7 @@ class VerifyJob:
     card_id: int
     n_items: int
     user_message: str
+    sentences_sha: str  # fingerprint of exactly what was graded (see store)
 
     @property
     def custom_id(self) -> str:
@@ -230,18 +232,34 @@ def _load(conn: psycopg.Connection, card_id: int) -> tuple[dict, list[SourceDoc]
     return card, docs, to_local
 
 
+def cited_docs(docs: list[SourceDoc], its: list[Item]) -> list[SourceDoc]:
+    """Only the sources some sentence cites, with their ids unchanged. The verifier
+    never sees an article no sentence relies on, so text in such an article cannot
+    influence any verdict (and the request is smaller)."""
+    cited = {s for it in its for s in it.ref["source_ids"]}
+    return [d for d in docs if d.article_id in cited]
+
+
+def sentences_sha(its: list[Item], to_local: dict) -> str:
+    """Fingerprint of the numbered sentences as the verifier reads them. Verdicts
+    come back as "V3: unsupported"; they only mean something for this exact list."""
+    return hashlib.sha256(render_sentences(its, to_local).encode()).hexdigest()
+
+
 def plan(conn: psycopg.Connection, card_id: int) -> VerifyJob | None:
     card, docs, to_local = _load(conn, card_id)
     its = items(card)
     if not its or not docs:
         return None
-    return VerifyJob(card_id, len(its), user_message(docs, its, to_local))
+    message = user_message(cited_docs(docs, its), its, to_local)
+    return VerifyJob(card_id, len(its), message, sentences_sha(its, to_local))
 
 
 def submit(conn, client, jobs: list[VerifyJob], model: str, effort: str, edition_id=None):
     requests = {
         j.custom_id: (request_params(j.user_message, model, effort),
-                      {"card_id": j.card_id, "n_items": j.n_items})
+                      {"card_id": j.card_id, "n_items": j.n_items,
+                       "sentences_sha": j.sentences_sha})
         for j in jobs
     }  # fmt: skip
     return batch.submit(conn, client, "verify", requests, edition_id)
@@ -249,9 +267,21 @@ def submit(conn, client, jobs: list[VerifyJob], model: str, effort: str, edition
 
 def store(conn: psycopg.Connection, meta: dict, result: VerifyResult, tin: int, tout: int,
           cost: float) -> str:  # fmt: skip
-    """Apply the verdicts to the stored card. Returns the new status."""
-    card, _, _ = _load(conn, meta["card_id"])
-    its = items(card)  # same card, same walk -> same V-numbers as the request
+    """Apply the verdicts to the stored card. Returns the new status, or "stale"
+    when the verdicts do not belong to the card as it is now.
+
+    Verdicts are applied at most once, and only to the text they were given for:
+    - the card must still be `draft` (a second set of results for a card that is
+      already verified, failed or published is ignored), and
+    - the numbered sentences must be the ones the request graded (same fingerprint).
+    Without these checks, results collected twice would delete the wrong sentences
+    from a card that had already been cut, or pull a published card back.
+    """
+    card, _, to_local = _load(conn, meta["card_id"])
+    its = items(card)
+    expected = meta.get("sentences_sha")  # absent on batches submitted before this check
+    if expected and expected != sentences_sha(its, to_local):
+        return "stale"
     try:
         card, report = apply(card, its, result)
         status = "verified"
@@ -263,14 +293,23 @@ def store(conn: psycopg.Connection, meta: dict, result: VerifyResult, tin: int, 
     with conn.cursor() as cur:
         cur.execute(
             """update cards set card = case when %s = 'verified' then %s::jsonb else card end,
-                   status = %s, verification = %s, verified_at = now(),
+                   status = %s, verified_at = now(),
                    cost_usd = coalesce(cost_usd, 0) + %s,
                    input_tokens = coalesce(input_tokens, 0) + %s,
                    output_tokens = coalesce(output_tokens, 0) + %s
-               where id = %s""",
-            (status, json.dumps(card), status, json.dumps(report), cost, tin, tout,
-             meta["card_id"]),
+               where id = %s and status = 'draft'""",
+            (status, json.dumps(card), status, cost, tin, tout, meta["card_id"]),
         )  # fmt: skip
+        if cur.rowcount == 0:
+            conn.rollback()
+            return "stale"
+        # The report quotes the sentences that were removed, so it lives in a table
+        # readers cannot query (card rows are public once published).
+        cur.execute(
+            """insert into card_verifications (card_id, report) values (%s, %s)
+               on conflict (card_id) do update set report = excluded.report, created_at = now()""",
+            (meta["card_id"], json.dumps(report)),
+        )
     conn.commit()
     return status
 
@@ -286,7 +325,8 @@ def collect(conn: psycopg.Connection, client, batch_row_id: int) -> dict:
         statuses[store(conn, meta, result, tin, tout, cost)] += 1
 
     stats = batch.collect(conn, client, batch_row_id, parse_result, save)
-    return stats | {"verified": statuses["verified"], "rejected": statuses["failed"]}
+    return stats | {"verified": statuses["verified"], "rejected": statuses["failed"],
+                    "stale": statuses["stale"]}  # fmt: skip
 
 
 def estimate_cost(jobs: list[VerifyJob], model: str) -> float:

@@ -145,5 +145,16 @@ def open_batches(conn: psycopg.Connection) -> list[tuple[int, str, str]]:
         return cur.fetchall()
 
 
+def in_flight(conn: psycopg.Connection, kind: str) -> list[dict]:
+    """Request metadata of every batch of this kind that has not been ingested yet.
+    The edition builder uses it to avoid submitting the same work twice."""
+    with conn.cursor() as cur:
+        cur.execute(
+            "select requests from llm_batches where kind = %s and status in ('submitted', 'ended')",
+            (kind,),
+        )
+        return [meta for (requests,) in cur.fetchall() for meta in requests.values()]
+
+
 def anthropic_client():
     return anthropic.Anthropic()  # reads ANTHROPIC_API_KEY

@@ -43,8 +43,10 @@ article ids. `llm_batches` remembers each batch of card requests sent to the
 Anthropic Batch API, so results that arrive after the run ended can still be
 collected. Both are internal: RLS on, no policies.
 
-**Verification (M4, `20261031000000_verification.sql`).** `cards.verification`
-records what the verification pass removed from a card and why; `verified_at` says
+**Verification (M4, `20261031000000_verification.sql` and
+`20261124000000_verification_private.sql`).** `card_verifications.report`
+(one row per card; row-level security on, no policy, so only the worker can read
+it) records what the verification pass removed from a card and why; `verified_at` says
 when it ran. `sources.kind` marks agencies and research sites, which don't count
 toward a story's outlet count.
 

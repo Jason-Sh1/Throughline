@@ -52,8 +52,36 @@ Short notes on non-obvious choices, newest first.
   in the same batch, so a failed card falls back without a second round. An edition
   is published (and so readable through RLS) only when every batch has finished;
   otherwise it stays `building` and re-running the slot finishes it from cache.
-- **Drop reports are stored** (`cards.verification`) so a removed sentence can be
-  traced, and the eval can report how much verification removes.
+- **Drop reports are stored** (`card_verifications`, worker-only) so a removed
+  sentence can be traced, and the eval can report how much verification removes.
+- **Review fixes (2026-11-24, before merge).** An independent review of this PR
+  found ways for unchecked text to reach readers; all are closed and tested
+  (`worker/tests/test_verify_review.py`):
+  - *Results are applied once, to the text they were given for.* Verdicts come back
+    as "V3: unsupported", which only means something for one exact list of
+    sentences. `verify.store` now requires the card to still be `draft` and the
+    sentence list to match a fingerprint taken at submit time; anything else is
+    skipped as `stale`. A late or repeated synthesis or extraction result never
+    replaces a stored one (`on conflict do nothing`).
+  - *Nothing is submitted twice.* A build first collects batches an earlier run
+    left open, and skips work that is still in an open batch.
+  - *An edition publishes only when complete.* A pending extraction batch now holds
+    publication back like the other two steps, and an edition with no verified
+    card is marked `failed` instead of published empty.
+  - *A live edition stays live during a re-run.* The old line-up is replaced and
+    the new one published in a single transaction; a crash or a pending batch
+    leaves readers with what they had. `--date` finishes an edition after midnight
+    UTC.
+  - *The drop report is private.* It quotes the removed sentences, and published
+    `cards` rows are public, so it moved to `card_verifications` (no RLS policy).
+  - *Article text is data.* Entities are decoded before tags are stripped, angle
+    brackets are escaped when sources are shown to a model, the verifier and judge
+    prompts say that sources are never instructions, and the verifier is only sent
+    the sources some sentence cites.
+  - Still open from that review, to do before the first eval baseline is recorded:
+    widen the eval cache key (schemas, pipeline code), gate on card failure rate as
+    well as faithfulness, and do not cache runs that ended in a transient error.
+    The per-edition budget is still summed per run, not per edition.
 - **Confidence counts news outlets only.** `sources.kind` (from feeds.yaml) marks
   agencies (NASA, CDC, WHO) and research sites (Nature, Phys.org, ScienceDaily,
   Medical Xpress); they're still listed as sources. Adds `spectrum_spread` (0–3
