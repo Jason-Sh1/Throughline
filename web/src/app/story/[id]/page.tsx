@@ -1,34 +1,40 @@
 // Story view: one briefing, in the order of the card schema. The brief is the lede;
 // everything after it is a collapsible section (native <details>, so it works without
-// JavaScript and is announced correctly by screen readers).
+// JavaScript).
 
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { StorySources } from "@/components/cited";
+import { Cited, StorySources } from "@/components/cited";
 import { ArrowLeftIcon, ChevronIcon } from "@/components/icons";
 import { Masthead } from "@/components/masthead";
 import { NotesProvider } from "@/components/notes";
+import { SiteFooter } from "@/components/site-footer";
 import { SourceRow } from "@/components/source-row";
 import { SpectrumPlot } from "@/components/spectrum-plot";
 import { MarkRead } from "@/components/spine";
 import { SentenceList, StoryMeta, Timeline } from "@/components/story-bits";
-import { findStory, getLatestEdition } from "@/lib/edition";
+import { getStory } from "@/lib/edition";
 import { markGlossary, plural, siglaFor } from "@/lib/text";
 import type { FramingBucket, FullCard } from "@/lib/types";
 
 type Props = { params: Promise<{ id: string }> };
 
+// No story pages are built ahead of time, but each one is cached after its first
+// request (and revalidated with the edition), instead of being rendered on every hit.
+export function generateStaticParams() {
+  return [];
+}
+
 async function load(idParam: string) {
-  const result = await getLatestEdition();
-  if (result.state !== "ready" || !/^\d+$/.test(idParam)) return null;
-  const story = findStory(result.edition, Number(idParam));
-  return story ? { edition: result.edition, story } : null;
+  if (!/^\d{1,15}$/.test(idParam)) return { state: "missing" as const };
+  return getStory(Number(idParam));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const found = await load((await params).id);
-  return found ? { title: found.story.headline.text } : { title: "Story not found" };
+  if (found.state === "ready") return { title: found.story.headline.text };
+  return { title: found.state === "error" ? "Could not load" : "Story not found" };
 }
 
 function Section({
@@ -45,11 +51,11 @@ function Section({
   return (
     <details className="section border-t border-rule" open={open}>
       <summary className="label flex min-h-12 items-center gap-2 py-3">
-        <ChevronIcon className="chevron size-3.5 shrink-0 text-ink-2" />
         <h2 className="text-[0.9375rem] font-semibold">{title}</h2>
         {note && <span className="text-[0.8125rem] text-ink-2">{note}</span>}
+        <ChevronIcon className="chevron ml-auto size-3.5 shrink-0 text-ink-2" />
       </summary>
-      <div className="pb-7 pl-[1.375rem]">{children}</div>
+      <div className="pb-7">{children}</div>
     </details>
   );
 }
@@ -78,12 +84,16 @@ function hasFraming(story: FullCard): boolean {
 
 export default async function StoryPage({ params }: Props) {
   const found = await load((await params).id);
-  if (!found) notFound();
+  if (found.state === "missing") notFound();
+  // A failed load is an error, not "not found": error.tsx says so and offers a retry,
+  // and neither the page cache nor the offline copy keeps it as if it were content.
+  if (found.state === "error") throw new Error("The story could not be loaded");
   const { edition, story } = found;
 
-  const stories = edition.cards.filter((c): c is FullCard => c.tier === "full");
+  // `edition` is null when the story has moved out of the current edition.
+  const stories = edition ? edition.cards.filter((c): c is FullCard => c.tier === "full") : [];
   const index = stories.findIndex((s) => s.cluster_id === story.cluster_id);
-  const next = stories[index + 1];
+  const next = index >= 0 ? stories[index + 1] : undefined;
   const spine = stories.map((s, i) => ({ id: s.cluster_id, rank: i + 1, title: s.headline.text }));
   const sigla = siglaFor(story.sources);
   const g = story.glossary;
@@ -102,18 +112,24 @@ export default async function StoryPage({ params }: Props) {
 
   return (
     <NotesProvider>
-      <MarkRead editionId={edition.id} storyId={story.cluster_id} />
-      <Masthead editionId={edition.id} stories={spine} />
+      {edition && <MarkRead editionId={edition.id} storyId={story.cluster_id} />}
+      {edition ? (
+        <Masthead editionId={edition.id} stories={spine} currentId={story.cluster_id} />
+      ) : (
+        <Masthead />
+      )}
       <main id="main" className="page pb-24">
         <StorySources storyId={story.cluster_id} sources={story.sources}>
           <article>
             <p className="label pt-5 text-[0.8125rem]">
               <Link
-                href={`/#story-${story.cluster_id}`}
+                href={index >= 0 ? `/#story-${story.cluster_id}` : "/"}
                 className="inline-flex min-h-11 items-center gap-1.5 text-ink-2 no-underline hover:text-ink"
               >
                 <ArrowLeftIcon className="size-3.5" />
-                Story {index + 1} of {stories.length}
+                {index >= 0
+                  ? `Story ${index + 1} of ${stories.length}`
+                  : "From an earlier edition. See the current one"}
               </Link>
             </p>
             <h1 className="text-balance text-[1.875rem] font-semibold leading-[1.13] tracking-[-0.015em]">
@@ -164,10 +180,12 @@ export default async function StoryPage({ params }: Props) {
             {g.length > 0 && (
               <Section title="Glossary" note={plural(g.length, "term")}>
                 <dl className="space-y-4">
-                  {g.map((t) => (
+                  {g.map((t, i) => (
                     <div key={t.term} className="max-w-[38rem]">
                       <dt className="font-semibold">{t.term}</dt>
-                      <dd>{t.definition}</dd>
+                      <dd>
+                        <Cited id={`glossary-${i}`} text={t.definition} sourceIds={t.source_ids} />
+                      </dd>
                     </div>
                   ))}
                 </dl>
@@ -181,18 +199,18 @@ export default async function StoryPage({ params }: Props) {
             )}
 
             {hasFraming(story) && (
-              <Section title="How outlets frame it">
+              <Section title="How outlets frame it" open>
                 <div className="space-y-7">
                   {FRAMING.filter((b) => story.framing[b.key].length > 0).map((b) => {
                     const reps = story.framing.representative?.[b.key] ?? [];
                     return (
                       <section key={b.key}>
                         <h3 className="label text-[0.875rem] font-semibold">{b.title}</h3>
-                        <p className="label mb-2 text-[0.8125rem] text-ink-2">{b.blurb}</p>
+                        <p className="mb-2 text-[0.875rem] text-ink-2">{b.blurb}</p>
                         <SentenceList idPrefix={b.key} sentences={story.framing[b.key]} />
                         {reps.length > 0 && (
                           <>
-                            <p className="label mt-4 text-[0.8125rem] text-ink-2">
+                            <p className="mt-4 text-[0.875rem] text-ink-2">
                               Headlines from outlets in this group, in their own words:
                             </p>
                             <ol className="mt-1 border-t border-rule">
@@ -223,10 +241,11 @@ export default async function StoryPage({ params }: Props) {
               </Section>
             )}
 
-            <Section title="Sources" note={plural(story.sources.length, "article")} open>
-              <p className="label mb-1 max-w-[36rem] text-[0.8125rem] leading-normal text-ink-2">
+            {/* Closed by default: every sentence already opens its own sources. */}
+            <Section title="All sources" note={plural(story.sources.length, "article")}>
+              <p className="mb-1 max-w-[36rem] text-[0.875rem] leading-normal text-ink-2">
                 The numbers match the small numbers after each sentence. Headlines are the
-                outlets&apos; own; follow a link to read the article at its publisher.
+                outlets&rsquo; own; follow a link to read the article at its publisher.
                 {story.confidence.article_count > story.sources.length &&
                   ` The briefing was written from these ${story.sources.length} of the ${story.confidence.article_count} articles in this story.`}
               </p>
@@ -245,14 +264,16 @@ export default async function StoryPage({ params }: Props) {
               <span className="text-[0.8125rem] text-ink-2">
                 Next, story {index + 2} of {stories.length}
               </span>
-              <span className="mt-1 flex items-start gap-2 font-serif text-[1.25rem] font-semibold leading-snug text-ink group-hover:underline group-hover:decoration-note">
+              <span className="mt-1 block font-serif text-[1.25rem] font-semibold leading-snug text-ink underline decoration-rule group-hover:decoration-note">
                 {next.headline.text}
               </span>
             </Link>
           ) : (
-            <p className="font-serif text-[1.25rem] font-semibold leading-snug">
-              That was the last briefing in this edition.
-            </p>
+            index >= 0 && (
+              <p className="font-serif text-[1.25rem] font-semibold leading-snug">
+                That was the last briefing in this edition.
+              </p>
+            )
           )}
           <p className="mt-4 text-[0.875rem]">
             <Link
@@ -260,10 +281,11 @@ export default async function StoryPage({ params }: Props) {
               className="inline-flex min-h-11 items-center gap-1.5 font-semibold text-note no-underline hover:underline"
             >
               <ArrowLeftIcon className="size-3.5" />
-              Back to the edition
+              {index >= 0 ? "Back to the edition" : "The current edition"}
             </Link>
           </p>
         </nav>
+        <SiteFooter />
       </main>
     </NotesProvider>
   );

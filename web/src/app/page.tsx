@@ -8,6 +8,8 @@ import { Masthead } from "@/components/masthead";
 import { NotesProvider } from "@/components/notes";
 import { SpectrumPlot } from "@/components/spectrum-plot";
 import { EditionEnd } from "@/components/spine";
+import { OfflineEdition } from "@/components/offline";
+import { SiteFooter } from "@/components/site-footer";
 import { SentenceList, StoryMeta } from "@/components/story-bits";
 import { getLatestEdition } from "@/lib/edition";
 import { capitalize, categoryLabel, formatEditionDate, plural } from "@/lib/text";
@@ -20,7 +22,7 @@ export default async function Today() {
     return (
       <>
         <Masthead />
-        <main id="main" className="page py-12">
+        <main id="main" data-edition-state={result.state} className="page py-12">
           <h1 className="text-[2rem] font-semibold leading-tight">
             {result.state === "empty" ? "No edition yet" : "The edition didn’t load"}
           </h1>
@@ -41,20 +43,25 @@ export default async function Today() {
 
   return (
     <NotesProvider>
+      <OfflineEdition editionId={edition.id} urls={stories.map((s) => `/story/${s.cluster_id}`)} />
       <Masthead editionId={edition.id} stories={spine} />
       <main id="main" className="page pb-24">
-        <div className="pt-8">
-          <h1 className="text-[2rem] font-semibold leading-[1.1] tracking-[-0.015em]">
-            {capitalize(edition.slot)} edition
-          </h1>
-          <p className="label mt-1.5 text-[0.875rem] text-ink-2">
-            <time dateTime={edition.date}>{formatEditionDate(edition.date)}</time>
+        {/* One quiet line: the lead story, not the word "edition", is the biggest thing here. */}
+        <div className="pt-5">
+          <div className="label text-[0.875rem] leading-relaxed text-ink-2">
+            <h1 className="inline font-semibold text-ink">{capitalize(edition.slot)} edition</h1>
             <span aria-hidden="true"> · </span>
-            {plural(stories.length, "briefing")}
-            {tail.length > 0 && `, ${plural(tail.length, "short item")}`}
-          </p>
+            <time dateTime={edition.date} className="whitespace-nowrap">
+              {formatEditionDate(edition.date)}
+            </time>
+            <span aria-hidden="true"> · </span>
+            <span className="whitespace-nowrap">
+              {plural(stories.length, "briefing")}
+              {tail.length > 0 && `, ${plural(tail.length, "short item")}`}
+            </span>
+          </div>
           {edition.isSample && (
-            <p className="label mt-4 border-l border-ink py-0.5 pl-3 text-[0.8125rem] leading-normal text-ink-2">
+            <p className="mt-3 border-l border-ink py-0.5 pl-3 text-[0.875rem] leading-normal text-ink-2">
               <strong className="font-semibold text-ink">Sample edition.</strong> No live edition
               is connected, so this is saved output from a real pipeline run on{" "}
               {formatEditionDate(edition.date)}. It predates the verification pass.
@@ -62,7 +69,7 @@ export default async function Today() {
           )}
         </div>
 
-        <ol className="mt-8">
+        <ol className="mt-5">
           {stories.map((card, i) => (
             <li
               key={card.cluster_id}
@@ -94,7 +101,7 @@ export default async function Today() {
                       </Link>
                     </h2>
                     <div className="mt-2">
-                      <StoryMeta card={card} />
+                      <StoryMeta card={card} headlineLabel={card.headline_label} />
                     </div>
                     <div className="mt-4">
                       <SentenceList
@@ -103,9 +110,16 @@ export default async function Today() {
                       />
                     </div>
                     {i === 0 && (
-                      <div className="mt-6 max-w-[30rem]">
-                        <SpectrumPlot confidence={card.confidence} />
-                      </div>
+                      <>
+                        {/* Teach the one gesture where it is first useful, not in the footer. */}
+                        <p className="mt-3 text-[0.875rem] italic text-ink-2">
+                          Tap any sentence, or the small numbers after it, to see the articles
+                          it came from.
+                        </p>
+                        <div className="mt-6 max-w-[30rem]">
+                          <SpectrumPlot confidence={card.confidence} />
+                        </div>
+                      </>
                     )}
                     <p className="label mt-4 text-[0.875rem]">
                       <Link
@@ -168,25 +182,7 @@ export default async function Today() {
           slot={edition.slot}
         />
 
-        <footer className="label mt-12 max-w-[36rem] space-y-2 text-[0.8125rem] leading-normal text-ink-2">
-          <p>
-            Throughline groups coverage of the same event across outlets and writes a short
-            briefing with AI. Every sentence cites the articles it came from: tap a sentence, or
-            the small numbers after it, to see them.
-          </p>
-          <p>
-            Outlet ratings are from{" "}
-            <a
-              href="https://www.allsides.com/media-bias/ratings"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-ink"
-            >
-              AllSides Media Bias Ratings
-            </a>{" "}
-            (CC BY-NC 4.0). A non-commercial student project: no ads, no paid tier.
-          </p>
-        </footer>
+        <SiteFooter />
       </main>
     </NotesProvider>
   );

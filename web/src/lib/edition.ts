@@ -31,12 +31,21 @@ function isSentence(v: unknown): v is Sentence {
   ); // prettier-ignore
 }
 
-function sentences(v: unknown): Sentence[] {
+function ids(v: unknown): number[] {
+  return Array.isArray(v) ? v.filter((n): n is number => typeof n === "number") : [];
+}
+
+/**
+ * Sentences that cite at least one of the card's sources. The worker already drops
+ * uncited sentences (CLAUDE.md rule 1); the reader refuses them too, so a sentence
+ * can never be on screen without sources behind it.
+ */
+function sentences(v: unknown, known?: Set<number>): Sentence[] {
   if (!Array.isArray(v)) return [];
-  return v.filter(isSentence).map((s) => ({
-    text: s.text,
-    source_ids: Array.isArray(s.source_ids) ? s.source_ids : [],
-  }));
+  return v
+    .filter(isSentence)
+    .map((s) => ({ text: s.text, source_ids: ids(s.source_ids) }))
+    .filter((s) => (known ? s.source_ids.some((id) => known.has(id)) : s.source_ids.length > 0));
 }
 
 function sources(v: unknown): Source[] {
@@ -89,57 +98,76 @@ export function normalizeCard(raw: unknown): Card | null {
     sources: src,
     rank: Number(c.rank) || 0,
   };
-  if (c.tier === "one_liner") {
-    if (!isSentence(c.one_liner)) return null;
-    const card: OneLinerCard = { ...base, tier: "one_liner", one_liner: sentences([c.one_liner])[0] };
+  const known = new Set(src.map((s) => s.article_id));
+  const cited = (v: unknown) => sentences(v, known);
+  // A card with a headline is a full briefing; the tier column is not part of the JSON.
+  const tier = c.tier ?? (c.headline ? "full" : "one_liner");
+  if (tier === "one_liner") {
+    const [oneLiner] = cited([c.one_liner]);
+    if (!oneLiner) return null;
+    const card: OneLinerCard = { ...base, tier: "one_liner", one_liner: oneLiner };
     return card;
   }
-  if (!isSentence(c.headline)) return null;
-  const brief = sentences(c.brief);
+  const [headline] = cited([c.headline]);
+  if (!headline) return null;
+  const brief = cited(c.brief);
   if (brief.length === 0) return null;
   const framing = (c.framing ?? {}) as Record<string, unknown>;
   const rep = (framing.representative ?? {}) as Record<string, unknown>;
   const card: FullCard = {
     ...base,
     tier: "full",
-    headline: sentences([c.headline])[0],
+    headline,
     headline_label:
       typeof c.headline_label === "string" ? c.headline_label : "Throughline headline",
     brief,
-    why_it_matters: sentences(c.why_it_matters),
-    key_facts: sentences(c.key_facts),
-    background: sentences(c.background),
+    why_it_matters: cited(c.why_it_matters),
+    key_facts: cited(c.key_facts),
+    background: cited(c.background),
     glossary: Array.isArray(c.glossary)
       ? (c.glossary as FullCard["glossary"])
           .filter((g) => g && typeof g.term === "string" && typeof g.definition === "string")
+          .map((g) => ({ term: g.term, definition: g.definition, source_ids: ids(g.source_ids) }))
+          .filter((g) => g.source_ids.some((id) => known.has(id)))
           .slice(0, 5)
       : [],
     timeline: Array.isArray(c.timeline)
-      ? (c.timeline as FullCard["timeline"]).filter(
-          (t) => t && typeof t.date === "string" && typeof t.event === "string",
-        )
+      ? (c.timeline as FullCard["timeline"])
+          .filter((t) => t && typeof t.date === "string" && typeof t.event === "string")
+          .map((t) => ({ date: t.date, event: t.event, source_ids: ids(t.source_ids) }))
+          .filter((t) => t.source_ids.some((id) => known.has(id)))
       : [],
     framing: {
-      widely_reported: sentences(framing.widely_reported),
-      reported_by_some: sentences(framing.reported_by_some),
-      analysis_opinion: sentences(framing.analysis_opinion),
+      widely_reported: cited(framing.widely_reported),
+      reported_by_some: cited(framing.reported_by_some),
+      analysis_opinion: cited(framing.analysis_opinion),
       representative: {
         widely_reported: sources(rep.widely_reported),
         reported_by_some: sources(rep.reported_by_some),
         analysis_opinion: sources(rep.analysis_opinion),
       },
     },
-    whats_next: sentences(c.whats_next),
+    whats_next: cited(c.whats_next),
   };
   return card;
 }
 
+// CLAUDE.md: Today shows 8 to 12 cards, then ends. The worker can store a longer
+// line-up (its own default is 50 briefings and 30 short items), so the reader takes
+// the top of the ranking and stops. The scheduled pipeline builds 10 and 6.
+export const MAX_BRIEFINGS = 12;
+export const MAX_SHORT_ITEMS = 8;
+
 export function normalizeEdition(raw: RawEdition, isSample: boolean): Edition {
   const slot = raw.slot === "midday" || raw.slot === "evening" ? raw.slot : "morning";
-  const cards = raw.cards
+  const ranked = raw.cards
     .map(normalizeCard)
     .filter((c): c is Card => c !== null)
     .sort((a, b) => a.rank - b.rank);
+  const cards = [
+    ...ranked.filter((c) => c.tier === "full").slice(0, MAX_BRIEFINGS),
+    ...ranked.filter((c) => c.tier === "one_liner").slice(0, MAX_SHORT_ITEMS),
+  ].sort((a, b) => a.rank - b.rank);
   return {
     id: Number(raw.edition_id ?? raw.id) || 0,
     date: String(raw.date ?? raw.edition_date ?? ""),
@@ -200,4 +228,54 @@ export async function getLatestEdition(): Promise<EditionResult> {
 export function findStory(edition: Edition, clusterId: number): FullCard | null {
   const card = edition.cards.find((c) => c.cluster_id === clusterId);
   return card && card.tier === "full" ? card : null;
+}
+
+/** The newest published briefing for a story, whichever edition it ran in. */
+async function fetchPublishedStory(
+  url: string,
+  key: string,
+  clusterId: number,
+): Promise<FullCard | null> {
+  const res = await fetch(
+    `${url.replace(/\/$/, "")}/rest/v1/cards?cluster_id=eq.${clusterId}&status=eq.published` +
+      "&select=card&order=created_at.desc&limit=5",
+    { headers: { apikey: key, Authorization: `Bearer ${key}` }, next: { revalidate: REVALIDATE_SECONDS } },
+  );
+  if (!res.ok) throw new Error(`cards request failed: ${res.status}`);
+  const rows = (await res.json()) as { card: Record<string, unknown> }[];
+  for (const row of rows) {
+    const card = normalizeCard(row.card);
+    if (card?.tier === "full") return card;
+  }
+  return null;
+}
+
+export type StoryResult =
+  | { state: "ready"; story: FullCard; edition: Edition | null } // edition: null = an earlier one
+  | { state: "missing" }
+  | { state: "error" };
+
+/**
+ * A story by id. It is looked up in the current edition first (so the page can show
+ * its place in the line-up); if it has moved out, the published briefing is loaded
+ * on its own, so a link opened or shared earlier in the day keeps working.
+ */
+export async function getStory(clusterId: number): Promise<StoryResult> {
+  const latest = await getLatestEdition();
+  if (latest.state === "error") return { state: "error" };
+  if (latest.state === "ready") {
+    const story = findStory(latest.edition, clusterId);
+    if (story) return { state: "ready", story, edition: latest.edition };
+    if (latest.edition.isSample) return { state: "missing" };
+  }
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return { state: "missing" };
+  try {
+    const story = await fetchPublishedStory(url, key, clusterId);
+    return story ? { state: "ready", story, edition: null } : { state: "missing" };
+  } catch (err) {
+    console.error("Could not load the story", err);
+    return { state: "error" };
+  }
 }

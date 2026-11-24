@@ -130,6 +130,50 @@ export function splitLastWord(text: string): [string, string] {
   return at === -1 ? ["", trimmed] : [trimmed.slice(0, at + 1), trimmed.slice(at + 1)];
 }
 
+export type Run =
+  | { kind: "text"; text: string }
+  | { kind: "term"; text: string; term: GlossaryTerm; after: string };
+
+const CLOSING_PUNCTUATION = /^[.,;:!?)\]\u2019\u201d"']+/;
+
+/**
+ * Lay a sentence out so it wraps well. A glossary term is a button, and browsers are
+ * free to break a line right after one, which would start the next line with a
+ * period or comma; so each term carries the punctuation that follows it (`after`).
+ * The sentence's last piece (`tail`) is split off so the source numbers can stay on
+ * the same line as it: the last word, or a term when the sentence ends with one.
+ * No text is lost: lead + tail, read in order, is the original sentence.
+ */
+export function sentenceRuns(segments: Segment[]): { lead: Run[]; tail: Run } {
+  const runs: Run[] = [];
+  let skip = 0; // characters of the next text segment already attached to a term
+  segments.forEach((seg, i) => {
+    if (seg.kind === "term") {
+      const next = segments[i + 1];
+      const after = next?.kind === "text" ? (CLOSING_PUNCTUATION.exec(next.text)?.[0] ?? "") : "";
+      runs.push({ kind: "term", text: seg.text, term: seg.term, after });
+      skip = after.length;
+    } else {
+      const text = seg.text.slice(skip);
+      skip = 0;
+      if (text) runs.push({ kind: "text", text });
+    }
+  });
+  const last = runs.pop();
+  if (!last) return { lead: [], tail: { kind: "text", text: "" } };
+  if (last.kind === "term") return { lead: runs, tail: last };
+  if (!last.text.trim()) {
+    // Only spaces after a term: the term is the real end of the sentence.
+    const prev = runs.pop();
+    if (prev?.kind === "term") return { lead: runs, tail: prev };
+    if (prev) runs.push(prev);
+    return { lead: runs, tail: { kind: "text", text: "" } };
+  }
+  const [before, word] = splitLastWord(last.text);
+  if (before) runs.push({ kind: "text", text: before });
+  return { lead: runs, tail: { kind: "text", text: word } };
+}
+
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
@@ -159,8 +203,10 @@ export function formatEditionDate(isoDate: string): string {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(isoDate);
   if (!m) return isoDate;
   const [, y, mo, d] = m.map(Number) as unknown as [number, number, number, number];
-  const weekday = WEEKDAYS[new Date(Date.UTC(y, mo - 1, d)).getUTCDay()];
-  return `${weekday} ${d} ${MONTHS[mo - 1]} ${y}`;
+  const date = new Date(Date.UTC(y, mo - 1, d));
+  // Reject dates that do not exist (month 13, 31 February) instead of printing nonsense.
+  if (date.getUTCMonth() !== mo - 1 || date.getUTCDate() !== d) return isoDate;
+  return `${WEEKDAYS[date.getUTCDay()]} ${d} ${MONTHS[mo - 1]} ${y}`;
 }
 
 /** "25 Oct, 23:46 UTC". Publisher timestamps are shown in UTC so server and browser agree. */

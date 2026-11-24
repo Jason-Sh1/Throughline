@@ -20,14 +20,15 @@ export const metadata: Metadata = {
   title: { default: "Throughline", template: "%s · Throughline" },
   description:
     "Daily news editions: each story clustered across outlets and briefed with cited sources.",
+  icons: { icon: "/icon.svg", apple: "/icons/180" },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f4f7f5" },
-    { media: "(prefers-color-scheme: dark)", color: "#131917" },
+    { media: "(prefers-color-scheme: light)", color: "#f2f7f5" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f1613" },
   ],
 };
 

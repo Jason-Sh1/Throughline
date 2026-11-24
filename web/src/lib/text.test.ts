@@ -6,6 +6,7 @@ import {
   formatTimestamp,
   markGlossary,
   normalizeRating,
+  sentenceRuns,
   siglaFor,
   spectrumCounts,
   splitGlossary,
@@ -149,6 +150,8 @@ describe("dates", () => {
   it("formats the edition date with its weekday", () => {
     expect(formatEditionDate("2026-10-26")).toBe("Monday 26 October 2026");
     expect(formatEditionDate("not a date")).toBe("not a date");
+    expect(formatEditionDate("2026-13-01")).toBe("2026-13-01");
+    expect(formatEditionDate("2026-02-31")).toBe("2026-02-31");
   });
 
   it("formats publisher timestamps in UTC and tolerates bad input", () => {
@@ -156,5 +159,37 @@ describe("dates", () => {
     expect(formatTimestamp("2026-10-25T20:46:52-04:00")).toBe("26 Oct, 00:46 UTC");
     expect(formatTimestamp(null)).toBeNull();
     expect(formatTimestamp("yesterday")).toBeNull();
+  });
+});
+
+describe("sentenceRuns", () => {
+  const flat = (r: ReturnType<typeof sentenceRuns>) =>
+    [...r.lead, r.tail].map((run) => run.text + (run.kind === "term" ? run.after : "")).join("");
+
+  it("splits off the last word so the source numbers can stay with it", () => {
+    const r = sentenceRuns([{ kind: "text", text: "The Fed held rates." }]);
+    expect(r).toEqual({
+      lead: [{ kind: "text", text: "The Fed held " }],
+      tail: { kind: "text", text: "rates." },
+    });
+  });
+
+  it("keeps the punctuation after a glossary term with the term", () => {
+    const r = sentenceRuns(splitGlossary("Access to Starshield, and more, was restored.", [term("Starshield")]));
+    const t = r.lead.find((run) => run.kind === "term");
+    expect(t).toMatchObject({ text: "Starshield", after: "," });
+    expect(flat(r)).toBe("Access to Starshield, and more, was restored.");
+  });
+
+  it("makes the term the tail when the sentence ends with it", () => {
+    const r = sentenceRuns(splitGlossary("Access was restored to Starshield.", [term("Starshield")]));
+    expect(r.tail).toMatchObject({ kind: "term", text: "Starshield", after: "." });
+    expect(flat(r)).toBe("Access was restored to Starshield.");
+  });
+
+  it("loses no text in awkward cases", () => {
+    for (const text of ["Runoff", "Runoff.", "A runoff ", "(the runoff) follows", "", "One"]) {
+      expect(flat(sentenceRuns(splitGlossary(text, [term("runoff")])))).toBe(text.trimEnd());
+    }
   });
 });

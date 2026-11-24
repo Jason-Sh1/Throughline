@@ -60,24 +60,34 @@ export interface SpineStory {
   title: string;
 }
 
-export function Spine({ editionId, stories }: { editionId: number; stories: SpineStory[] }) {
+export function Spine({
+  editionId,
+  stories,
+  currentId,
+}: {
+  editionId: number;
+  stories: SpineStory[];
+  currentId?: number;
+}) {
   const read = new Set(useReadIds(editionId));
   const done = stories.filter((s) => read.has(s.id)).length;
   // A progress display, not navigation: with a dozen stories on a phone the stitches
   // would be far smaller than a fair tap target. The page itself is the way around.
+  // The line runs the width of the masthead; the stitches sit on it at a fixed pitch,
+  // so five stories and twelve look like the same object.
   return (
     <div className="label flex min-w-0 flex-1 items-center gap-3">
       <div
         role="img"
         aria-label={`${done} of ${stories.length} briefings in this edition opened`}
-        className="relative flex h-6 min-w-0 flex-1 items-center justify-between before:absolute before:inset-x-0 before:top-1/2 before:h-px before:bg-ink"
+        className="relative flex h-6 min-w-0 flex-1 items-center gap-[9px] overflow-hidden pl-2 before:absolute before:inset-x-0 before:top-1/2 before:h-px before:bg-ink"
       >
         {stories.map((s) => (
           <span
             key={s.id}
-            className={`relative block h-3.5 w-[5px] rounded-[1px] border border-ink ${
-              read.has(s.id) ? "bg-ink" : "bg-paper"
-            }`}
+            className={`relative block w-[3px] shrink-0 rounded-[1px] ${
+              s.id === currentId ? "h-[18px] bg-marker outline outline-1 outline-ink" : "h-3"
+            } ${s.id === currentId ? "" : read.has(s.id) ? "bg-ink" : "bg-paper outline outline-1 outline-ink"}`}
           />
         ))}
       </div>
@@ -100,6 +110,7 @@ export function EditionEnd({
 }) {
   const read = new Set(useReadIds(editionId));
   const left = storyIds.filter((id) => !read.has(id)).length;
+  if (storyIds.length === 0) return null; // an edition of short items only has nothing to finish
   return (
     <section aria-labelledby="edition-end" className="mt-14 border-t-2 border-ink pt-6">
       <h2 id="edition-end" className="text-[1.5rem] font-semibold leading-tight">

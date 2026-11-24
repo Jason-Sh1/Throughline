@@ -2,6 +2,53 @@
 
 Short notes on non-obvious choices, newest first.
 
+## 2026-11-24 — Reader UI review fixes
+
+An independent review of the reader UI found real problems; these are the changes.
+
+- **Today is capped in the reader** (12 briefings, 8 short items), whatever the
+  worker stored. The worker's own default line-up is far longer, and "8 to 12
+  cards" is a product rule, so the reader enforces it.
+- **A story link keeps working after the story leaves the edition.** The page looks
+  in the current edition first; if the story is not there, it loads the published
+  briefing by id and says it is from an earlier edition.
+- **A failed load is an error page, not "not found"**, and it is never kept: the
+  page cache does not store it and the service worker recognises it by a marker.
+- **The service worker does not make readers wait or re-download.** A stored page is
+  served if the network takes more than 4 seconds or answers with a server error;
+  an edition already stored is not fetched again; build files no stored page uses
+  are dropped.
+- **The reader never shows uncited text.** Sentences, glossary terms and timeline
+  entries that cite none of the card's sources are dropped on read, as a second
+  line of defence behind the worker's citation filter.
+- **On wide screens the note is a real sidenote**: non-modal, no scrim, and clicking
+  another sentence swaps it. On phones it stays a modal sheet.
+- **Our explanations moved to the serif.** The sans is now only publishers' words
+  and controls, so the typeface really does say who is speaking.
+- Not done from that review: a three-step headline scale, local-time timestamps,
+  filling the wide-screen margin at rest, and a Back-button close for the sheet.
+
+## 2026-11-24 — M7 (the parts that need no accounts)
+
+- **Offline reading with a hand-written service worker** (`web/public/sw.js`, about
+  120 lines, no library). Pages are network-first with a stored copy as fallback, so
+  a reader online always gets the newest edition. The Today screen tells the worker
+  which story pages belong to the edition; it stores them, with the scripts, styles
+  and fonts their HTML refers to, and drops stories from older editions. A page that
+  is not stored falls back to `/offline`. A library (Workbox, next-pwa) would do more
+  than this app needs and hide how it works.
+- **The worker stores pages, nothing about the reader.** Registered only in
+  production builds.
+- **Icons are one drawing.** `public/icon.svg` plus PNG sizes drawn from the same
+  shapes at build time (`app/icons/[size]`), so no binary files to keep in sync.
+- **About and Privacy describe the code as it is.** The About page lists where a
+  briefing can be wrong and says accuracy numbers are not published yet. The Privacy
+  page lists the two things kept on the device (read state, offline copy) and says
+  what the host sees. Both must change in the same pull request as the behavior.
+- **Contrast is measured, not eyeballed.** `docs/a11y.md` has the ratios computed
+  from the color tokens. One pair failed (green source numbers on marker yellow in
+  dark mode, 4.47:1) and was changed.
+
 ## 2026-11-24 — M5
 
 - **The citations are the interface.** The reader is set like an annotated scholarly
