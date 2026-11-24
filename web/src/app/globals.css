@@ -120,21 +120,36 @@ a {
   background-size: 100% 100%;
 }
 
+/* A sentence that can be opened says so under the pointer and while pressed. */
+@media (hover: hover) {
+  .sentence.cursor-pointer:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--rule);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.2em;
+  }
+}
+
+.sentence.cursor-pointer:active {
+  background-size: 100% 100%;
+}
+
 /* Source marks: small numerals that open the sources for one sentence. The
    visible mark is small, the tap target is not (WCAG 2.2 target size). */
 .marks {
   position: relative;
   display: inline-flex;
   align-items: baseline;
-  gap: 0.2em;
-  margin-left: 0.2em;
+  /* Wide enough apart that "1 10 11" cannot be read as "11011". */
+  gap: 0.5em;
+  margin-left: 0.25em;
   padding: 0 0.15em;
   font-family: var(--ff-sans);
-  font-size: 0.68em;
+  font-size: 0.74em;
   font-weight: 600;
   font-variant-numeric: lining-nums;
   line-height: 1;
-  vertical-align: 0.42em;
+  vertical-align: 0.36em;
   color: var(--note);
   background: none;
   border: 0;
@@ -194,6 +209,12 @@ dialog.sheet {
   color: var(--ink);
   overflow: hidden auto;
   overscroll-behavior: contain;
+  z-index: 20; /* above the sticky masthead when it opens non-modally */
+}
+
+/* While the modal sheet is open the page behind it does not scroll. */
+html:has(dialog.sheet:modal) {
+  overflow: hidden;
 }
 
 dialog.sheet::backdrop {

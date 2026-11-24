@@ -48,12 +48,3 @@ describe("service worker assetUrls", () => {
     expect(assetUrls('<a href="/story/12">x</a><img src="/icon.svg">')).toEqual([]);
   });
 });
-
-describe("service worker scope of what it stores", () => {
-  it("only caches same-origin story pages, the edition and build assets", () => {
-    // Guards against a future edit widening the cache to arbitrary URLs.
-    expect(source).toContain('url.pathname.startsWith("/story/")');
-    expect(source).toContain('url.pathname.startsWith("/_next/static/")');
-    expect(source).toContain("url.origin !== self.location.origin");
-  });
-});

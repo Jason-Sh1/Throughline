@@ -1,14 +1,14 @@
 "use client";
 
-// A sentence Throughline wrote, with its source marks. Tapping the sentence or its
-// marks opens the note sheet with the articles it cites (ROADMAP M5 "Receipts").
-// The marks button is the keyboard and screen-reader control; the sentence itself
-// is an extra, larger pointer target.
+// A sentence Throughline wrote, with its source numbers. Tapping the sentence or its
+// numbers opens the note sheet with the articles it cites (ROADMAP M5 "Receipts").
+// The numbers are a real button: that is the keyboard and screen-reader control. The
+// sentence itself is an extra, larger pointer target.
 
 import { createContext, useContext, useMemo } from "react";
 import { useNotes } from "./notes";
-import { citedSources, siglaFor, splitLastWord } from "@/lib/text";
-import type { Segment } from "@/lib/text";
+import { citedSources, sentenceRuns, siglaFor } from "@/lib/text";
+import type { Run, Segment } from "@/lib/text";
 import type { Source } from "@/lib/types";
 
 interface StoryScope {
@@ -56,7 +56,7 @@ export function Cited({
   sourceIds,
   segments,
 }: {
-  /** Unique within the page; marks which sentence is highlighted while the sheet is open. */
+  /** Unique within the story; marks which sentence is highlighted while its note is open. */
   id: string;
   text: string;
   sourceIds: number[];
@@ -69,42 +69,40 @@ export function Cited({
   const cited = useMemo(() => citedSources(sourceIds, sources), [sourceIds, sources]);
   const numbers = cited.map((s) => sigla[s.article_id]);
   const active = activeKey === key;
+  // Kept together on one line: a glossary term with the punctuation after it, and the
+  // last word of the sentence with its source numbers.
+  const { lead, tail } = useMemo(
+    () => sentenceRuns(segments ?? [{ kind: "text", text }]),
+    [segments, text],
+  );
 
-  const showSources = () => open(key, { kind: "sources", quote: text, sources: cited, sigla });
+  const showSources = () => {
+    if (cited.length > 0) open(key, { kind: "sources", quote: text, sources: cited, sigla });
+  };
 
-  const renderSegment = (seg: Segment, i: number) =>
-    seg.kind === "text" ? (
-      seg.text
-    ) : (
-      <button
-        key={i}
-        type="button"
-        className="term"
-        aria-haspopup="dialog"
-        aria-label={`${seg.text}: show definition`}
-        onClick={(e) => {
-          e.stopPropagation();
-          open(key, {
-            kind: "term",
-            term: seg.term,
-            sources: citedSources(seg.term.source_ids, sources),
-            sigla,
-          });
-        }}
-      >
-        {seg.text}
-      </button>
-    );
-
-  // The last word and the source marks are kept together, so the marks never wrap
-  // onto a line of their own.
-  const parts: Segment[] = segments ?? [{ kind: "text", text }];
-  const last = parts[parts.length - 1];
-  const [lead, lastWord] = last.kind === "text" ? splitLastWord(last.text) : ["", ""];
+  const term = (run: Extract<Run, { kind: "term" }>) => (
+    <button
+      type="button"
+      className="term"
+      aria-haspopup="dialog"
+      aria-label={`${run.text}: show definition`}
+      onClick={(e) => {
+        e.stopPropagation();
+        open(key, {
+          kind: "term",
+          term: run.term,
+          sources: citedSources(run.term.source_ids, sources),
+          sigla,
+        });
+      }}
+    >
+      {run.text}
+    </button>
+  );
 
   return (
     <span
-      className="sentence cursor-pointer"
+      className={`sentence ${cited.length > 0 ? "cursor-pointer" : ""}`}
       data-active={active}
       onClick={() => {
         // Do not hijack a drag that selected text.
@@ -112,17 +110,32 @@ export function Cited({
         showSources();
       }}
     >
-      {parts.slice(0, -1).map(renderSegment)}
-      {lead}
+      {lead.map((run, i) =>
+        run.kind === "text" ? (
+          run.text
+        ) : (
+          <span key={i} className="whitespace-nowrap">
+            {term(run)}
+            {run.after}
+          </span>
+        ),
+      )}
       <span className="whitespace-nowrap">
-        {last.kind === "text" ? lastWord : renderSegment(last, parts.length - 1)}
+        {tail.kind === "text" ? (
+          tail.text
+        ) : (
+          <>
+            {term(tail)}
+            {tail.after}
+          </>
+        )}
         {cited.length > 0 && (
           <button
             type="button"
             className="marks"
             aria-haspopup="dialog"
-            aria-expanded={active}
-            aria-label={`Sources for this sentence: ${outletList(cited)}`}
+            // The name starts with the numbers the button shows (WCAG 2.5.3).
+            aria-label={`Sources ${numbers.join(", ")}: ${outletList(cited)}`}
             onClick={(e) => {
               e.stopPropagation();
               showSources();

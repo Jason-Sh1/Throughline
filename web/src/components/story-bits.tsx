@@ -5,18 +5,31 @@ import { categoryLabel, formatPartialDate } from "@/lib/text";
 import type { Segment } from "@/lib/text";
 import type { Card, Sentence, TimelineNode } from "@/lib/types";
 
-/** Topic, developing flag, outlet count and the AI label, on one line under a headline. */
+/**
+ * The line under a headline: developing flag, topic, whose headline it is, and the AI
+ * label. Each part stays whole when the line wraps, and the separator stays with the
+ * part before it, so a line never starts with a dot or ends with half a label.
+ */
 export function StoryMeta({ card, headlineLabel }: { card: Card; headlineLabel?: string }) {
-  const parts = [categoryLabel(card.category), headlineLabel, card.ai_label].filter(Boolean);
+  const parts = [
+    card.confidence.developing ? "Developing" : null,
+    categoryLabel(card.category),
+    headlineLabel,
+    card.ai_label,
+  ].filter((p): p is string => Boolean(p));
   return (
-    <p className="label flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.8125rem] text-ink-2">
-      {card.confidence.developing && (
-        <span className="rounded-sm border border-ink-2 px-1.5 py-px font-semibold text-ink">
-          Developing
+    <p className="label text-[0.8125rem] leading-relaxed text-ink-2">
+      {parts.map((part, i) => (
+        <span key={part} className="whitespace-nowrap">
+          {i === 0 && card.confidence.developing ? (
+            <span className="font-semibold text-ink">{part}</span>
+          ) : (
+            part
+          )}
+          {i < parts.length - 1 && <span aria-hidden="true">{" \u00b7"}</span>}
+          {i < parts.length - 1 && <span className="whitespace-normal"> </span>}
         </span>
-      )}
-      {/* The separator is glued to the word before it, so a line never starts with a dot. */}
-      <span>{parts.join("\u00a0\u00b7 ")}</span>
+      ))}
     </p>
   );
 }

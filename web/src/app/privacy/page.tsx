@@ -51,9 +51,9 @@ export default function PrivacyPage() {
 
       <h2>News content</h2>
       <p>
-        We store headlines, links and short excerpts from news feeds in order to write the
-        briefings. Article text we hold is deleted after 14 days and is never shown in the
-        app.
+        To write the briefings we store headlines, links and the short summaries
+        publishers put in their feeds, and we keep those. Where we hold any fuller article
+        text, a nightly job deletes it after 14 days. None of it is ever shown in the app.
       </p>
 
       <h2>If this changes</h2>
