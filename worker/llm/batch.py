@@ -145,5 +145,44 @@ def open_batches(conn: psycopg.Connection) -> list[tuple[int, str, str]]:
         return cur.fetchall()
 
 
+# Batch results can be fetched for 29 days. Well before that, a batch that still
+# cannot be collected is not coming back: stop waiting for it so its work is
+# submitted again.
+GIVE_UP_AFTER_HOURS = 48
+
+
+def is_permanent(error: Exception) -> bool:
+    """Errors that will not go away on retry: the batch is gone or not ours."""
+    return isinstance(error, anthropic.NotFoundError | anthropic.PermissionDeniedError)
+
+
+def give_up(conn: psycopg.Connection, row_id: int, permanent: bool) -> bool:
+    """Mark a batch `failed` when it cannot be collected: at once for a permanent
+    error, otherwise once it is older than GIVE_UP_AFTER_HOURS. Returns whether
+    it was marked. A failed batch is no longer in flight, so the next build
+    submits its work again."""
+    with conn.cursor() as cur:
+        cur.execute(
+            """update llm_batches set status = 'failed', ended_at = coalesce(ended_at, now())
+               where id = %s and status in ('submitted', 'ended')
+                 and (%s or submitted_at < now() - make_interval(hours => %s))""",
+            (row_id, permanent, GIVE_UP_AFTER_HOURS),
+        )
+        marked = cur.rowcount > 0
+    conn.commit()
+    return marked
+
+
+def in_flight(conn: psycopg.Connection, kind: str) -> list[dict]:
+    """Request metadata of every batch of this kind that has not been ingested yet.
+    The edition builder uses it to avoid submitting the same work twice."""
+    with conn.cursor() as cur:
+        cur.execute(
+            "select requests from llm_batches where kind = %s and status in ('submitted', 'ended')",
+            (kind,),
+        )
+        return [meta for (requests,) in cur.fetchall() for meta in requests.values()]
+
+
 def anthropic_client():
     return anthropic.Anthropic()  # reads ANTHROPIC_API_KEY

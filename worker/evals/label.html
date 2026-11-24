@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Throughline gold labeling</title>
+<style>
+  :root { --ink:#1f2328; --muted:#5b6370; --line:#d8dce1; --bg:#f6f7f8; --focus:#5a4fcf; --same:#1f7a4d; --diff:#8a5a00; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:15px/1.45 system-ui, sans-serif; color:var(--ink); background:var(--bg); display:grid; grid-template-columns: 300px 1fr; height:100vh; }
+  aside { border-right:1px solid var(--line); overflow:auto; background:#fff; }
+  aside h1 { font-size:15px; margin:0; padding:12px 14px; border-bottom:1px solid var(--line); }
+  aside button { display:block; width:100%; text-align:left; border:0; border-bottom:1px solid var(--line); background:none; padding:9px 14px; font:inherit; cursor:pointer; }
+  aside button[aria-current="true"] { background:#ecebfa; }
+  aside .done { color:var(--same); font-weight:600; }
+  main { overflow:auto; padding:18px 24px 80px; max-width:900px; }
+  .help { color:var(--muted); font-size:13px; margin-bottom:14px; }
+  kbd { border:1px solid var(--line); border-bottom-width:2px; border-radius:4px; padding:0 4px; font-size:12px; background:#fff; }
+  .anchor { background:#fff; border:2px solid var(--ink); border-radius:8px; padding:12px 14px; margin-bottom:16px; }
+  .label { font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+  .art { background:#fff; border:1px solid var(--line); border-radius:8px; padding:10px 14px; margin-bottom:8px; display:grid; grid-template-columns:1fr auto; gap:10px; }
+  .art:focus { outline:3px solid var(--focus); outline-offset:1px; }
+  .art .title { font-weight:600; }
+  .art .meta, .anchor .meta { color:var(--muted); font-size:13px; }
+  .art .summary, .anchor .summary { font-size:14px; margin-top:4px; }
+  .choice { display:flex; flex-direction:column; gap:6px; }
+  .choice button { font:inherit; font-size:13px; padding:4px 10px; border-radius:6px; border:1px solid var(--line); background:#fff; cursor:pointer; min-width:96px; }
+  .choice button[aria-pressed="true"].same { background:var(--same); color:#fff; border-color:var(--same); }
+  .choice button[aria-pressed="true"].diff { background:var(--diff); color:#fff; border-color:var(--diff); }
+  textarea { width:100%; font:inherit; padding:8px; border:1px solid var(--line); border-radius:6px; }
+  .bar { position:fixed; bottom:0; left:300px; right:0; background:#fff; border-top:1px solid var(--line); padding:10px 24px; display:flex; gap:12px; align-items:center; }
+  .bar button { font:inherit; padding:6px 14px; border-radius:6px; border:1px solid var(--ink); background:var(--ink); color:#fff; cursor:pointer; }
+  #status { color:var(--muted); }
+  a { color:inherit; }
+</style>
+</head>
+<body>
+<aside><h1 id="progress">Stories</h1><nav id="list"></nav></aside>
+<main id="main"><p>Loading…</p></main>
+<div class="bar"><button id="save">Save &amp; next</button><span id="status"></span></div>
+<script>
+const $ = (s) => document.querySelector(s);
+let stories = [], current = null;
+
+async function loadList(selectId) {
+  stories = await (await fetch("/api/stories")).json();
+  const done = stories.filter((s) => s.done).length;
+  $("#progress").textContent = `Stories — ${done}/${stories.length} labeled`;
+  $("#list").innerHTML = "";
+  for (const s of stories) {
+    const b = document.createElement("button");
+    b.innerHTML = `${s.done ? '<span class="done">✓</span> ' : ""}${esc(s.title)}`;
+    b.setAttribute("aria-current", String(current && current.id === s.id));
+    b.onclick = () => open(s.id);
+    $("#list").appendChild(b);
+  }
+  if (selectId) open(selectId);
+}
+
+function esc(t) { return (t || "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+function when(t) { return t ? new Date(t).toLocaleString() : "time unknown"; }
+
+async function open(id) {
+  current = await (await fetch(`/api/story/${encodeURIComponent(id)}`)).json();
+  document.querySelectorAll("#list button").forEach((b, i) => b.setAttribute("aria-current", String(stories[i].id === id)));
+  const a = current.anchor;
+  $("#main").innerHTML = `
+    <p class="help"><kbd>J</kbd>/<kbd>K</kbd> move · <kbd>S</kbd> same event · <kbd>D</kbd> different ·
+      <kbd>F</kbd> key facts · <kbd>Ctrl</kbd>+<kbd>Enter</kbd> save &amp; next. Articles are shuffled and blind.</p>
+    <div class="anchor"><div class="label">Anchor story (${esc(current.category)})</div>
+      <div class="title"><a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.title)}</a></div>
+      <div class="meta">${esc(a.outlet)}</div><div class="summary">${esc(a.summary)}</div></div>
+    <h2 class="label">1. Same event as the anchor?</h2>
+    <div id="arts"></div>
+    <h2 class="label">2. Key facts a good briefing must state (one per line)</h2>
+    <textarea id="facts" rows="6" placeholder="e.g. Lula won Brazil's presidential runoff">${esc(current.key_facts.join("\n"))}</textarea>
+    <h2 class="label">Notes (optional)</h2>
+    <textarea id="notes" rows="2">${esc(current.notes)}</textarea>`;
+  const box = $("#arts");
+  current.articles.forEach((art) => {
+    const div = document.createElement("div");
+    div.className = "art"; div.tabIndex = 0; div.dataset.id = art.id;
+    div.innerHTML = `<div><div class="title"><a href="${esc(art.url)}" target="_blank" rel="noopener">${esc(art.title)}</a></div>
+      <div class="meta">${esc(art.outlet)} · ${when(art.published_at)}</div><div class="summary">${esc(art.summary)}</div></div>
+      <div class="choice" role="group" aria-label="Same event?">
+        <button class="same" data-v="same">Same (S)</button><button class="diff" data-v="different">Different (D)</button></div>`;
+    div.querySelectorAll(".choice button").forEach((b) => (b.onclick = () => mark(div, b.dataset.v)));
+    box.appendChild(div);
+    paint(div);
+  });
+  const first = box.querySelector(".art"); if (first) first.focus();
+  $("#status").textContent = "";
+}
+
+function paint(div) {
+  const v = current.membership[div.dataset.id];
+  div.querySelectorAll(".choice button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v === v)));
+}
+
+function mark(div, v) {
+  current.membership[div.dataset.id] = v; paint(div);
+  const next = div.nextElementSibling; if (next) next.focus();
+}
+
+async function save() {
+  const facts = $("#facts").value.split("\n");
+  const missing = current.articles.filter((a) => !current.membership[a.id]).length;
+  const body = { id: current.id, membership: current.membership, key_facts: facts, notes: $("#notes").value };
+  const r = await (await fetch("/api/gold", { method: "POST", body: JSON.stringify(body) })).json();
+  $("#status").textContent = r.done ? "Saved." : `Saved, but incomplete (${missing} unlabeled article(s) or no key facts).`;
+  const idx = stories.findIndex((s) => s.id === current.id);
+  const next = stories.slice(idx + 1).find((s) => !s.done) || stories.find((s) => !s.done && s.id !== current.id);
+  await loadList(r.done && next ? next.id : null);
+}
+
+$("#save").onclick = save;
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); save(); return; }
+  if (e.target.tagName === "TEXTAREA") { if (e.key === "Escape") e.target.blur(); return; }
+  const art = document.activeElement.closest && document.activeElement.closest(".art");
+  const k = e.key.toLowerCase();
+  if (k === "f") { e.preventDefault(); $("#facts").focus(); }
+  else if (art && k === "s") mark(art, "same");
+  else if (art && k === "d") mark(art, "different");
+  else if (k === "j" || e.key === "ArrowDown") { e.preventDefault(); (art ? art.nextElementSibling : $(".art"))?.focus(); }
+  else if (k === "k" || e.key === "ArrowUp") { e.preventDefault(); art?.previousElementSibling?.focus(); }
+});
+loadList().then(() => { const s = stories.find((x) => !x.done) || stories[0]; if (s) open(s.id); else $("#main").innerHTML = "<p>No stories yet. Run <code>make eval-snapshot</code>.</p>"; });
+</script>
+</body>
+</html>

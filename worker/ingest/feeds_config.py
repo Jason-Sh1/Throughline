@@ -58,6 +58,13 @@ class BiasRating(StrEnum):
 LEFT_SIDE = {BiasRating.LEFT, BiasRating.LEAN_LEFT}
 RIGHT_SIDE = {BiasRating.RIGHT, BiasRating.LEAN_RIGHT}
 
+
+class OutletKind(StrEnum):
+    NEWS = "news"
+    AGENCY = "agency"  # government or intergovernmental body (NASA, CDC, WHO)
+    RESEARCH = "research"  # journal or research press-release site (Nature, Phys.org)
+
+
 Slug = Annotated[str, Field(pattern=r"^[a-z0-9]+(-[a-z0-9]+)*$")]
 Region = Annotated[str, Field(pattern=r"^[A-Z]{2}$")]
 
@@ -86,6 +93,9 @@ class Outlet(BaseModel):
     homepage: str
     region: Region
     allsides_rating: BiasRating
+    # Agencies and research sites are listed as sources but don't count toward a
+    # story's outlet count or spectrum spread (confidence, M4).
+    kind: OutletKind = OutletKind.NEWS
     # Set by the AllSides import; the per-outlet page we link to for attribution.
     allsides_url: str | None = None
     # Use when the outlet's name on AllSides differs from `name`.

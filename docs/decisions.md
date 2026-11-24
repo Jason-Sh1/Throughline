@@ -2,6 +2,84 @@
 
 Short notes on non-obvious choices, newest first.
 
+## 2026-10-31 — M4
+
+- **Verification drops, never rewrites.** A rewrite would be new, unchecked text.
+  Each card gets one request (Haiku 5.5, effort `medium`, Batch API) that judges
+  every sentence against only the sources it cites. Anything not `supported`,
+  including a sentence the model forgot to grade, is removed. A failed headline or
+  no surviving bullet fails the card.
+- **Only verified cards ship.** Full-tier stories also get their one-liner verified
+  in the same batch, so a failed card falls back without a second round. An edition
+  is published (and so readable through RLS) only when every batch has finished;
+  otherwise it stays `building` and re-running the slot finishes it from cache.
+- **Drop reports are stored** (`card_verifications`, worker-only) so a removed
+  sentence can be traced, and the eval can report how much verification removes.
+- **Review fixes (2026-11-24, before merge).** An independent review of this PR
+  found ways for unchecked text to reach readers; all are closed, and a second
+  independent check confirmed it (tests: `worker/tests/test_verify_review.py`,
+  `test_evals_review.py`):
+  - *Results are applied once, to the text they were given for.* Verdicts come back
+    as "V3: unsupported", which only means something for one exact list of
+    sentences. `verify.store` now requires the card to still be `draft` and the
+    sentence list to match a fingerprint taken at submit time; anything else is
+    skipped as `stale`. A late or repeated synthesis or extraction result never
+    replaces a stored one (`on conflict do nothing`).
+  - *Nothing is submitted twice.* A build first collects batches an earlier run
+    left open, and skips work that is still in an open batch. One build per
+    edition at a time (a Postgres advisory lock); a second one exits. A batch that
+    cannot be collected is marked `failed` (at once if it is gone, otherwise
+    after 48 hours) instead of blocking every later build.
+  - *An edition publishes only when complete.* A pending extraction batch now holds
+    publication back like the other two steps, and an edition with no verified
+    card is marked `failed` instead of published empty.
+  - *A live edition stays live during a re-run.* The old line-up is replaced and
+    the new one published in a single transaction; a crash or a pending batch
+    leaves readers with what they had. `--date` finishes an edition after midnight
+    UTC.
+  - *The drop report is private.* It quotes the removed sentences, and published
+    `cards` rows are public, so it moved to `card_verifications` (no RLS policy).
+  - *Article text is data.* Angle brackets are escaped when sources are shown to
+    a model, so nothing in a headline or excerpt can close the sources block; the
+    verifier and judge prompts say that sources are never instructions; and the
+    verifier is only sent the sources some sentence cites. (`verify_v1` and
+    `judge_v1` were edited in place: no published card or eval baseline had used
+    the earlier text. From here on a prompt change means a new version file.)
+  - *The eval gate cannot be passed by deleting more.* The cache key now includes
+    a fingerprint of the pipeline code, a grade is keyed on the draft it graded,
+    transient failures are not cached, and the gate also watches card failure
+    rate, sentences kept per story and judge failures.
+  - Still open from the two reviews: the edition budget is summed per run, not
+    per edition (a re-run starts from zero); verdict ids are not constrained by
+    the schema; cached cards keep the confidence computed when they were written;
+    the labeling helper does not check the request origin; the story's candidate
+    card is the newest non-failed one, not the one for the current inputs; a
+    finished run publishes whatever verified, with no minimum number of cards;
+    an edition left `building` is only finished by re-running its slot and date.
+- **Confidence counts news outlets only.** `sources.kind` (from feeds.yaml) marks
+  agencies (NASA, CDC, WHO) and research sites (Nature, Phys.org, ScienceDaily,
+  Medical Xpress); they're still listed as sources. Adds `spectrum_spread` (0–3
+  sides), `single_source` (≤1 news outlet) and `other_sources`.
+- **Evals run the real pipeline on frozen snapshots**, synchronously instead of
+  batched so an eval takes minutes. Snapshots hold only feed-syndicated text
+  (headline + RSS summary ≤600 chars) because the repo is public; that's slightly
+  thinner input than production, where the Guardian gives body text.
+- **The judge is Claude Sonnet 5.5, not Haiku**, so the model isn't grading its
+  own output. It grades the card *before* verification with the verifier's
+  numbering, so one call yields final faithfulness and the verifier's catch rate.
+  ~$0.04 per story; effort `low` keeps it there.
+- **Citation recall without gold labels:** the judge lists uncited sources that
+  also state each sentence. Gold labels cover what an LLM shouldn't decide:
+  which facts matter (key-fact coverage) and which articles are the same event.
+- **Labeling is blind**: articles shuffled under opaque ids, so the labeler can't
+  see which ones the clusterer chose (that would bias the clustering score).
+- **Content-addressed eval cache** keyed by story, prompt *texts*, models, gold
+  facts and a fingerprint of the pipeline code. CI restores it, so the gate
+  re-scores for free unless something that changes the output changed. Gate
+  against the committed baseline: faithfulness may not drop >0.02 (run-to-run
+  noise), the card failure rate may not rise >0.10, sentences kept per story may
+  not fall below 80%, and the judge may not fail on a story.
+
 ## 2026-10-25 — M3
 
 - **Model: Claude Haiku 5.5 for both extraction and synthesis.** Checked

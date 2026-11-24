@@ -89,15 +89,20 @@ def build_job(
         cur.execute("select 1 from cards where content_hash = %s", (chash,))
         if cur.fetchone():
             return None
-    ex = Extraction.model_validate(data)
+    return CardJob(
+        cluster_id, chash, extraction_id, docs, user_message(docs, Extraction.model_validate(data))
+    )
+
+
+def user_message(docs: list[SourceDoc], ex: Extraction) -> str:
+    """Pure: the eval runner builds the same message from a frozen snapshot."""
     published = [d.published_at for d in docs if d.published_at]
     today = max(published).strftime("%Y-%m-%d") if published else "unknown"
-    user = (
+    return (
         f"<sources>\n{render_sources(docs)}\n</sources>\n\n"
         f"<claims>\n{render_claims(ex)}\n</claims>\n\n"
         f"The newest source was published on {today}. Write the briefing JSON."
     )
-    return CardJob(cluster_id, chash, extraction_id, docs, user)
 
 
 def request_params(user_message: str, model: str, effort: str) -> dict:
@@ -143,12 +148,19 @@ def store_card(
             """insert into cards (cluster_id, content_hash, prompt_version, model, status, card,
                    source_count, input_tokens, output_tokens, cost_usd)
                values (%s, %s, %s, %s, 'draft', %s, %s, %s, %s, %s)
-               on conflict (content_hash) do update set card = excluded.card
+               on conflict (content_hash) do nothing
                returning id""",
             (meta["cluster_id"], meta["content_hash"], version, meta["params"]["model"],
              card.model_dump_json(), card.confidence.outlet_count, tokens_in, tokens_out, cost),
         )  # fmt: skip
-        card_id = cur.fetchone()[0]
+        row = cur.fetchone()
+        if row is None:
+            # A card for exactly these inputs already exists (a second batch for the
+            # same story, or this batch collected twice). Keep it: it may already be
+            # verified or published, and a late draft must never replace checked text.
+            cur.execute("select id from cards where content_hash = %s", (meta["content_hash"],))
+            row = cur.fetchone()
+        card_id = row[0]
     conn.commit()
     return card_id
 

@@ -6,6 +6,7 @@ the stored card, one-liner fallback, spend accounting and the static export.
 """
 
 import json
+import re
 from datetime import UTC, datetime, timedelta
 from types import SimpleNamespace
 
@@ -43,15 +44,34 @@ def reply(text):
     return m
 
 
+VERDICT_LINE = re.compile(r"^\[(V\d+)\] cites: .*\n(.*)$", re.M)
+
+
+def verdicts_for(user_message: str, reject: tuple[str, ...]) -> str:
+    """A verifier reply: every sentence supported unless its text contains one of
+    `reject`."""
+    out = [{"id": vid, "verdict": "unsupported" if any(r in text for r in reject)
+            else "supported", "reason": "fake"}
+           for vid, text in VERDICT_LINE.findall(user_message)]  # fmt: skip
+    return json.dumps({"verdicts": out})
+
+
 class FakeAnthropic:
     """Just enough of client.messages(.batches): answers "extract-*" requests with
-    `extraction` and "card-*" requests with `card` (JSON strings)."""
+    `extraction`, "card-*" requests with `card` (JSON strings) and "verify-*"
+    requests with verdicts (supported unless the sentence contains a `reject` string)."""
 
-    def __init__(self, card, extraction=None):
+    def __init__(self, card, extraction=None, reject=()):
         self.batches_sent: dict[str, list] = {}
         self.direct = []
         replies = {"extract": extraction or json.dumps(EXTRACTION), "card": card}
         outer = self
+
+        def answer(r):
+            kind = r["custom_id"].split("-")[0]
+            if kind == "verify":
+                return verdicts_for(r["params"]["messages"][0]["content"], reject)
+            return replies[kind]
 
         class Batches:
             def create(self, requests):
@@ -64,7 +84,7 @@ class FakeAnthropic:
 
             def results(self, bid):
                 return [SimpleNamespace(custom_id=r["custom_id"], result=SimpleNamespace(
-                            type="succeeded", message=reply(replies[r["custom_id"].split("-")[0]])))
+                            type="succeeded", message=reply(answer(r))))
                         for r in outer.batches_sent[bid]]  # fmt: skip
 
         def create(**params):
@@ -136,7 +156,10 @@ def test_edition_build_end_to_end(db, monkeypatch, tmp_path):
     eid = edition.build(db, "morning", n_full=1, n_tail=5, wait_s=0, stats=stats)
     assert stats["new_extractions"] == 2 and stats["extraction"]["ok"] == 2
     assert stats["new_cards"] == 1 and stats["synthesis"]["ok"] == 1
-    assert len(fake_claude.batches_sent) == 2  # one extraction batch, one synthesis batch
+    # one batch each for extraction, synthesis and verification
+    assert len(fake_claude.batches_sent) == 3
+    assert stats["verification"]["verified"] == 3  # full card + both one-liners
+    assert stats["published"] is True
     assert stats["cost_usd"] > 0
     req = fake_claude.requests("card-")[0]["params"]
     assert "SECRET FULL TEXT" in req["messages"][0]["content"]  # model sees text...
@@ -169,7 +192,8 @@ def test_edition_build_end_to_end(db, monkeypatch, tmp_path):
     stats2 = {}
     edition.build(db, "morning", n_full=1, n_tail=5, wait_s=0, stats=stats2)
     assert stats2["new_extractions"] == 0 and stats2["new_cards"] == 0
-    assert stats2["cost_usd"] == 0 and len(fake_claude.batches_sent) == 2
+    assert stats2["new_verifications"] == 0
+    assert stats2["cost_usd"] == 0 and len(fake_claude.batches_sent) == 3
 
     out = tmp_path / "edition.json"
     doc = edition.export(db, out, eid)

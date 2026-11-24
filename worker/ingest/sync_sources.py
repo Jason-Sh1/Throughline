@@ -28,20 +28,29 @@ def sync(conn: psycopg.Connection, feeds: FeedsFile) -> dict[str, int]:
             cur.execute(
                 """
                 insert into sources (slug, name, homepage_url, region, allsides_rating,
-                                     allsides_url, rating_updated_at)
-                values (%s, %s, %s, %s, %s, %s, now())
+                                     allsides_url, kind, rating_updated_at)
+                values (%s, %s, %s, %s, %s, %s, %s, now())
                 on conflict (slug) do update set
                   name = excluded.name,
                   homepage_url = excluded.homepage_url,
                   region = excluded.region,
                   allsides_url = excluded.allsides_url,
+                  kind = excluded.kind,
                   rating_updated_at = case
                     when sources.allsides_rating is distinct from excluded.allsides_rating
                     then now() else sources.rating_updated_at end,
                   allsides_rating = excluded.allsides_rating
                 returning id
                 """,
-                (o.slug, o.name, o.homepage, o.region, o.allsides_rating.value, o.allsides_url),
+                (
+                    o.slug,
+                    o.name,
+                    o.homepage,
+                    o.region,
+                    o.allsides_rating.value,
+                    o.allsides_url,
+                    o.kind.value,
+                ),
             )
             source_id = cur.fetchone()[0]
             stats["sources"] += 1
