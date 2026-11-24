@@ -2,6 +2,45 @@
 
 Short notes on non-obvious choices, newest first.
 
+## 2026-11-24 — M5
+
+- **The citations are the interface.** The reader is set like an annotated scholarly
+  text: each sentence ends in small source numbers, and tapping the sentence opens
+  the articles behind it. The visual system is written up in `DESIGN.md`; the
+  product facts it rests on are in `PRODUCT.md`.
+- **Two typefaces, two voices.** Throughline's own text is always in the serif
+  (STIX Two Text). Publishers' words (their real headlines and names) and interface
+  labels are always in the sans (Schibsted Grotesk). This is how rule 3 ("never show
+  AI text under a publisher's name") is made visible, not only followed.
+- **A receipt shows the outlet's headline, not an excerpt.** The roadmap said
+  "source excerpt", but rule 5 forbids showing article text and the card JSON holds
+  none. The sheet shows the sentence, then each cited article's outlet, AllSides
+  rating, time, real headline and a link out.
+- **Coverage plot uses position and text, never color.** One dot per news outlet
+  under its AllSides rating, all in the same ink; counts are printed; "Not rated" is a
+  separate group with hollow dots. Red and blue are not used anywhere.
+- **One overlay, built on `<dialog>`.** Sources and glossary definitions share one
+  native modal dialog (focus trap, Escape, focus return come from the browser). It is
+  a bottom sheet on phones and a margin panel on wide screens.
+- **Sections are native `<details>`**, so the Story view works without JavaScript.
+  Brief, Why it matters, Key facts and Sources start open.
+- **The spine.** The line through the masthead carries one stitch per briefing and
+  fills in as stories are opened, then the page ends with "You're caught up". It
+  counts what is left; it is not a streak. Read state is kept in `localStorage`
+  only, per edition: no account and nothing sent to a server.
+- **Data: two plain `fetch` calls to Supabase's REST API**, cached for 5 minutes
+  (ISR). Row-level security already limits the anon key to published editions and
+  cards. Without the two `NEXT_PUBLIC_SUPABASE_*` variables the app shows the sample
+  edition from `docs/samples/` and labels it as a sample. supabase-js arrives with
+  auth in M6.
+- **The reader re-validates cards** (`normalizeCard`): unusable cards are skipped
+  and links that are not http(s) are dropped, so one bad row cannot break the page
+  or inject a `javascript:` URL.
+- **Glossary terms are underlined once per story**, at their first whole-word
+  mention in reading order (`markGlossary`), longest term first.
+- **Web unit tests use Vitest** (`npm test`, part of `make test-web`) for the pure
+  logic in `web/src/lib`. Components are checked by lint, typecheck and build.
+
 ## 2026-10-31 — M4
 
 - **Verification drops, never rewrites.** A rewrite would be new, unchecked text.
