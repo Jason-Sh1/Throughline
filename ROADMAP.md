@@ -48,13 +48,14 @@ Claude: check items off as they're completed and add a one-line note (date, anyt
 - [ ] Record baseline numbers in `/docs/evals.md`
 
 ### M5 — Core UI (Week 5)
-- [ ] Today screen: 8–12 cards, spectrum bar, topic chip, updated/developing tag, "You're caught up"
-- [ ] Story view: collapsible sections in schema order
-- [ ] Receipts: tap a sentence → bottom sheet with source excerpt + outlet + link
-- [ ] Glossary overlays (≤5 underlined terms)
-- [ ] Timeline component
-- [ ] "AI-generated from N sources" labels
-- [ ] Source list with prominent link-outs
+- [x] Today screen: 8–12 cards, spectrum bar, topic chip, updated/developing tag, "You're caught up" — 2026-11-24; a numbered list, not cards; coverage plot on the lead story; progress line in the masthead; reads Supabase, or the sample edition when not configured
+- [x] Story view: collapsible sections in schema order — 2026-11-24; native `<details>`
+- [x] Receipts: tap a sentence → bottom sheet with source excerpt + outlet + link — 2026-11-24; shows the outlet's headline, not an excerpt (rule 5; see decisions.md); margin panel on wide screens
+- [x] Glossary overlays (≤5 underlined terms) — 2026-11-24; each term underlined once per story
+- [x] Timeline component — 2026-11-24
+- [x] "AI-generated from N sources" labels — 2026-11-24
+- [x] Source list with prominent link-outs — 2026-11-24
+- [ ] **Human:** review the visual design (`DESIGN.md`, screenshots in the M5 pull request)
 
 ### M6 — Auth, onboarding, personalization (Week 6)
 - [ ] Supabase Auth (magic link + Google)

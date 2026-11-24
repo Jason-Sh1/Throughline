@@ -29,8 +29,8 @@ test-worker: ## Lint + test the Python worker
 	$(WORKER) ruff format --check .
 	$(WORKER) pytest -q
 
-test-web: ## Lint + typecheck the web app
-	cd web && npm run lint && npm run typecheck
+test-web: ## Lint, typecheck and unit-test the web app
+	cd web && npm run lint && npm run typecheck && npm test
 
 lint: ## Lint only
 	$(WORKER) ruff check .

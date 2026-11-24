@@ -1,29 +1,266 @@
 @import "tailwindcss";
 
-/* Placeholder neutral palette. The real design system is proposed in M5.
-   CLAUDE.md: neutral colors only, no red/blue brand colors. */
+/* Throughline reader: "the annotated edition".
+   Cool paper, green-black ink, one annotation green for anything that cites or
+   links, one marker yellow that only ever means "the sentence you are checking".
+   CLAUDE.md: neutral palette, no red or blue brand colors. See DESIGN.md. */
 :root {
-  --background: #fafaf9;
-  --foreground: #1c1917;
-  --muted: #57534e;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-muted: var(--muted);
+  --paper: oklch(0.972 0.006 165);
+  --paper-2: oklch(0.945 0.009 165);
+  --ink: oklch(0.22 0.02 170);
+  --ink-2: oklch(0.42 0.02 170);
+  --rule: oklch(0.85 0.012 165);
+  --note: oklch(0.42 0.1 162);
+  --note-wash: oklch(0.925 0.035 162);
+  --marker: oklch(0.925 0.13 102);
+  --scrim: oklch(0.22 0.02 170 / 0.38);
+  /* Two voices. Serif: Throughline's own synthesis. Sans: publishers' words
+     (their headlines, their names) and interface labels. */
+  --ff-serif: var(--font-stix), "STIX Two Text", Georgia, serif;
+  --ff-sans: var(--font-schibsted), "Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #1c1917;
-    --foreground: #f5f5f4;
-    --muted: #a8a29e;
+    --paper: oklch(0.19 0.012 170);
+    --paper-2: oklch(0.235 0.014 170);
+    --ink: oklch(0.93 0.008 165);
+    --ink-2: oklch(0.74 0.012 165);
+    --rule: oklch(0.36 0.014 170);
+    --note: oklch(0.81 0.11 160);
+    --note-wash: oklch(0.3 0.04 162);
+    --marker: oklch(0.44 0.09 100);
+    --scrim: oklch(0.1 0.01 170 / 0.6);
+    color-scheme: dark;
   }
 }
 
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-rule: var(--rule);
+  --color-note: var(--note);
+  --color-note-wash: var(--note-wash);
+  --color-marker: var(--marker);
+  --font-serif: var(--ff-serif);
+  --font-sans: var(--ff-sans);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 4.5rem;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--ff-serif);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  font-variant-numeric: oldstyle-nums;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--marker);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--note);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+/* The page column. On wide screens it sits left of a reserved margin, the way a
+   book with sidenotes does: that margin is where the note panel opens, so a note
+   never covers the sentence it belongs to. */
+.page {
+  max-width: 44rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 72rem) {
+  .page {
+    margin-left: max(0rem, calc((100vw - 44rem - 26rem) / 2));
+    margin-right: auto;
+  }
+}
+
+/* Interface labels and publisher text: the grotesque, lining figures. Not tabular:
+   this face widens commas and periods to figure width under tnum, which opens gaps
+   before punctuation in running text. */
+.label {
+  font-family: var(--ff-sans);
+  font-variant-numeric: lining-nums;
+}
+
+/* --- Citable sentence ---------------------------------------------------- */
+
+.sentence {
+  border-radius: 2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  background-image: linear-gradient(var(--marker), var(--marker));
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  transition: background-size 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sentence[data-active="true"] {
+  background-size: 100% 100%;
+}
+
+/* Source marks: small numerals that open the sources for one sentence. The
+   visible mark is small, the tap target is not (WCAG 2.2 target size). */
+.marks {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.2em;
+  margin-left: 0.2em;
+  padding: 0 0.15em;
+  font-family: var(--ff-sans);
+  font-size: 0.68em;
+  font-weight: 600;
+  font-variant-numeric: lining-nums;
+  line-height: 1;
+  vertical-align: 0.42em;
+  color: var(--note);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  border-radius: 3px;
+}
+
+.marks::after {
+  content: "";
+  position: absolute;
+  inset: -0.75rem -0.5rem;
+}
+
+.marks:hover,
+.marks[aria-expanded="true"] {
+  background: var(--note-wash);
+}
+
+.term {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: help;
+  text-decoration: underline dotted var(--note);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+}
+
+.term:hover {
+  background: var(--note-wash);
+}
+
+/* --- Note sheet (sources / glossary) -------------------------------------- */
+
+dialog.sheet {
+  position: fixed;
+  inset: auto 0 0 0;
+  width: 100%;
+  max-width: none;
+  max-height: min(78dvh, 40rem);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid var(--rule);
+  border-radius: 14px 14px 0 0;
+  background: var(--paper-2);
+  color: var(--ink);
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+}
+
+dialog.sheet::backdrop {
+  background: var(--scrim);
+}
+
+@media (min-width: 72rem) {
+  /* On wide screens the note sits in the margin, like a sidenote. */
+  dialog.sheet {
+    inset: 0 0 0 auto;
+    width: 26rem;
+    height: 100dvh;
+    max-height: none;
+    border-top: 0;
+    border-left: 1px solid var(--rule);
+    border-radius: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog.sheet[open] {
+    animation: sheet-in 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  dialog.sheet[open]::backdrop {
+    animation: fade-in 200ms ease-out;
+  }
+  @keyframes sheet-in {
+    from {
+      transform: translateY(1.5rem);
+      opacity: 0.6;
+    }
+  }
+  @media (min-width: 72rem) {
+    @keyframes sheet-in {
+      from {
+        transform: translateX(1.5rem);
+        opacity: 0.6;
+      }
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sentence {
+    transition: none;
+  }
+}
+
+/* --- Collapsible story sections ------------------------------------------- */
+
+details.section > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+details.section > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.section > summary .chevron {
+  transition: transform 150ms ease-out;
+}
+
+details.section[open] > summary .chevron {
+  transform: rotate(90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  details.section > summary .chevron {
+    transition: none;
+  }
 }
