@@ -237,7 +237,8 @@ def cited_docs(docs: list[SourceDoc], its: list[Item]) -> list[SourceDoc]:
     never sees an article no sentence relies on, so text in such an article cannot
     influence any verdict (and the request is smaller)."""
     cited = {s for it in its for s in it.ref["source_ids"]}
-    return [d for d in docs if d.article_id in cited]
+    # Stored cards cite article ids; eval cards cite the local ids ("S3").
+    return [d for d in docs if d.article_id in cited or d.local_id in cited]
 
 
 def sentences_sha(its: list[Item], to_local: dict) -> str:

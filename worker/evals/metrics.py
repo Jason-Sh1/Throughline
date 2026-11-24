@@ -121,6 +121,7 @@ def card_metrics(rows: list[dict]) -> dict:
             c["failed"] += 1
         if not j:
             continue
+        c["judged"] += 1
         kept = set(run["kept"])
         for g in j["result"]["sentences"]:
             ok = g["verdict"] == "supported"
@@ -154,6 +155,7 @@ def card_metrics(rows: list[dict]) -> dict:
         "key_fact_coverage": _ratio(c["facts_covered"], c["facts"]),
         "key_fact_stories": c["fact_stories"],
         "sentences_judged": c["pre_total"],
+        "sentences_kept_per_story": _ratio(c["kept"], c["judged"]),
         "card_failure_rate": _ratio(c["failed"], c["stories"]),
     }
 

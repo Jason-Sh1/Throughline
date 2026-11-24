@@ -76,7 +76,7 @@ edition-collect: ## Ingest batches a previous run left open
 edition-json: ## Export the latest edition as static JSON (OUT=path, default worker/out/edition.json)
 	$(WORKER) python -m llm.edition --export $(abspath $(or $(OUT),worker/out/edition.json))
 
-eval-quick: ## 30-story eval gate: fails if faithfulness drops vs evals/baseline.json
+eval-quick: ## 30-story eval gate against evals/baseline.json (ARGS=--update-baseline sets it)
 	$(WORKER) python -m evals.run --suite quick --check $(ARGS)
 
 eval: ## Full eval over every story (ARGS="--update-baseline --record")

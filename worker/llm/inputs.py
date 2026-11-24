@@ -46,11 +46,12 @@ class SourceDoc:
 
 def clean_text(text: str | None) -> str:
     """RSS summaries often carry HTML and entities; the model wants plain text.
-    Entities are decoded *before* tags are stripped, so an escaped tag in a feed
-    (`&lt;/sources&gt;`) is removed like a real one instead of becoming one."""
+    Tags are stripped first and entities decoded second, so "fell &lt;1% while the
+    Nasdaq rose &gt;2%" keeps its numbers. An encoded tag therefore survives as
+    literal text; `render_sources` escapes angle brackets, so it cannot act as one."""
     if not text:
         return ""
-    return _SPACE.sub(" ", _TAG.sub(" ", html.unescape(text))).strip()
+    return _SPACE.sub(" ", html.unescape(_TAG.sub(" ", text))).strip()
 
 
 def is_opinion(url: str) -> bool:
@@ -146,7 +147,7 @@ def docs_for_articles(conn: psycopg.Connection, article_ids: list[int]) -> list[
 def _esc(text: str) -> str:
     """Article text is untrusted. Escaping angle brackets means nothing inside a
     headline or excerpt can close the <source> tag or open a new block."""
-    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    return text.replace("<", "&lt;").replace(">", "&gt;")
 
 
 def render_sources(docs: list[SourceDoc]) -> str:
@@ -155,7 +156,7 @@ def render_sources(docs: list[SourceDoc]) -> str:
     for d in docs:
         when = d.published_at.strftime("%Y-%m-%d %H:%M UTC") if d.published_at else "unknown"
         kind = "opinion/analysis" if d.is_opinion else "news"
-        outlet = _esc(d.outlet).replace('"', "&quot;")
+        outlet = _esc(d.outlet).replace('"', "'")  # it sits inside a quoted attribute
         parts.append(
             f'<source id="{d.local_id}" outlet="{outlet}" published="{when}" type="{kind}">\n'
             f"Headline: {_esc(d.title)}\n{_esc(d.excerpt)}\n</source>"
