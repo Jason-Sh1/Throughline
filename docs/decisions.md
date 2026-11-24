@@ -2,6 +2,24 @@
 
 Short notes on non-obvious choices, newest first.
 
+## 2026-11-24 — M8 preparation
+
+- **The schedule has an off switch.** `editions.yml` runs three times a day, but a
+  scheduled run does nothing unless the repository variable `EDITIONS_ENABLED` is
+  `true`. Merging the file therefore spends nothing and sends no failure emails;
+  the pipeline starts only when the database secret is in place and the switch is
+  flipped. Manual runs always work, for the first test.
+- **Edition size defaults to 10 briefings and 6 short items** in the schedule
+  (the builder's own default is 50 and 30). Today shows 8 to 12 cards by rule, and
+  a smaller edition keeps the estimated cost well under the per-edition cap.
+- **One pipeline run at a time**, and a running one is never cancelled, because it
+  may be waiting on a batch that is already paid for.
+- **Workflow inputs go through `env`**, never into the script text, so a typed
+  value cannot be run as shell.
+- **The nightly re-cluster and the 14-day purge ride on the evening run** instead of
+  separate schedules: one fewer thing to keep in sync, and the purge the Privacy
+  page promises runs whenever editions do.
+
 ## 2026-11-24 — M7 (the parts that need no accounts)
 
 - **Offline reading with a hand-written service worker** (`web/public/sw.js`, about

@@ -75,8 +75,8 @@ Claude: check items off as they're completed and add a one-line note (date, anyt
 - [ ] **Human:** screen-reader pass (VoiceOver, NVDA) and a look on a real phone (see `docs/a11y.md`)
 
 ### M8 — Deploy & launch (Week 8)
-- [ ] Deploy web to Vercel, custom domain
-- [ ] Scheduled editions (3/day) via GitHub Actions cron
+- [ ] **Human:** deploy, following `DEPLOY.md` (restore the Supabase project, apply migrations, add the `DATABASE_URL` secret, import the repo in Vercel). Free `*.vercel.app` domain by decision
+- [x] Scheduled editions (3/day) via GitHub Actions cron — 2026-11-24; `.github/workflows/editions.yml`, built but switched off until the repository variable `EDITIONS_ENABLED` is `true`; also runs the nightly re-cluster and the 14-day purge. Not run against the real database yet
 - [ ] Sentry + `pipeline_runs` admin dashboard + token-spend tracking
 - [ ] Public eval metrics page
 - [ ] README: pitch, GIF, live link, architecture diagram, eval table, design decisions, legal notes, setup
