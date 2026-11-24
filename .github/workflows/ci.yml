@@ -30,14 +30,15 @@ jobs:
         run: make validate-feeds
       - name: Migrations, RLS tests, and worker tests against Postgres
         run: make db-test
-      # The eval cache is content-addressed (story + prompt texts + models), so
-      # restoring the newest copy is always safe; an unchanged pipeline re-scores
-      # for free and only a prompt/model change pays for new LLM calls (~$1).
+      # The eval cache is content-addressed (story, prompt texts, models and a
+      # fingerprint of the pipeline code), so restoring the newest copy is always
+      # safe; an unchanged pipeline re-scores for free and only a change that can
+      # alter the output pays for new LLM calls (~$1.40 for the quick suite).
       - name: Restore eval cache
         uses: actions/cache/restore@v4
         with:
           path: worker/evals/.cache
-          key: evals-${{ github.run_id }}
+          key: evals-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: evals-
       - name: Eval gate
         env:
@@ -50,7 +51,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: worker/evals/.cache
-          key: evals-${{ github.run_id }}
+          key: evals-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Eval results
         if: always()
         uses: actions/upload-artifact@v4

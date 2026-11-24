@@ -74,7 +74,7 @@ def run_story(client, story: dict) -> dict:
     docs = story_docs(story)
     valid = {d.local_id for d in docs}
     out: dict = {"story_id": story["id"], "error": None, "pre_card": None, "card": None,
-                 "kept": [], "verification": None}  # fmt: skip
+                 "kept": [], "verification": None, "transient": False}  # fmt: skip
     try:
         user = f"<sources>\n{render_sources(docs)}\n</sources>"
         ex = call_json(client, extract.request_params(user, m["extract"]),
@@ -91,7 +91,9 @@ def run_story(client, story: dict) -> dict:
         card = copy.deepcopy(pre)
         its = verify.items(card)
         identity = {i: i for i in valid}
-        vparams = verify.request_params(verify.user_message(docs, its, identity), m["verify"],
+        # Same as production: the verifier only sees sources some sentence cites.
+        cited = verify.cited_docs(docs, its)
+        vparams = verify.request_params(verify.user_message(cited, its, identity), m["verify"],
                                         m["verify_effort"])  # fmt: skip
         res = call_json(client, vparams, lambda t: verify.parse_result(t, len(its)), spend)
         drop_ids, _ = verify.review(its, res)
@@ -106,7 +108,9 @@ def run_story(client, story: dict) -> dict:
     except CardRejected as e:
         out["error"] = f"citation filter: {e}"
     except ValueError as e:
+        # Invalid JSON after the retry, a refusal or max_tokens: may succeed next time.
         out["error"] = str(e)
+        out["transient"] = True
     out["seconds"] = round(time.monotonic() - t0, 2)
     out["spend"] = spend.as_dict()
     return out

@@ -251,6 +251,35 @@ def build(
     card is marked `failed`, never published empty.
     """
     edition_id = get_edition(conn, slot, day or datetime.now(UTC).date())
+    if not _lock_edition(conn, edition_id):
+        raise SystemExit(f"another build of edition {edition_id} is running; not starting a second")
+    try:
+        return _build_locked(conn, edition_id, n_full, n_tail, wait_s, stats)
+    finally:
+        _unlock_edition(conn, edition_id)
+
+
+# Session-level advisory lock: held across the many commits of a build, released in
+# `finally`, and released by Postgres itself if the process dies.
+LOCK_NAMESPACE = 7461  # arbitrary; keeps edition locks apart from any other advisory locks
+
+
+def _lock_edition(conn, edition_id: int) -> bool:
+    with conn.cursor() as cur:
+        cur.execute("select pg_try_advisory_lock(%s, %s)", (LOCK_NAMESPACE, edition_id))
+        got = cur.fetchone()[0]
+    conn.commit()
+    return got
+
+
+def _unlock_edition(conn, edition_id: int) -> None:
+    conn.rollback()  # leave no failed transaction behind before unlocking
+    with conn.cursor() as cur:
+        cur.execute("select pg_advisory_unlock(%s, %s)", (LOCK_NAMESPACE, edition_id))
+    conn.commit()
+
+
+def _build_locked(conn, edition_id: int, n_full: int, n_tail: int, wait_s: int, stats: dict) -> int:
     was_published = edition_status(conn, edition_id) == "published"
     stats.update(edition_id=edition_id)
     for k in SPEND_KEYS:
@@ -411,9 +440,17 @@ def collect_open(conn, stats: dict) -> None:
         "verify": verify.collect,
     }
     for row_id, provider_id, kind in open_rows:
-        if batch.wait_for(client, provider_id, 0):
-            stats[provider_id] = collectors[kind](conn, client, row_id)
-            _add(stats, stats[provider_id])
+        # Each batch on its own: one that cannot be read (deleted, expired, made
+        # under another key) must not stop the others, or every later build.
+        try:
+            if batch.wait_for(client, provider_id, 0):
+                stats[provider_id] = collectors[kind](conn, client, row_id)
+                _add(stats, stats[provider_id])
+        except Exception as e:  # noqa: BLE001 - any failure is handled the same way
+            conn.rollback()
+            gone = batch.give_up(conn, row_id, permanent=batch.is_permanent(e))
+            stats[provider_id] = {"error": f"{type(e).__name__}: {e}"[:200], "abandoned": gone}
+            print(f"  batch {provider_id}: {e}" + (" (abandoned)" if gone else " (will retry)"))
 
 
 def export(conn, out: Path, edition_id: int | None = None) -> dict:
