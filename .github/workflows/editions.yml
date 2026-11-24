@@ -1,0 +1,109 @@
+name: Editions
+
+# The production pipeline: ingest, cluster, build and publish one edition, three times
+# a day. It writes to the real database (secret DATABASE_URL) and calls the Anthropic
+# API, so scheduled runs do nothing until the repository variable EDITIONS_ENABLED is
+# set to "true" (Settings > Secrets and variables > Actions > Variables). Setting it
+# back to anything else pauses the schedule. Manual runs always work.
+# Setup and cost notes: DEPLOY.md.
+
+on:
+  schedule:
+    # UTC. 10:30 is 6:30 am US Eastern in summer and 5:30 am in winter.
+    - cron: "30 10 * * *" # morning
+    - cron: "30 16 * * *" # midday
+    - cron: "30 22 * * *" # evening
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: "Edition slot"
+        type: choice
+        options: [morning, midday, evening]
+        default: morning
+      date:
+        description: "Edition date, YYYY-MM-DD (blank = today, UTC). Use it to finish an edition after midnight UTC."
+        default: ""
+      full:
+        description: "Stories that get a full briefing"
+        default: ""
+      tail:
+        description: "Stories that get a one-line item"
+        default: ""
+
+# One pipeline run at a time. A run that is still going is never cancelled: it may be
+# waiting on a batch that is already paid for.
+concurrency:
+  group: editions
+  cancel-in-progress: false
+
+jobs:
+  edition:
+    if: github.event_name == 'workflow_dispatch' || vars.EDITIONS_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
+      CRAWLER_CONTACT: https://github.com/${{ github.repository }}
+      # Today shows 8 to 12 briefings (CLAUDE.md). Override with repository variables.
+      FULL: ${{ inputs.full || vars.EDITION_FULL || '10' }}
+      TAIL: ${{ inputs.tail || vars.EDITION_TAIL || '6' }}
+      # Passed through the environment, never pasted into a script.
+      SLOT_INPUT: ${{ inputs.slot }}
+      DATE_INPUT: ${{ inputs.date }}
+      SCHEDULE: ${{ github.event.schedule }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+      - name: Check secrets
+        run: |
+          for v in DATABASE_URL ANTHROPIC_API_KEY; do
+            [ -n "${!v}" ] || { echo "::error title=Missing secret::$v is not set as a repository secret (see DEPLOY.md)"; exit 1; }
+          done
+      - name: Pick the slot
+        run: |
+          case "${SLOT_INPUT:-}" in
+            morning|midday|evening) slot="$SLOT_INPUT" ;;
+            *) case "$SCHEDULE" in
+                 "30 10 * * *") slot=morning ;;
+                 "30 16 * * *") slot=midday ;;
+                 *) slot=evening ;;
+               esac ;;
+          esac
+          echo "SLOT=$slot" >> "$GITHUB_ENV"
+          args="--full $FULL --tail $TAIL --wait 3000"
+          if [[ "${DATE_INPUT:-}" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then args="$args --date $DATE_INPUT"; fi
+          [[ "$FULL" =~ ^[0-9]+$ && "$TAIL" =~ ^[0-9]+$ ]] || { echo "::error::FULL and TAIL must be numbers"; exit 1; }
+          echo "EDITION_ARGS=$args" >> "$GITHUB_ENV"
+      - name: Install worker deps (CPU-only torch)
+        run: |
+          cd worker && uv sync --python 3.12
+          cd .. && make embed-deps
+      - name: Ingest and cluster
+        run: make sync-sources fetch cluster
+      - name: Build and publish the edition
+        run: make edition SLOT="$SLOT" ARGS="$EDITION_ARGS"
+      # Once a day, after the evening edition: merge / split clusters and delete
+      # article text older than 14 days (the privacy page promises this).
+      - name: Nightly re-cluster and purge
+        if: env.SLOT == 'evening'
+        run: make recluster purge
+      - name: Report
+        if: always()
+        run: |
+          cd worker && uv run python - <<'PY'
+          import json, os
+          import psycopg
+          with psycopg.connect(os.environ["DATABASE_URL"]) as conn, conn.cursor() as cur:
+              cur.execute("select stats from pipeline_runs where kind = 'edition' order by id desc limit 1")
+              row = cur.fetchone()
+          stats = row[0] if row else {}
+          keep = ("edition_id", "published", "empty", "cards", "full", "tail", "cost_usd",
+                  "new_cards", "new_verifications")
+          line = json.dumps({k: stats[k] for k in keep if k in stats}, default=str)
+          print(f"::notice title=Edition::{line}")
+          if stats.get("published") is False:
+              print("::warning title=Edition not published::A batch is still running or no card "
+                    "verified. Re-run this workflow with the same slot (and date) to finish it.")
+          PY
