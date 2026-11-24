@@ -26,9 +26,9 @@ import psycopg
 
 from common.db import connect
 from common.runs import pipeline_run
-from llm import batch, extract, prompts, synthesize
+from llm import batch, extract, prompts, synthesize, verify
 from llm.batch import anthropic_client
-from llm.card import one_liner_card
+from llm.card import SIDES, one_liner_card
 from llm.extract import ExtractionFailed, ExtractJob, extract_model, gemini_caller
 from llm.inputs import build_sources, docs_to_json, load_cluster_rows
 from llm.synthesize import build_job, synth_effort, synth_model
@@ -39,9 +39,6 @@ HALF_LIFE_HOURS = 18
 # 3 editions a day * 30 days * $0.20 = $18, under the $20/month cap. Most
 # editions cost far less, because unchanged clusters reuse their cached card.
 MAX_EDITION_COST_USD = float(os.environ.get("MAX_EDITION_COST_USD", "0.20"))
-
-SIDES = {"left": "left", "lean_left": "left", "center": "center",
-         "lean_right": "right", "right": "right"}  # fmt: skip
 
 
 def score(outlets: int, ratings: set[str], age_hours: float) -> float:
@@ -104,11 +101,15 @@ def store_one_liner(conn: psycopg.Connection, cluster_id: int, extraction_id: in
             """insert into cards (cluster_id, content_hash, prompt_version, model, card,
                    source_count, input_tokens, output_tokens, cost_usd)
                values (%s, %s, %s, %s, %s, %s, 0, 0, 0)
-               on conflict (content_hash) do update set card = excluded.card returning id""",
+               on conflict (content_hash) do nothing returning id""",
             (cluster_id, f"one-liner:{ex_hash}", version, model, json.dumps(card),
              card["confidence"]["outlet_count"]),
         )  # fmt: skip
-        cid = cur.fetchone()[0]
+        row = cur.fetchone()
+        if row is None:  # already stored (and maybe verified): keep it as is
+            cur.execute("select id from cards where content_hash = %s", (f"one-liner:{ex_hash}",))
+            row = cur.fetchone()
+        cid = row[0]
     conn.commit()
     return cid
 
@@ -202,7 +203,13 @@ def run_extraction(conn, ranked: list[int], edition_id: int, wait_s: int, stats:
 
 
 def build(conn, slot: str, n_full: int, n_tail: int, wait_s: int, stats: dict) -> int:
-    """Returns the edition id. Spend lands in stats, which pipeline_run records."""
+    """Returns the edition id. Spend lands in stats, which pipeline_run records.
+
+    Steps: rank -> extract (batch) -> synthesize full cards (batch) -> verify every
+    candidate card (batch) -> assemble from verified cards only -> publish. If a
+    batch outlives --wait, the edition stays `building`; re-running the same slot
+    picks up the cached results and finishes it.
+    """
     edition_id = get_edition(conn, slot, datetime.now(UTC).date())
     ranked = rank_clusters(conn)[: n_full + n_tail]
     stats.update(ranked=len(ranked), edition_id=edition_id)
@@ -217,27 +224,77 @@ def build(conn, slot: str, n_full: int, n_tail: int, wait_s: int, stats: dict) -
     jobs = [j for c in full if (j := build_job(conn, c, ex_ids[c], model))]
     stats.update(full=len(full), tail=len(tail), new_cards=len(jobs),
                  cached_cards=len(full) - len(jobs))  # fmt: skip
+    pending = False
     if jobs:
         _check_budget(stats, "synthesis", synthesize.estimate_cost(jobs, model))
         client = anthropic_client()
-        _run_batch(conn, client,
-                   lambda: synthesize.submit(conn, client, jobs, model, effort, edition_id),
-                   synthesize.collect, wait_s, stats, "synthesis")  # fmt: skip
+        pending |= not _run_batch(
+            conn, client, lambda: synthesize.submit(conn, client, jobs, model, effort, edition_id),
+            synthesize.collect, wait_s, stats, "synthesis")  # fmt: skip
 
-    assemble(conn, edition_id, full, tail, ex_ids)
+    candidates = candidate_cards(conn, full, tail, ex_ids)
+    pending |= not run_verification(conn, candidates, edition_id, wait_s, stats)
+    assemble(conn, edition_id, candidates)
+    if not pending:
+        publish(conn, edition_id)
+    stats["published"] = not pending
     return edition_id
 
 
-def assemble(conn, edition_id: int, full: list[int], tail: list[int], ex_ids: dict) -> None:
+def candidate_cards(conn, full: list[int], tail: list[int], ex_ids: dict) -> list[tuple]:
+    """(cluster id, full card id or None, one-liner card id or None) in rank order.
+    Full-tier stories also get a one-liner, verified in the same batch, so a full
+    card that fails verification can fall back without a second round."""
+    out = []
+    for cid in full + tail:
+        card_id = latest_card(conn, cid) if cid in full else None
+        out.append((cid, card_id, store_one_liner(conn, cid, ex_ids[cid])))
+    return out
+
+
+def run_verification(conn, candidates: list[tuple], edition_id: int, wait_s: int,
+                     stats: dict) -> bool:  # fmt: skip
+    """Verify every candidate card still in `draft`. False if the batch is pending."""
+    ids = [i for _, full_id, one_id in candidates for i in (full_id, one_id) if i]
+    with conn.cursor() as cur:
+        cur.execute("select id from cards where id = any(%s) and status = 'draft'", (ids,))
+        drafts = sorted(r[0] for r in cur.fetchall())
+    jobs = [j for i in drafts if (j := verify.plan(conn, i))]
+    stats.update(new_verifications=len(jobs))
+    if not jobs:
+        return True
+    model, effort = verify.verify_model(), verify.verify_effort()
+    _check_budget(stats, "verification", verify.estimate_cost(jobs, model))
+    client = anthropic_client()
+    return _run_batch(conn, client,
+                      lambda: verify.submit(conn, client, jobs, model, effort, edition_id),
+                      verify.collect, wait_s, stats, "verification")  # fmt: skip
+
+
+def card_status(conn, card_id: int | None) -> str | None:
+    if card_id is None:
+        return None
+    with conn.cursor() as cur:
+        cur.execute("select status from cards where id = %s", (card_id,))
+        row = cur.fetchone()
+    return row[0] if row else None
+
+
+PUBLISHABLE = ("verified", "published")
+
+
+def assemble(conn, edition_id: int, candidates: list[tuple]) -> None:
+    """Only verified cards make it in (rule 2): the full card if it passed, else
+    the story's one-liner if that passed, else the story is left out."""
     rank = 0
     with conn.cursor() as cur:
         cur.execute("delete from edition_cards where edition_id = %s", (edition_id,))
-    for cid in full + tail:
-        tier = "full" if cid in full else "one_liner"
-        card_id = latest_card(conn, cid) if tier == "full" else None
-        if card_id is None:  # no full card (failed or pending): fall back to a one-liner
-            tier, card_id = "one_liner", store_one_liner(conn, cid, ex_ids[cid])
-        if card_id is None:
+    for _, full_id, one_id in candidates:
+        if card_status(conn, full_id) in PUBLISHABLE:
+            tier, card_id = "full", full_id
+        elif card_status(conn, one_id) in PUBLISHABLE:
+            tier, card_id = "one_liner", one_id
+        else:
             continue
         rank += 1
         with conn.cursor() as cur:
@@ -249,12 +306,32 @@ def assemble(conn, edition_id: int, full: list[int], tail: list[int], ex_ids: di
     conn.commit()
 
 
+def publish(conn, edition_id: int) -> None:
+    """Make the edition and its cards readable by the web app (RLS policies
+    expose only `published` rows)."""
+    with conn.cursor() as cur:
+        cur.execute(
+            """update cards set status = 'published' where id in
+                   (select card_id from edition_cards where edition_id = %s)""",
+            (edition_id,),
+        )
+        cur.execute(
+            "update editions set status = 'published', published_at = now() where id = %s",
+            (edition_id,),
+        )
+    conn.commit()
+
+
 def collect_open(conn, stats: dict) -> None:
     """Ingest finished batches that an earlier run stopped waiting for. Their
     results go into the extraction / card caches, so re-running the edition
     then uses them without paying again."""
     client = anthropic_client()
-    collectors = {"extract": extract.collect, "synthesize": synthesize.collect}
+    collectors = {
+        "extract": extract.collect,
+        "synthesize": synthesize.collect,
+        "verify": verify.collect,
+    }
     for row_id, provider_id, kind in batch.open_batches(conn):
         if batch.wait_for(client, provider_id, 0):
             stats[provider_id] = collectors[kind](conn, client, row_id)

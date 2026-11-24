@@ -14,6 +14,8 @@ PROMPTS_DIR = Path(__file__).parent
 
 EXTRACT = "extract_v1"
 SYNTHESIZE = "synthesize_v1"
+VERIFY = "verify_v1"
+JUDGE = "judge_v1"  # eval only (worker/evals)
 
 
 def load(name: str) -> tuple[str, str]:

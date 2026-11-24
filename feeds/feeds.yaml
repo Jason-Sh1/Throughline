@@ -16,6 +16,10 @@
 # feed not answering 200/304. Removed after live checks: WSJ (robots.txt
 # disallows crawlers), Atlantic entertainment feed (404).
 #
+# `kind` (default news): agency = government or intergovernmental body; research =
+# journal or research press-release site. Only news outlets count toward a story's
+# outlet count and spectrum spread.
+#
 # Schema: worker/ingest/feeds_config.py. Validate with `make validate-feeds`
 # (STRICT=1 for the launch targets).
 
@@ -829,6 +833,7 @@ outlets:
     name: ScienceDaily
     homepage: https://www.sciencedaily.com
     region: US
+    kind: research
     allsides_name: Science Daily
     allsides_rating: center
     allsides_url: https://www.allsides.com/news-source/science-daily-media-bias
@@ -859,6 +864,7 @@ outlets:
     name: Phys.org
     homepage: https://phys.org
     region: IM
+    kind: research
     allsides_rating: not_rated
     feeds:
       - url: https://phys.org/rss-feed/
@@ -883,6 +889,7 @@ outlets:
     name: NASA
     homepage: https://www.nasa.gov
     region: US
+    kind: agency
     allsides_rating: not_rated
     allsides_url: https://www.allsides.com/news-source/nasa-media-bias
     feeds:
@@ -912,6 +919,7 @@ outlets:
     name: Medical Xpress
     homepage: https://medicalxpress.com
     region: IM
+    kind: research
     allsides_rating: not_rated
     feeds:
       - url: https://medicalxpress.com/rss-feed/
@@ -1211,6 +1219,7 @@ outlets:
     name: CDC Newsroom
     homepage: https://www.cdc.gov
     region: US
+    kind: agency
     allsides_name: Centers for Disease Control and Prevention
     allsides_rating: not_rated
     allsides_url: https://www.allsides.com/news-source/centers-disease-control-and-prevention-media-bias
@@ -1400,6 +1409,7 @@ outlets:
     name: Nature
     homepage: https://www.nature.com
     region: GB
+    kind: research
     allsides_rating: not_rated
     feeds:
       - url: https://www.nature.com/nature.rss
@@ -1458,6 +1468,7 @@ outlets:
     name: World Health Organization
     homepage: https://www.who.int
     region: CH
+    kind: agency
     allsides_rating: not_rated
     feeds:
       - url: https://www.who.int/rss-feeds/news-english.xml

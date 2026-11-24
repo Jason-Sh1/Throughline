@@ -30,8 +30,26 @@ jobs:
         run: make validate-feeds
       - name: Migrations, RLS tests, and worker tests against Postgres
         run: make db-test
+      # The eval cache is content-addressed (story + prompt texts + models), so
+      # restoring the newest copy is always safe; an unchanged pipeline re-scores
+      # for free and only a prompt/model change pays for new LLM calls (~$1).
+      - name: Restore eval cache
+        uses: actions/cache@v4
+        with:
+          path: worker/evals/.cache
+          key: evals-${{ github.run_id }}
+          restore-keys: evals-
       - name: Eval gate
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: make eval-quick
+      - name: Eval results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-results
+          path: worker/evals/results/
+          if-no-files-found: ignore
 
   web:
     runs-on: ubuntu-latest

@@ -2,6 +2,41 @@
 
 Short notes on non-obvious choices, newest first.
 
+## 2026-10-31 — M4
+
+- **Verification drops, never rewrites.** A rewrite would be new, unchecked text.
+  Each card gets one request (Haiku 5.5, effort `medium`, Batch API) that judges
+  every sentence against only the sources it cites. Anything not `supported`,
+  including a sentence the model forgot to grade, is removed. A failed headline or
+  no surviving bullet fails the card.
+- **Only verified cards ship.** Full-tier stories also get their one-liner verified
+  in the same batch, so a failed card falls back without a second round. An edition
+  is published (and so readable through RLS) only when every batch has finished;
+  otherwise it stays `building` and re-running the slot finishes it from cache.
+- **Drop reports are stored** (`cards.verification`) so a removed sentence can be
+  traced, and the eval can report how much verification removes.
+- **Confidence counts news outlets only.** `sources.kind` (from feeds.yaml) marks
+  agencies (NASA, CDC, WHO) and research sites (Nature, Phys.org, ScienceDaily,
+  Medical Xpress); they're still listed as sources. Adds `spectrum_spread` (0–3
+  sides), `single_source` (≤1 news outlet) and `other_sources`.
+- **Evals run the real pipeline on frozen snapshots**, synchronously instead of
+  batched so an eval takes minutes. Snapshots hold only feed-syndicated text
+  (headline + RSS summary ≤600 chars) because the repo is public; that's slightly
+  thinner input than production, where the Guardian gives body text.
+- **The judge is Claude Sonnet 5.5, not Haiku**, so the model isn't grading its
+  own output. It grades the card *before* verification with the verifier's
+  numbering, so one call yields final faithfulness and the verifier's catch rate.
+  ~$0.04 per story; effort `low` keeps it there.
+- **Citation recall without gold labels:** the judge lists uncited sources that
+  also state each sentence. Gold labels cover what an LLM shouldn't decide:
+  which facts matter (key-fact coverage) and which articles are the same event.
+- **Labeling is blind**: articles shuffled under opaque ids, so the labeler can't
+  see which ones the clusterer chose (that would bias the clustering score).
+- **Content-addressed eval cache** keyed by story, prompt *texts*, models and gold
+  facts. CI restores it, so the gate re-scores for free unless something that
+  changes the output changed. Gate: faithfulness may not drop >0.02 (run-to-run
+  noise) below the committed baseline.
+
 ## 2026-10-25 — M3
 
 - **Model: Claude Haiku 5.5 for both extraction and synthesis.** Checked

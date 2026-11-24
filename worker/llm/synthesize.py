@@ -89,15 +89,20 @@ def build_job(
         cur.execute("select 1 from cards where content_hash = %s", (chash,))
         if cur.fetchone():
             return None
-    ex = Extraction.model_validate(data)
+    return CardJob(
+        cluster_id, chash, extraction_id, docs, user_message(docs, Extraction.model_validate(data))
+    )
+
+
+def user_message(docs: list[SourceDoc], ex: Extraction) -> str:
+    """Pure: the eval runner builds the same message from a frozen snapshot."""
     published = [d.published_at for d in docs if d.published_at]
     today = max(published).strftime("%Y-%m-%d") if published else "unknown"
-    user = (
+    return (
         f"<sources>\n{render_sources(docs)}\n</sources>\n\n"
         f"<claims>\n{render_claims(ex)}\n</claims>\n\n"
         f"The newest source was published on {today}. Write the briefing JSON."
     )
-    return CardJob(cluster_id, chash, extraction_id, docs, user)
 
 
 def request_params(user_message: str, model: str, effort: str) -> dict:
