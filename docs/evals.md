@@ -53,5 +53,8 @@ judgment hasn't been measured yet; a sample of human sentence labels would do th
 ## Baseline
 
 _Not measured yet._ Nothing fills this in automatically. After `make eval-snapshot`
-and the hand-labeled gold set (ROADMAP M4), run `make eval ARGS="--update-baseline"`
-and record the numbers here. Until then the gate reports only.
+and the hand-labeled gold set (ROADMAP M4), run
+`make eval-quick ARGS=--update-baseline` (this sets the `quick` baseline, the one CI
+compares against; `make eval ARGS=--update-baseline` sets the `full` one), commit
+`worker/evals/baseline.json`, and record the numbers here. Until then the gate
+compares nothing and CI prints an "Eval gate not armed" warning.

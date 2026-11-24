@@ -32,7 +32,11 @@ def test_code_change_invalidates_the_cache(evaldirs, monkeypatch):
 
 def test_code_fingerprint_covers_the_pipeline_and_ignores_line_endings(tmp_path, monkeypatch):
     names = {p.name for p in run.CODE_FILES}
-    assert {"verify.py", "schemas.py", "inputs.py", "pipeline.py", "judge.py"} <= names
+    assert {"verify.py", "schemas.py", "inputs.py", "citations.py", "batch.py", "pipeline.py",
+            "judge.py", "stories.py"} <= names  # fmt: skip
+    # Code that cannot change an eval result must not cost a re-run when it changes.
+    assert not {"edition.py", "cost.py"} & names
+    assert all(p.exists() for p in run.CODE_FILES)
     a, b = tmp_path / "a.py", tmp_path / "b.py"
     a.write_bytes(b"x = 1\ny = 2\n")
     monkeypatch.setattr(run, "CODE_FILES", [a])
@@ -50,9 +54,12 @@ def test_judge_grade_is_tied_to_the_draft_it_graded():
     card = draft_dict()
     other = draft_dict()
     other["brief"][0]["text"] = "A different sentence."
-    assert run.judge_key(card, []) != run.judge_key(other, [])
-    assert run.judge_key(card, []) == run.judge_key(draft_dict(), [])
-    assert run.judge_key(card, []) != run.judge_key(card, ["A key fact."])
+    s1, s2 = story("s1"), story("s2")
+    assert run.judge_key(s1, card, []) != run.judge_key(s1, other, [])
+    assert run.judge_key(s1, card, []) == run.judge_key(story("s1"), draft_dict(), [])
+    assert run.judge_key(s1, card, []) != run.judge_key(s1, card, ["A key fact."])
+    # The judge grades against the story's sources, so they are part of the key too.
+    assert run.judge_key(s1, card, []) != run.judge_key(s2, card, [])
 
 
 class FlakyClient:
@@ -126,3 +133,11 @@ def test_gate_tolerates_a_baseline_from_before_the_new_metrics(evaldirs):
 def test_kept_sentences_per_story_is_reported(evaldirs):
     m = run.evaluate([story("s1")], {}, lambda: FakeClient(reject=("Markets rose",)))
     assert m["sentences_kept_per_story"] == m["sentences_judged"] - 1
+
+
+def test_gate_warns_when_the_suite_has_no_baseline(evaldirs, capsys):
+    # `make eval --update-baseline` writes the "full" baseline; CI gates on "quick".
+    run.BASELINE.write_text(json.dumps({"full": {"metrics": {"faithfulness": 0.95}}}))
+    result = {"stories": 3, "faithfulness": 0.10, "judge_failures": 0}
+    assert run.check(result, "quick", run.BASELINE) == []
+    assert "Eval gate not armed" in capsys.readouterr().out

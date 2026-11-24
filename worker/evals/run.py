@@ -6,11 +6,14 @@ faithfulness with the committed baseline.
 
 Every pipeline run and judge grade is cached on disk, keyed by a hash of
 everything that could change it (story, prompt *texts*, models, efforts, gold
-key facts). An unchanged pipeline costs nothing to re-evaluate, so CI can run the
-gate on every PR and only pays when a prompt or model actually changed.
+key facts, and a fingerprint of the pipeline code). An unchanged pipeline costs
+nothing to re-evaluate, so CI can run the gate on every PR and only pays when
+something that can alter the output changed.
 
 Options:
-  --check            fail if faithfulness dropped more than TOLERANCE vs baseline
+  --check            fail if faithfulness dropped more than TOLERANCE vs the suite's
+                     baseline, or the card failure rate rose, or far fewer sentences
+                     survive, or the judge failed on a story (see check())
   --update-baseline  write these numbers to evals/baseline.json
   --record           also insert the results into the `evals` table (DATABASE_URL)
 """
@@ -55,12 +58,24 @@ def _prompt_text(name: str) -> str:
 
 # Code that shapes a request or post-processes a response: schemas and their field
 # descriptions, token limits, source rendering, the citation filter, how verdicts are
-# applied. A change to any of it can change the output without touching a prompt
-# file, so it is part of the cache key. Coarse on purpose: an unrelated edit to one
-# of these files costs one re-run (~$1); a stale score that passes the gate is worse.
-CODE_FILES = sorted(
-    [*(EVALS_DIR.parent / "llm").glob("*.py"), EVALS_DIR / "pipeline.py", EVALS_DIR / "judge.py"]
-)
+# applied, how a story becomes sources. A change to any of it can change the output
+# without touching a prompt file, so it is part of the cache key. Listed by name:
+# the edition builder and the price table cannot change an eval result, and an edit
+# there should not cost a re-run (~$1.40). Add a module here when the eval starts
+# importing it.
+LLM_DIR = EVALS_DIR.parent / "llm"
+CODE_FILES = [
+    LLM_DIR / "batch.py",  # request parameters
+    LLM_DIR / "citations.py",
+    LLM_DIR / "extract.py",
+    LLM_DIR / "inputs.py",
+    LLM_DIR / "schemas.py",
+    LLM_DIR / "synthesize.py",
+    LLM_DIR / "verify.py",
+    EVALS_DIR / "judge.py",
+    EVALS_DIR / "pipeline.py",
+    EVALS_DIR / "stories.py",
+]
 
 
 def code_fingerprint() -> str:
@@ -76,10 +91,11 @@ def run_key(story: dict) -> str:
     return _hash("run", story, texts, pipeline.models(), code_fingerprint())
 
 
-def judge_key(pre_card: dict, facts: list[str]) -> str:
-    """Keyed on the card that was actually graded, not on the run key: if a run is
-    redone, an old grade must not be attached to a different draft."""
-    return _hash("judge", pre_card, _prompt_text(prompts.JUDGE), judge.judge_model(),
+def judge_key(story: dict, pre_card: dict, facts: list[str]) -> str:
+    """Keyed on what the judge reads: the story's sources and the draft that was
+    actually graded (not the run key: if a run is redone, an old grade must not be
+    attached to a different draft)."""
+    return _hash("judge", story, pre_card, _prompt_text(prompts.JUDGE), judge.judge_model(),
                  judge.judge_effort(), facts, code_fingerprint())  # fmt: skip
 
 
@@ -106,7 +122,7 @@ def evaluate(stories: list[dict], gold: dict, client_factory, workers: int = 4) 
             need_run += 1
             need_judge += 1
         elif cached_run["pre_card"] is not None:  # a story with no draft has nothing to judge
-            need_judge += _cached("judge", judge_key(cached_run["pre_card"], facts)) is None
+            need_judge += _cached("judge", judge_key(s, cached_run["pre_card"], facts)) is None
     estimate = need_run * EST_RUN_USD + need_judge * EST_JUDGE_USD
     print(f"{len(plan)} stories: {need_run} pipeline runs and {need_judge} judge calls "
           f"not cached (est. ${estimate:.2f})")  # fmt: skip
@@ -127,7 +143,7 @@ def evaluate(stories: list[dict], gold: dict, client_factory, workers: int = 4) 
                 _store("run", rk, run)
         graded = None
         if run["pre_card"] is not None:
-            jk = judge_key(run["pre_card"], facts)
+            jk = judge_key(story, run["pre_card"], facts)
             graded = _cached("judge", jk)
             if graded is None:
                 try:
@@ -175,7 +191,10 @@ def check(result: dict, suite: str, baseline_path: Path = BASELINE) -> list[str]
         )
     base = json.loads(baseline_path.read_text()).get(suite) if baseline_path.exists() else None
     if base is None:
-        print(f"no {suite} baseline yet: reporting only (run with --update-baseline to set one)")
+        if result["stories"]:
+            print(f"::warning title=Eval gate not armed::no '{suite}' baseline in "
+                  f"{baseline_path.name}: nothing is compared. Set one with "
+                  f"`make eval-quick ARGS=--update-baseline` and commit the file.")  # fmt: skip
         return problems
     old, new = base["metrics"]["faithfulness"], result["faithfulness"]
     if old is not None and new is not None and new < old - TOLERANCE:
